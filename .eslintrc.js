@@ -22,6 +22,9 @@ module.exports = {
       files: [
         '**/*.vue'
       ],
+      parserOptions: {
+        project: './tsconfig.json'
+      },
       extends: [
         'plugin:vue/essential',
         '@vue/standard',
