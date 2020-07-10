@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-const routes: Array<RouteConfig> = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     name: 'Home',
@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: typeof process.env.CORDOVA_PLATFORM === 'undefined' ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes
 })
