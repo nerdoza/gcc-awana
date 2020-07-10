@@ -1,24 +1,6 @@
-# gcc-awana
+# GCC AWANA App
 
-## Project setup
-```
-npm install
-```
+App designed to track clubber's attendance and book progress each week.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Copyright and License
+Copyright 2020 Zachary Cardoza
