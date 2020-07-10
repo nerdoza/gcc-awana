@@ -3,7 +3,7 @@
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
-  const baseUrl = (process.env.BASE_URL ?? './') as string
+  const baseUrl = (process.env.BASE_URL ?? './')
 
   register(`${baseUrl}service-worker.js`, {
     ready () {

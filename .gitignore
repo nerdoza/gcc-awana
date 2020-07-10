@@ -26,3 +26,6 @@ pnpm-debug.log*
 /src-cordova/plugins
 /src-cordova/www
 /public/cordova.js
+
+#Electron-builder output
+/dist_electron
