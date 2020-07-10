@@ -1,11 +1,18 @@
 {
-  "name": "com.bayssmekanique.gcc.awana",
+  "name": "gcc-awana",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "android:build": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-android",
+    "android:build:www": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-only-www-android",
+    "android:dev": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-serve-android",
+    "cordova:prepare": "vue-cli-service cordova-prepare",
+    "ios:build": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-ios",
+    "ios:build:www": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-only-www-ios",
+    "ios:dev": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-serve-ios",
+    "web:build": "vue-cli-service build",
+    "web:dev": "vue-cli-service serve"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -39,6 +46,7 @@
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "typescript": "~3.9.6",
+    "vue-cli-plugin-cordova": "~2.4.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
