@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "coenraads.bracket-pair-colorizer-2",
+    "streetsidesoftware.code-spell-checker",
+    "eg2.vscode-npm-script",
+    "pflannery.vscode-versionlens",
+    "octref.vetur",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode-remote.vscode-remote-extensionpack"
+  ]
+}
