@@ -4,6 +4,9 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
+const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
+const isElectron = typeof process.env.IS_ELECTRON !== 'undefined'
+
 const routes: RouteConfig[] = [
   {
     path: '/',
@@ -21,7 +24,7 @@ const routes: RouteConfig[] = [
 ]
 
 const router = new VueRouter({
-  mode: typeof process.env.CORDOVA_PLATFORM === 'undefined' ? 'hash' : 'history',
+  mode: isCordova || isElectron ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes
 })
