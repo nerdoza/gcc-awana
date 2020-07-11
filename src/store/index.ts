@@ -1,15 +1,19 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex, { Store } from 'vuex'
+import { extractVuexModule, createProxy } from 'vuex-class-component'
+import UserStore from './user'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+const store = new Store({
   modules: {
-  }
+    ...extractVuexModule(UserStore)
+  },
+  strict: process.env.NODE_ENV !== 'production'
 })
+
+export default store
+
+export const vxm = {
+  user: createProxy(store, UserStore)
+}

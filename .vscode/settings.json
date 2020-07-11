@@ -20,5 +20,8 @@
   "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
   "vetur.format.defaultFormatter.ts": "none",
   "remote.WSL.fileWatcher.polling": true,
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "cSpell.words": [
+    "vuex"
+  ]
 }

@@ -5,7 +5,8 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2020,
-    project: 'tsconfig.json'
+    project: 'tsconfig.json',
+    sourceType: 'module'
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -20,31 +21,37 @@ module.exports = {
   overrides: [
     {
       files: [
-        '**/*.vue'
+        './src/**/*.vue'
       ],
       extends: [
         'plugin:vue/essential',
         '@vue/standard',
         '@vue/typescript/recommended'
       ],
+      parserOptions: {
+        extraFileExtensions: ['.vue']
+      },
       rules: {
-        '@typescript-eslint/explicit-function-return-type': 'off'
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off'
       }
     },
     {
       files: [
-        '**/*.ts'
+        './src/**/*.ts'
       ],
       extends: [
         'standard-with-typescript'
       ],
       rules: {
-        '@typescript-eslint/explicit-function-return-type': 'off'
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off'
       }
     },
     {
       files: [
-        '**/*.js'
+        '*.js',
+        './src/**/*.js'
       ],
       extends: [
         'standard'
