@@ -6,7 +6,10 @@
       </v-col>
 
       <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3" v-on:click="clearName()">Hello {{ user.fullname }}!</h1>
+        <h1
+          class="display-2 font-weight-bold mb-3"
+          v-on:click="clearName()"
+        >Hello {{ user.firstname }}!</h1>
       </v-col>
     </v-row>
   </v-container>
@@ -24,6 +27,8 @@ import { vxm } from '@/store'
   }
 })
 export default class extends Vue {
-  clearName = () => vxm.user.clearName()
+  clearName () {
+    vxm.user.clearName()
+  }
 }
 </script>

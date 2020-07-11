@@ -22,6 +22,7 @@
   "remote.WSL.fileWatcher.polling": true,
   "eslint.format.enable": true,
   "cSpell.words": [
+    "vuetify",
     "vuex"
   ]
 }

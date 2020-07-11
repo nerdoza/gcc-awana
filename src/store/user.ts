@@ -1,6 +1,6 @@
 import { createModule, mutation } from 'vuex-class-component'
 
-export default class UserStore extends createModule({ namespaced: 'user', strict: false }) {
+export default class extends createModule({ namespaced: 'user', strict: false }) {
   firstname = 'Michael'
   lastname = 'Olofinjana'
   specialty = 'JavaScript'
