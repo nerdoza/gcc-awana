@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-
 import { register } from 'register-service-worker'
 
-if (process.env.NODE_ENV === 'production') {
+import { isProduction, isWeb } from '@/const'
+
+if (isWeb && isProduction) {
   const baseUrl = (process.env.BASE_URL ?? './')
 
   register(`${baseUrl}service-worker.js`, {

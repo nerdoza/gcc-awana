@@ -1,8 +1,8 @@
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faExternalLinkAlt } from '@fortawesome/pro-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faExternalLinkAlt } from '@fortawesome/pro-solid-svg-icons'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 library.add(faExternalLinkAlt)
@@ -10,6 +10,9 @@ library.add(faExternalLinkAlt)
 Vue.use(Vuetify)
 
 export default new Vuetify({
+  theme: {
+    dark: true
+  },
   icons: {
     iconfont: 'faSvg',
     values: {

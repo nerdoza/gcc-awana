@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+
 import { vxm } from '@/store'
 
 @Component({
@@ -28,6 +29,7 @@ import { vxm } from '@/store'
 })
 export default class extends Vue {
   clearName () {
+    this.$vuetify.theme.dark = false
     vxm.user.clearName()
   }
 }

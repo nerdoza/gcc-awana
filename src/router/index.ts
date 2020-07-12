@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+
+import { isWeb } from '@/const'
+
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
-
-const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
-const isElectron = typeof process.env.IS_ELECTRON !== 'undefined'
 
 const routes: RouteConfig[] = [
   {
@@ -24,7 +24,7 @@ const routes: RouteConfig[] = [
 ]
 
 const router = new VueRouter({
-  mode: isCordova || isElectron ? 'hash' : 'history',
+  mode: isWeb ? 'history' : 'hash',
   base: process.env.BASE_URL,
   routes
 })

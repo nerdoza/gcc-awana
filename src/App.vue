@@ -44,7 +44,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
+
 import HelloWorld from './components/HelloWorld.vue'
 
 @Component({

@@ -8,9 +8,13 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module'
   },
+  plugins: [
+    'simple-import-sort'
+  ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'simple-import-sort/sort': 'error',
     'no-void': [
       'error',
       {
@@ -50,7 +54,7 @@ module.exports = {
     },
     {
       files: [
-        '*.js',
+        './*.js',
         './src/**/*.js'
       ],
       extends: [

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
-import { extractVuexModule, createProxy } from 'vuex-class-component'
+import { createProxy, extractVuexModule } from 'vuex-class-component'
+
 import UserStore from './user'
 
 Vue.use(Vuex)
