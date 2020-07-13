@@ -19,7 +19,7 @@ const icon = (...args: string[]) => ({
 
 export default new Vuetify({
   theme: {
-    dark: false
+    dark: true
   },
   icons: {
     iconfont: 'faSvg',

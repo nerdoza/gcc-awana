@@ -5,11 +5,11 @@
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>GCC AWANA</v-toolbar-title>
+              <v-toolbar-title>Welcome</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
-                  <v-btn to="/help" icon v-on="on">
+                  <v-btn @click.stop="helpOpen = true" icon v-on="on">
                     <v-icon>$info</v-icon>
                   </v-btn>
                 </template>
@@ -17,7 +17,6 @@
               </v-tooltip>
             </v-toolbar>
             <v-card-text>
-              <div class="text--primary">Welcome!</div>
               <div class="text--primary">Entering your mobile phone number below to get started.</div>
               <v-form>
                 <v-text-field
@@ -26,6 +25,7 @@
                   prepend-icon="$phone"
                   type="tel"
                   v-mask="'+1 (###) ###-####'"
+                  v-model="phoneNumber"
                 ></v-text-field>
               </v-form>
               <div
@@ -39,13 +39,24 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-dialog v-model="helpOpen" max-width="400">
+        <v-card>
+          <v-card-title class="headline">Help</v-card-title>
+          <v-card-text>
+            This app is designed to assist parents and leaders involved in the Grace Community Church AWANA program.
+            <br />If you would like to find out more about this program, contact:
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-main>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { mask } from 'vue-the-mask'
+
+import { phoneNumberRegex } from '@/const'
 
 @Component({
   directives: {
@@ -53,6 +64,13 @@ import { mask } from 'vue-the-mask'
   }
 })
 export default class extends Vue {
+  phoneNumber = ''
   phoneNumberValid = false
+  helpOpen = false
+
+  @Watch('phoneNumber')
+  onPhoneNumberChanged (val: string) {
+    this.phoneNumberValid = phoneNumberRegex.test(val)
+  }
 }
 </script>

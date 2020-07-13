@@ -6,3 +6,5 @@ export const isWeb = !isCordova && !isElectron
 
 export const isProduction = process.env.NODE_ENV === 'production'
 export const isDevelopment = process.env.NODE_ENV === 'development'
+
+export const phoneNumberRegex = new RegExp(/^\+1\s\(\d{3}\)\s\d{3}-\d{4}$/)
