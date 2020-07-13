@@ -2,15 +2,31 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { isWeb } from '@/const'
-import Auth from '@/views/auth.vue'
+import AuthStart from '@/views/authStart.vue'
+import AuthVerification from '@/views/authVerification.vue'
+import Registration from '@/views/registration.vue'
 
 Vue.use(VueRouter)
 
 const routes: RouteConfig[] = [
   {
-    path: '/',
-    name: 'Auth',
-    component: Auth
+    path: '/auth',
+    name: 'AuthStart',
+    component: AuthStart
+  },
+  {
+    path: '/auth-verify',
+    name: 'AuthVerification',
+    component: AuthVerification
+  },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: Registration
+  },
+  {
+    path: '/*',
+    redirect: '/auth'
   }
 ]
 

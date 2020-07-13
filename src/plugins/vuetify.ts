@@ -1,12 +1,12 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faMobileAlt } from '@fortawesome/pro-duotone-svg-icons'
-import { faQuestion } from '@fortawesome/pro-solid-svg-icons'
+import { faKey, faMobileAlt } from '@fortawesome/pro-duotone-svg-icons'
+import { faCheck, faQuestion } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faMobileAlt, faQuestion)
+library.add(faKey, faMobileAlt, faCheck, faQuestion)
 
 Vue.use(Vuetify)
 
@@ -25,7 +25,9 @@ export default new Vuetify({
     iconfont: 'faSvg',
     values: {
       info: icon('fas', 'question'),
-      phone: icon('fad', 'mobile-alt')
+      phone: icon('fad', 'mobile-alt'),
+      key: icon('fad', 'key'),
+      check: icon('fas', 'check')
     }
   }
 })

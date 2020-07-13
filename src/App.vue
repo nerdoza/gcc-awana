@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <router-view />
+    <v-main>
+      <v-container fluid class="fill-height">
+        <router-view></router-view>
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
@@ -12,3 +16,9 @@ export default class extends Vue {
 
 }
 </script>
+
+<style lang="scss">
+html {
+  overflow-y: hidden;
+}
+</style>

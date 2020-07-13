@@ -6,6 +6,7 @@
     "lint": "vue-cli-service lint",
     "android:build": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-android",
     "android:build:www": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-only-www-android",
+    "android:build:run": "npm run android:build:www && cd src-cordova && cordova run android",
     "android:dev": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-serve-android",
     "cordova:prepare": "vue-cli-service cordova-prepare",
     "electron:build": "vue-cli-service electron:build",
@@ -31,7 +32,7 @@
     "vue-property-decorator": "^9.0.0",
     "vue-router": "^3.3.4",
     "vue-the-mask": "^0.11.1",
-    "vuetify": "^2.2.11",
+    "vuetify": "^2.3.4",
     "vuex": "^3.5.1",
     "vuex-class-component": "2.3.3",
     "vuex-module-decorators": "^0.17.0"
@@ -51,7 +52,7 @@
     "@vue/cli-service": "~4.4.6",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
-    "electron": "^9.0.0",
+    "electron": "^9.1.0",
     "electron-devtools-installer": "^3.1.0",
     "eslint": "^7.4.0",
     "eslint-config-standard": "^14.1.1",
@@ -64,11 +65,11 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.6",
     "vue-cli-plugin-cordova": "~2.4.1",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.4",
     "vue-cli-plugin-vuetify": "~2.0.6",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
+    "vuetify-loader": "^1.6.0"
   }
 }

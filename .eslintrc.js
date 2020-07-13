@@ -8,7 +8,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: './tsconfig.json',
     sourceType: 'module',
-    createDefaultProgram: true
+    createDefaultProgram: false
   },
   plugins: [
     'simple-import-sort'
@@ -34,8 +34,11 @@ module.exports = {
         '@vue/standard',
         '@vue/typescript/recommended'
       ],
+      parser: 'vue-eslint-parser',
       parserOptions: {
-        extraFileExtensions: ['.vue']
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.vue'],
+        createDefaultProgram: true
       },
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
