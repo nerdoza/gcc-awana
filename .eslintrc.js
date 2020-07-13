@@ -5,8 +5,10 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2020,
-    project: 'tsconfig.json',
-    sourceType: 'module'
+    tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
+    sourceType: 'module',
+    createDefaultProgram: true
   },
   plugins: [
     'simple-import-sort'
