@@ -28,7 +28,7 @@
               name="phone"
               prepend-icon="$phone"
               type="tel"
-              v-mask="'+1 (###) ###-####'"
+              v-mask="phoneNumberMask"
               v-model="phoneNumber"
             ></v-text-field>
           </v-form>
@@ -49,7 +49,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { mask } from 'vue-the-mask'
 
-import { phoneNumberRegex } from '@/const'
+import { phoneNumberMask, phoneNumberRegex } from '@/const'
 
 @Component({
   directives: {
@@ -57,6 +57,7 @@ import { phoneNumberRegex } from '@/const'
   }
 })
 export default class extends Vue {
+  phoneNumberMask = phoneNumberMask
   phoneNumber = ''
 
   get phoneNumberValid () {

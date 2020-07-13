@@ -8,4 +8,10 @@ export const isProduction = process.env.NODE_ENV === 'production'
 export const isDevelopment = process.env.NODE_ENV === 'development'
 
 export const phoneNumberRegex = new RegExp(/^\+1\s\(\d{3}\)\s\d{3}-\d{4}$/)
+export const phoneNumberMask = '+1 (###) ###-####'
+
 export const verificationCodeRegex = new RegExp(/^\d{4}$/)
+export const verificationCodeMask = '####'
+
+export const zipCodeRegex = new RegExp(/^\d{5}$/)
+export const zipCodeMask = '#####'

@@ -1,4 +1,5 @@
 import './registerServiceWorker'
+import './plugins/veeValidate'
 
 import Vue from 'vue'
 
