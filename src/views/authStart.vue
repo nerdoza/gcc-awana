@@ -28,7 +28,7 @@
               name="phone"
               prepend-icon="$phone"
               type="tel"
-              v-mask="phoneNumberMask"
+              v-facade="phoneNumberMask"
               v-model="phoneNumber"
             ></v-text-field>
           </v-form>
@@ -46,14 +46,14 @@
 </template>
 
 <script lang="ts">
+import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
-import { mask } from 'vue-the-mask'
 
 import { phoneNumberMask, phoneNumberRegex } from '@/const'
 
 @Component({
   directives: {
-    mask
+    facade
   }
 })
 export default class extends Vue {

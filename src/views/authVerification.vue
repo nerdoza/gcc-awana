@@ -13,7 +13,7 @@
               name="code"
               prepend-icon="$key"
               type="tel"
-              v-mask="verificationCodeMask"
+              v-facade="verificationCodeMask"
               v-model="code"
             ></v-text-field>
           </v-form>
@@ -32,14 +32,14 @@
 </template>
 
 <script lang="ts">
+import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
-import { mask } from 'vue-the-mask'
 
 import { verificationCodeMask, verificationCodeRegex } from '@/const'
 
 @Component({
   directives: {
-    mask
+    facade
   }
 })
 export default class extends Vue {

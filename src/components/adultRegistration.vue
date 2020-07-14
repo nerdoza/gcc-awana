@@ -32,7 +32,7 @@
             <v-text-field-with-validation
               label="Zip"
               :rules="{ required: true, regex: zipCodeRegex }"
-              v-mask="zipCodeMask"
+              v-facade="zipCodeMask"
               v-model="user.zip"
               autocomplete="postal-code"
             />
@@ -66,7 +66,7 @@
             <v-text-field-with-validation
               :rules="{ regex: phoneNumberRegex }"
               v-model="user.altPhone"
-              v-mask="phoneNumberMask"
+              v-facade="phoneNumberMask"
               label="Alt Phone Number"
             />
           </v-col>
@@ -78,8 +78,8 @@
 
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
+import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
-import { mask } from 'vue-the-mask'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
@@ -88,7 +88,7 @@ import { vxm } from '@/store'
 
 @Component({
   directives: {
-    mask
+    facade
   },
   components: {
     ValidationObserver,

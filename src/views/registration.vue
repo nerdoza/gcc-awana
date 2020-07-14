@@ -58,15 +58,11 @@
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
 import { Component, Vue } from 'vue-property-decorator'
-import { mask } from 'vue-the-mask'
 
 import AdultRegistration from '@/components/adultRegistration.vue'
 import { vxm } from '@/store'
 
 @Component({
-  directives: {
-    mask
-  },
   components: {
     ValidationObserver,
     AdultRegistration
