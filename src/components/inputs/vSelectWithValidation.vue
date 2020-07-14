@@ -1,11 +1,6 @@
 <template>
-  <ValidationProvide  mode="lazy" :name="$attrs.label" :rules="rules" v-slot="{ errors }">
-    <v-select
-      v-model="innerValue"
-      :error-messages="errors"
-      v-bind="$attrs"
-      v-on="$listeners"
-    ></v-select>
+  <ValidationProvider mode="lazy" :name="$attrs.label" :rules="rules" v-slot="{ errors }">
+    <v-select v-model="innerValue" :error-messages="errors" v-bind="$attrs" v-on="$listeners"></v-select>
   </ValidationProvider>
 </template>
 
@@ -30,8 +25,8 @@ export default class extends Vue {
   }
 
   @Watch('value')
-  onValueChanged (val: string) {
-    this.innerValue = val
+  onValueChanged (value: string) {
+    this.innerValue = value
   }
 
   created () {

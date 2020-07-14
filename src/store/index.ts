@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import { createProxy, extractVuexModule } from 'vuex-class-component'
 
-import UserStore from './user'
+import RegistrationStore from './registration'
 
 Vue.use(Vuex)
 
 const store = new Store({
   modules: {
-    ...extractVuexModule(UserStore)
+    ...extractVuexModule(RegistrationStore)
   },
   strict: process.env.NODE_ENV !== 'production'
 })
@@ -16,5 +16,5 @@ const store = new Store({
 export default store
 
 export const vxm = {
-  user: createProxy(store, UserStore)
+  registration: createProxy(store, RegistrationStore)
 }
