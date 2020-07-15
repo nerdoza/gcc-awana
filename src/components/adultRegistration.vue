@@ -3,14 +3,14 @@
     <v-form>
       <v-container>
         <v-row>
-          <v-col cols="12" sm="6" xs="12">
+          <v-col cols="6" md="6">
             <v-text-field-with-validation
               rules="required"
               label="First Name"
               v-model="user.firstName"
             />
           </v-col>
-          <v-col cols="12" sm="6" xs="12">
+          <v-col cols="6" md="6">
             <v-text-field-with-validation
               rules="required"
               label="Last Name"
@@ -25,10 +25,10 @@
               autocomplete="street-address"
             />
           </v-col>
-          <v-col cols="12" sm="6" xs="12">
+          <v-col cols="12" sm="6">
             <v-text-field-with-validation rules="required" label="City" v-model="user.city" />
           </v-col>
-          <v-col cols="12" sm="3" xs="6">
+          <v-col cols="6" sm="3">
             <v-text-field-with-validation
               label="Zip"
               :rules="{ required: true, regex: zipCodeRegex }"
@@ -37,7 +37,7 @@
               autocomplete="postal-code"
             />
           </v-col>
-          <v-col cols="12" sm="3" xs="6">
+          <v-col cols="6" sm="3">
             <v-select-with-validation
               v-model="user.state"
               :items="states"
@@ -54,7 +54,7 @@
               autocomplete="email"
             />
           </v-col>
-          <v-col cols="12" sm="6" xs="12">
+          <v-col cols="6">
             <v-text-field
               v-model="user.primaryPhone"
               label="Mobile Phone Number"
@@ -62,7 +62,7 @@
               disabled
             />
           </v-col>
-          <v-col cols="12" sm="6" xs="12">
+          <v-col cols="6">
             <v-text-field-with-validation
               :rules="{ regex: phoneNumberRegex }"
               v-model="user.altPhone"

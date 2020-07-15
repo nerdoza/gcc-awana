@@ -18,7 +18,22 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-html {
-  overflow-y: hidden;
+$radius: 0.5rem;
+
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: $radius;
+  height: $radius;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: $radius;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: $radius;
 }
 </style>
