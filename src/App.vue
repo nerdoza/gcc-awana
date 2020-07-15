@@ -22,6 +22,7 @@ $radius: 0.5rem;
 
 * {
   scrollbar-width: thin;
+  scrollbar-color: black white;
 }
 
 *::-webkit-scrollbar {
@@ -31,9 +32,11 @@ $radius: 0.5rem;
 
 *::-webkit-scrollbar-track {
   border-radius: $radius;
+  background: black;
 }
 
 *::-webkit-scrollbar-thumb {
   border-radius: $radius;
+  background-color: white;
 }
 </style>
