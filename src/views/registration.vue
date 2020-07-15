@@ -34,21 +34,21 @@
         <v-stepper-content step="3">
           <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
           <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-          <v-btn text>Cancel</v-btn>
+          <v-btn text @click="goBack()">Back</v-btn>
         </v-stepper-content>
 
         <v-stepper-step :complete="stepStatus > 4" step="4">Terms &amp; Conditions</v-stepper-step>
         <v-stepper-content step="4">
           <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
           <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-          <v-btn text>Cancel</v-btn>
+          <v-btn text @click="goBack()">Back</v-btn>
         </v-stepper-content>
 
         <v-stepper-step :complete="stepStatus > 5" step="5">Confirm Information</v-stepper-step>
         <v-stepper-content step="4">
           <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
           <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-          <v-btn text>Cancel</v-btn>
+          <v-btn text @click="goBack()">Back</v-btn>
         </v-stepper-content>
       </v-stepper>
     </v-col>

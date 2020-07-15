@@ -30,6 +30,7 @@
               type="tel"
               v-facade="phoneNumberMask"
               v-model="phoneNumber"
+              autofocus
             ></v-text-field>
           </v-form>
           <div

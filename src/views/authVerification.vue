@@ -15,6 +15,7 @@
               type="tel"
               v-facade="verificationCodeMask"
               v-model="code"
+              autofocus
             ></v-text-field>
           </v-form>
           <div

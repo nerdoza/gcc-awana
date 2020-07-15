@@ -8,6 +8,7 @@
               rules="required"
               label="First Name"
               v-model="user.firstName"
+              autofocus
             />
           </v-col>
           <v-col cols="6" md="6">
