@@ -7,7 +7,7 @@
             <v-text-field-with-validation
               rules="required"
               label="First Name"
-              v-model="user.firstName"
+              v-model="adultData.firstName"
               autofocus
             />
           </v-col>
@@ -15,32 +15,32 @@
             <v-text-field-with-validation
               rules="required"
               label="Last Name"
-              v-model="user.lastName"
+              v-model="adultData.lastName"
             />
           </v-col>
           <v-col cols="12">
             <v-text-field-with-validation
               rules="required"
               label="Street Address"
-              v-model="user.streetAddress"
+              v-model="adultData.streetAddress"
               autocomplete="street-address"
             />
           </v-col>
           <v-col cols="12" sm="6">
-            <v-text-field-with-validation rules="required" label="City" v-model="user.city" />
+            <v-text-field-with-validation rules="required" label="City" v-model="adultData.city" />
           </v-col>
           <v-col cols="6" sm="3">
             <v-text-field-with-validation
               label="Zip"
               :rules="{ required: true, regex: zipCodeRegex }"
               v-facade="zipCodeMask"
-              v-model="user.zip"
+              v-model="adultData.zip"
               autocomplete="postal-code"
             />
           </v-col>
           <v-col cols="6" sm="3">
             <v-select-with-validation
-              v-model="user.state"
+              v-model="adultData.state"
               :items="states"
               rules="required"
               label="State"
@@ -50,14 +50,14 @@
           <v-col cols="12">
             <v-text-field-with-validation
               rules="required|email"
-              v-model="user.email"
+              v-model="adultData.email"
               label="E-mail"
               autocomplete="email"
             />
           </v-col>
           <v-col cols="6">
             <v-text-field
-              v-model="user.primaryPhone"
+              v-model="adultData.primaryPhone"
               label="Mobile Phone Number"
               autocomplete="tel"
               disabled
@@ -66,7 +66,7 @@
           <v-col cols="6">
             <v-text-field-with-validation
               :rules="{ regex: phoneNumberRegex }"
-              v-model="user.altPhone"
+              v-model="adultData.altPhone"
               v-facade="phoneNumberMask"
               label="Alt Phone Number"
             />
@@ -108,11 +108,11 @@ export default class extends Vue {
   readonly phoneNumberMask = phoneNumberMask
   readonly states = states
 
-  user = vxm.registration.adultRegistration
+  adultData = vxm.registration.adultRegistration
 
   async validate () {
     const formValidation = await this.$refs.form.validate()
-    return this.user.isValid && formValidation
+    return this.adultData.isValid && formValidation
   }
 }
 </script>

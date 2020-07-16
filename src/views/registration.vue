@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row class="registration-view" align="center" justify="center">
     <v-col cols="12" sm="10" md="8" lg="6">
       <v-toolbar color="primary" dark flat>
         <v-toolbar-title>Registration</v-toolbar-title>
@@ -11,7 +11,7 @@
         </v-stepper-step>
         <v-stepper-content step="1">
           <v-card class="mb-6">
-            <adult-registration ref="adultRegistrationForm" />
+            <adult-registration ref="adultRegistrationForm" v-if="stepStatus === 1" />
           </v-card>
           <v-btn
             color="primary"
@@ -25,7 +25,9 @@
           <small>Fill with your child's information</small>
         </v-stepper-step>
         <v-stepper-content step="2">
-          <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+          <v-card class="mb-6">
+            <child-registration ref="childRegistrationForm" v-if="stepStatus === 2" />
+          </v-card>
           <v-btn color="primary" @click="completeStep()">Continue</v-btn>
           <v-btn text @click="goBack()">Back</v-btn>
         </v-stepper-content>
@@ -60,21 +62,25 @@ import { ValidationObserver } from 'vee-validate'
 import { Component, Vue } from 'vue-property-decorator'
 
 import AdultRegistration from '@/components/adultRegistration.vue'
+import ChildRegistration from '@/components/childRegistration.vue'
 import { vxm } from '@/store'
 
 @Component({
   components: {
     ValidationObserver,
-    AdultRegistration
+    AdultRegistration,
+    ChildRegistration
   }
 })
 export default class extends Vue {
   $refs!: {
     adultRegistrationForm: InstanceType<typeof AdultRegistration>
+    childRegistrationForm: InstanceType<typeof ChildRegistration>
   }
 
-  stepStatus = 1
+  stepStatus = 2
   adultRegistrationData = vxm.registration.adultRegistration
+  childRegistrationData = vxm.registration.childRegistrations
 
   async validateAdultRegistration () {
     const success = await this.$refs.adultRegistrationForm.validate()
@@ -94,7 +100,14 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.v-stepper__step__step .v-icon.v-icon.fa-check {
-  font-size: 1rem;
+.registration-view {
+  .v-card {
+    transition-delay: 1s;
+    transition: opacity 0.3s;
+  }
+
+  .v-stepper__step__step .v-icon.v-icon.fa-check {
+    font-size: 1rem;
+  }
 }
 </style>
