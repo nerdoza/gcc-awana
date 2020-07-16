@@ -53,8 +53,8 @@ export default class extends Vue {
 </script>
 
 <style lang='scss'>
-.v-select__selections input {
-  position: absolute !important;
-  left: -999999px !important;
-}
+// .v-select__selections input {
+//   position: absolute !important;
+//   left: -999999px !important;
+// }
 </style>

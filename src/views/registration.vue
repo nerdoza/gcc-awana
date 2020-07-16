@@ -10,14 +10,16 @@
           <small>Fill with your personal information</small>
         </v-stepper-step>
         <v-stepper-content step="1">
-          <v-card class="mb-6">
-            <adult-registration ref="adultRegistrationForm" v-if="stepStatus === 1" />
-          </v-card>
-          <v-btn
-            color="primary"
-            @click="validateAdultRegistration()"
-            :disabled="!adultRegistrationData.isValid"
-          >Continue</v-btn>
+          <adult-registration ref="adultRegistrationForm" v-if="stepStatus === 1" />
+          <v-row>
+            <v-col cols="auto">
+              <v-btn
+                color="primary"
+                @click="validateAdultRegistration()"
+                :disabled="!adultRegistrationData.isValid"
+              >Continue</v-btn>
+            </v-col>
+          </v-row>
         </v-stepper-content>
 
         <v-stepper-step :complete="stepStatus > 2" step="2">
@@ -25,11 +27,27 @@
           <small>Fill with your child's information</small>
         </v-stepper-step>
         <v-stepper-content step="2">
-          <v-card class="mb-6">
-            <child-registration ref="childRegistrationForm" v-if="stepStatus === 2" />
-          </v-card>
-          <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-          <v-btn text @click="goBack()">Back</v-btn>
+          <child-registration ref="childRegistrationForm" v-if="stepStatus === 2" />
+          <v-row>
+            <v-col cols="auto">
+              <v-btn
+                v-if="childRegistrationData.isEmpty"
+                color="primary"
+                @click="validateChildRegistration()"
+              >Skip</v-btn>
+              <v-btn
+                v-else
+                color="primary"
+                @click="validateChildRegistration()"
+                :disabled="!childRegistrationData.isValid"
+              >Continue</v-btn>
+              <v-btn text @click="goBack()">Back</v-btn>
+            </v-col>
+            <v-spacer />
+            <v-col cols="auto">
+              <v-btn color="primary" @click="addChild()">Add Child</v-btn>
+            </v-col>
+          </v-row>
         </v-stepper-content>
 
         <v-stepper-step :complete="stepStatus > 3" step="3">Leader Volunteer</v-stepper-step>
@@ -87,6 +105,17 @@ export default class extends Vue {
     if (success) {
       this.stepStatus++
     }
+  }
+
+  async validateChildRegistration () {
+    const success = await this.$refs.childRegistrationForm.validate()
+    if (success) {
+      this.stepStatus++
+    }
+  }
+
+  addChild () {
+    this.childRegistrationData.addChild()
   }
 
   goBack () {
