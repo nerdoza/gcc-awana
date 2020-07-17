@@ -5,6 +5,7 @@ import { faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQ
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 library.add(faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare)
@@ -20,7 +21,15 @@ const icon = (...args: string[]) => ({
 
 export default new Vuetify({
   theme: {
-    dark: true
+    dark: false,
+    themes: {
+      light: {
+        primary: colors.teal.accent4,
+        secondary: colors.grey.darken1,
+        accent: colors.amber.darken2,
+        error: colors.red.accent3
+      }
+    }
   },
   icons: {
     iconfont: 'faSvg',

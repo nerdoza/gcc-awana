@@ -13,11 +13,7 @@
           <adult-registration ref="adultRegistrationForm" v-if="stepStatus === 1" />
           <v-row>
             <v-col cols="auto">
-              <v-btn
-                color="primary"
-                @click="validateAdultRegistration()"
-                :disabled="!adultRegistrationData.isValid"
-              >Continue</v-btn>
+              <v-btn color="primary" @click="validateAdultRegistration()">Continue</v-btn>
             </v-col>
           </v-row>
         </v-stepper-content>
@@ -35,12 +31,7 @@
                 color="primary"
                 @click="validateChildRegistration()"
               >Skip</v-btn>
-              <v-btn
-                v-else
-                color="primary"
-                @click="validateChildRegistration()"
-                :disabled="!childRegistrationData.isValid"
-              >Continue</v-btn>
+              <v-btn v-else color="primary" @click="validateChildRegistration()">Continue</v-btn>
               <v-btn text @click="goBack()">Back</v-btn>
             </v-col>
             <v-spacer />
@@ -96,7 +87,7 @@ export default class extends Vue {
     childRegistrationForm: InstanceType<typeof ChildRegistration>
   }
 
-  stepStatus = 2
+  stepStatus = 1
   adultRegistrationData = vxm.registration.adultRegistration
   childRegistrationData = vxm.registration.childRegistrations
 

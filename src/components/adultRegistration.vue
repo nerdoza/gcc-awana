@@ -1,7 +1,7 @@
 <template>
   <validation-observer ref="form">
     <v-form>
-      <v-card class="mb-6">
+      <v-card class="mb-6" outlined elevation="2">
         <v-container>
           <v-row>
             <v-col cols="6" md="6">
@@ -43,7 +43,7 @@
               <v-select-with-validation
                 v-model="adultData.state"
                 :items="states"
-                rules="required"
+                :rules="{ required: true, oneOf: states }"
                 label="State"
                 autocomplete="address-level1"
               />

@@ -23,7 +23,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 export default class extends Vue {
   innerValue = ''
 
-  @Prop([String]) readonly rules!: string
+  @Prop([String, Object]) readonly rules!: string | {required?: boolean, regex?: string | RegExp, oneOf?: string[]}
   @Prop([String]) readonly value!: string
 
   @Watch('innerValue')

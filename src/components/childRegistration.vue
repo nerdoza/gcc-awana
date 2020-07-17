@@ -1,7 +1,13 @@
 <template>
   <validation-observer ref="form">
     <v-form>
-      <v-card class="mb-6" v-for="(child, index) in childData.children" :key="index">
+      <v-card
+        class="mb-6"
+        v-for="(child, index) in childData.children"
+        :key="index"
+        outlined
+        elevation="2"
+      >
         <v-container>
           <v-row>
             <v-col cols="6" md="6">
@@ -53,7 +59,7 @@
               <v-select-with-validation
                 v-bind:value="child.gender"
                 v-on:input="updateChild(index, {gender: $event})"
-                rules="required"
+                :rules="{ required: true, oneOf: genders.map(v => v.value) }"
                 :items="genders"
                 label="Gender"
                 autocomplete="sex"
@@ -63,8 +69,8 @@
               <v-select-with-validation
                 v-bind:value="child.grade"
                 v-on:input="updateChild(index, {grade: $event})"
-                rules="required"
-                :items="grade"
+                :rules="{ required: true, oneOf: grades.map(v => v.value) }"
+                :items="grades"
                 label="Grade"
                 :hint="'As of September  ' + getCurrentSchoolYear()"
                 persistent-hint
@@ -80,19 +86,19 @@
                 label="Child has medical condition/allergies?"
               ></v-checkbox>
             </v-col>
-            <v-col cols="12">
-              <v-textarea-with-validation
-                v-if="child.hasMedical"
-                rules="required"
-                label="Medical conditions"
-                v-bind:value="child.medical"
-                v-on:input="updateChild(index, {medical: $event})"
-                autofocus
-              />
-            </v-col>
+            <v-expand-transition>
+              <v-col cols="12" v-if="child.hasMedical">
+                <v-textarea-with-validation
+                  rules="required"
+                  label="Medical conditions"
+                  v-bind:value="child.medical"
+                  v-on:input="updateChild(index, {medical: $event})"
+                />
+              </v-col>
+            </v-expand-transition>
           </v-row>
         </v-container>
-        <v-btn absolute fab bottom small right color="primary" @click="deleteChild(index)">
+        <v-btn absolute fab bottom small right color="secondary" @click="deleteChild(index)">
           <v-icon>$trash</v-icon>
         </v-btn>
       </v-card>
@@ -108,7 +114,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextareaWithValidation from '@/components/inputs/vTextareaWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
-import { dateOfBirthISORegex, dateOfBirthMask, dateOfBirthRegex, genders, getCurrentSchoolYear, grade } from '@/const'
+import { dateOfBirthISORegex, dateOfBirthMask, dateOfBirthRegex, genders, getCurrentSchoolYear, grades } from '@/const'
 import { vxm } from '@/store'
 
 import { ChildUpdate } from '../store/registration'
@@ -132,7 +138,7 @@ export default class extends Vue {
   readonly dateOfBirthMask = dateOfBirthMask
   readonly dateOfBirthRegex = dateOfBirthRegex
   readonly genders = genders
-  readonly grade = grade
+  readonly grades = grades
   readonly getCurrentSchoolYear = getCurrentSchoolYear
 
   childData = vxm.registration.childRegistrations

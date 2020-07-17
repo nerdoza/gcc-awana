@@ -1,6 +1,6 @@
 import { createModule, createSubModule, mutation } from 'vuex-class-component'
 
-import { phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
+import { gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
 
 export default class extends createModule({ namespaced: 'registration', strict: false }) {
   adultRegistration = createSubModule(AdultRegistration)
@@ -35,8 +35,8 @@ export interface ChildUpdate {
   firstName?: string
   lastName?: string
   dateOfBirth?: Date | null
-  gender?: 'Male' | 'Female' | '' | null
-  grade?: 'Pre' | 'K' | '1' | '2' | '3' | '4' | '5' | '6' | null
+  gender?: gendersType
+  grade?: gradesType
   hasMedical?: boolean
   medical?: string | null
 }
@@ -45,8 +45,8 @@ export interface ChildSerializedState {
   firstName?: string
   lastName?: string
   dateOfBirth?: string | null
-  gender?: 'Male' | 'Female' | '' | null
-  grade?: 'Pre' | 'K' | '1' | '2' | '3' | '4' | '5' | '6' | null
+  gender?: gendersType
+  grade?: gradesType
   medical?: string | null
 }
 
@@ -54,8 +54,8 @@ export class ChildRegistration {
   firstName = ''
   lastName = ''
   dateOfBirth: Date | null = null
-  gender: 'Male' | 'Female' | '' | null = null
-  grade: 'Pre' | 'K' | '1' | '2' | '3' | '4' | '5' | '6' | null = null
+  gender: gendersType = null
+  grade: gradesType = null
   medical: string | null = null
 
   constructor (state?: ChildSerializedState) {
@@ -127,7 +127,7 @@ export class ChildRegistration {
     const age = this.ageAsOfSchoolStart()
     switch (this.grade) {
       case null:
-      case 'Pre':
+      case 'p':
         if (age < 3) {
           return 'Puggles'
         } else if (age < 5) {
@@ -135,7 +135,7 @@ export class ChildRegistration {
         } else {
           return 'Sparks'
         }
-      case 'K':
+      case 'k':
       case '1':
       case '2':
         return 'Sparks'
@@ -196,9 +196,9 @@ export class ChildRegistration {
     if (this.grade === null && this.dateOfBirth !== null) {
       const age = this.ageAsOfSchoolStart()
       if (age < 5) {
-        this.grade = 'Pre'
+        this.grade = 'p'
       } else if (age < 6) {
-        this.grade = 'K'
+        this.grade = 'k'
       } else if (age < 7) {
         this.grade = '1'
       } else if (age < 8) {
@@ -224,7 +224,7 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
   }
 
   get isEmpty () {
-    return this.children.length <= 1 && this.children[0].isEmpty
+    return this.children.length === 1 && this.children[0].isEmpty
   }
 
   @mutation

@@ -1,5 +1,5 @@
 import { extend } from 'vee-validate'
-import { email, regex, required } from 'vee-validate/dist/rules'
+import { email, oneOf, regex, required } from 'vee-validate/dist/rules'
 
 extend('email', {
   ...email,
@@ -8,6 +8,11 @@ extend('email', {
 
 extend('regex', {
   ...regex,
+  message: '{_field_} is not complete'
+})
+
+extend('oneOf', {
+  ...oneOf,
   message: '{_field_} is not complete'
 })
 
