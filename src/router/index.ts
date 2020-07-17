@@ -2,24 +2,31 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { isWeb } from '@/const'
-
-import Home from '../views/Home.vue'
+import AuthStart from '@/views/authStart.vue'
+import AuthVerification from '@/views/authVerification.vue'
+import Registration from '@/views/registration.vue'
 
 Vue.use(VueRouter)
 
 const routes: RouteConfig[] = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/auth',
+    name: 'AuthStart',
+    component: AuthStart
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: async () => await import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/auth-verify',
+    name: 'AuthVerification',
+    component: AuthVerification
+  },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: Registration
+  },
+  {
+    path: '/*',
+    redirect: '/auth'
   }
 ]
 

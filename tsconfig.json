@@ -3,7 +3,6 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
-    "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
@@ -20,7 +19,7 @@
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ]
     },
     "lib": [
@@ -30,11 +29,12 @@
       "scripthost"
     ]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue"
-  ],
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.vue",
+    "./types/*.d.ts"
   ]
 }

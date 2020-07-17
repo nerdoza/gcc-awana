@@ -5,11 +5,14 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2020,
+    tsconfigRootDir: __dirname,
     project: 'tsconfig.json',
-    sourceType: 'module'
+    sourceType: 'module',
+    createDefaultProgram: false
   },
   plugins: [
-    'simple-import-sort'
+    'simple-import-sort',
+    '@typescript-eslint'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -32,7 +35,9 @@ module.exports = {
         '@vue/standard',
         '@vue/typescript/recommended'
       ],
+      parser: 'vue-eslint-parser',
       parserOptions: {
+        parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.vue']
       },
       rules: {
