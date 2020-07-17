@@ -41,6 +41,15 @@ export interface ChildUpdate {
   medical?: string | null
 }
 
+export interface ChildSerializedState {
+  firstName?: string
+  lastName?: string
+  dateOfBirth?: string | null
+  gender?: 'Male' | 'Female' | '' | null
+  grade?: 'Pre' | 'K' | '1' | '2' | '3' | '4' | '5' | '6' | null
+  medical?: string | null
+}
+
 export class ChildRegistration {
   firstName = ''
   lastName = ''
@@ -48,6 +57,27 @@ export class ChildRegistration {
   gender: 'Male' | 'Female' | '' | null = null
   grade: 'Pre' | 'K' | '1' | '2' | '3' | '4' | '5' | '6' | null = null
   medical: string | null = null
+
+  constructor (state?: ChildSerializedState) {
+    if (typeof state?.firstName !== 'undefined') {
+      this.firstName = state.firstName
+    }
+    if (typeof state?.lastName !== 'undefined') {
+      this.lastName = state.lastName
+    }
+    if (typeof state?.dateOfBirth !== 'undefined' && state.dateOfBirth !== null) {
+      this.dateOfBirth = new Date(state.dateOfBirth)
+    }
+    if (typeof state?.gender !== 'undefined') {
+      this.gender = state.gender
+    }
+    if (typeof state?.grade !== 'undefined') {
+      this.grade = state.grade
+    }
+    if (typeof state?.medical !== 'undefined') {
+      this.medical = state.medical
+    }
+  }
 
   get hasMedical () {
     return this.medical !== null
