@@ -6,12 +6,13 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     tsconfigRootDir: __dirname,
-    project: './tsconfig.json',
+    project: 'tsconfig.json',
     sourceType: 'module',
     createDefaultProgram: false
   },
   plugins: [
-    'simple-import-sort'
+    'simple-import-sort',
+    '@typescript-eslint'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -37,8 +38,7 @@ module.exports = {
       parser: 'vue-eslint-parser',
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.vue'],
-        createDefaultProgram: true
+        extraFileExtensions: ['.vue']
       },
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
