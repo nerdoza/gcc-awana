@@ -20,9 +20,14 @@ const routes: RouteConfig[] = [
     component: AuthVerification
   },
   {
-    path: '/registration',
+    path: '/registration/:step',
     name: 'Registration',
-    component: Registration
+    component: Registration,
+    props: route => ({ step: +(route.params.step ?? 1) })
+  },
+  {
+    path: '/registration',
+    redirect: '/registration/1'
   },
   {
     path: '/*',

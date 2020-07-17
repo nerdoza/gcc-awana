@@ -53,7 +53,7 @@ export default class extends Vue {
 
   submit () {
     if (this.codeValid) {
-      this.$router.push({ name: 'Registration' })
+      this.$router.push({ name: 'Registration', params: { step: '1' } })
     }
   }
 }

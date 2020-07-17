@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, PropSync, Vue } from 'vue-property-decorator'
 
 import AdultRegistration from '@/components/adultRegistration.vue'
 import ChildRegistration from '@/components/childRegistration.vue'
@@ -87,21 +87,22 @@ export default class extends Vue {
     childRegistrationForm: InstanceType<typeof ChildRegistration>
   }
 
-  stepStatus = 1
   adultRegistrationData = vxm.registration.adultRegistration
   childRegistrationData = vxm.registration.childRegistrations
+
+  @PropSync('step', { type: Number, default: 1 }) stepStatus!: number
 
   async validateAdultRegistration () {
     const success = await this.$refs.adultRegistrationForm.validate()
     if (success) {
-      this.stepStatus++
+      this.goForward()
     }
   }
 
   async validateChildRegistration () {
     const success = await this.$refs.childRegistrationForm.validate()
     if (success) {
-      this.stepStatus++
+      this.goForward()
     }
   }
 
@@ -110,11 +111,15 @@ export default class extends Vue {
   }
 
   goBack () {
-    this.stepStatus--
+    this.$router.push({ name: 'Registration', params: { step: (this.stepStatus - 1).toString() } })
+  }
+
+  goForward () {
+    this.$router.push({ name: 'Registration', params: { step: (this.stepStatus + 1).toString() } })
   }
 
   completeStep () {
-    this.stepStatus++
+    this.goForward()
   }
 }
 </script>
