@@ -9,7 +9,6 @@
                 rules="required"
                 label="First Name"
                 v-model="adultData.firstName"
-                autofocus
               />
             </v-col>
             <v-col cols="6" md="6">

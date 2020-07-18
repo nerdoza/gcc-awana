@@ -16,7 +16,6 @@
                 label="First Name"
                 v-bind:value="child.firstName"
                 v-on:input="updateChild(index, {firstName: $event})"
-                autofocus
               />
             </v-col>
             <v-col cols="6" md="6">

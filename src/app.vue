@@ -20,9 +20,16 @@ export default class extends Vue {
 <style lang="scss">
 $radius: 0.5rem;
 
+.v-application--wrap {
+  background-image: url("~@/assets/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 * {
   scrollbar-width: thin;
-  scrollbar-color: white gray;
+  scrollbar-color: #00bfa5 #666666;
 }
 
 *::-webkit-scrollbar {
@@ -31,12 +38,11 @@ $radius: 0.5rem;
 }
 
 *::-webkit-scrollbar-track {
-  border-radius: $radius;
-  background: white;
+  background: #666666;
 }
 
 *::-webkit-scrollbar-thumb {
   border-radius: $radius;
-  background-color: lightgray;
+  background-color: #00bfa5;
 }
 </style>

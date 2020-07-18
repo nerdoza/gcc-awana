@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="4">
+    <v-col cols="12" sm="8" md="6" lg="4" xl="2">
       <v-card class="elevation-12">
         <v-toolbar color="primary" dark flat>
           <v-toolbar-title>Welcome</v-toolbar-title>
@@ -30,7 +30,6 @@
               type="tel"
               v-facade="phoneNumberMask"
               v-model="phoneNumber"
-              autofocus
             ></v-text-field>
           </v-form>
           <div
