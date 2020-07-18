@@ -44,9 +44,13 @@
 
           <v-stepper-step :complete="stepStatus > 3" step="3">Leader Volunteer</v-stepper-step>
           <v-stepper-content step="3">
-            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-            <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-            <v-btn text @click="goBack()">Back</v-btn>
+            <volunteer-registration ref="volunteerRegistrationForm" v-if="stepStatus === 3" />
+            <v-row>
+              <v-col cols="auto">
+                <v-btn color="primary" @click="validateVolunteerRegistration()">Continue</v-btn>
+                <v-btn text @click="goBack()">Back</v-btn>
+              </v-col>
+            </v-row>
           </v-stepper-content>
 
           <v-stepper-step :complete="stepStatus > 4" step="4">Terms &amp; Conditions</v-stepper-step>
@@ -72,21 +76,24 @@
 import { ValidationObserver } from 'vee-validate'
 import { Component, PropSync, Vue } from 'vue-property-decorator'
 
-import AdultRegistration from '@/components/adultRegistration.vue'
-import ChildRegistration from '@/components/childRegistration.vue'
+import AdultRegistration from '@/components/registration/adultRegistration.vue'
+import ChildRegistration from '@/components/registration/childRegistration.vue'
+import VolunteerRegistration from '@/components/registration/volunteerRegistration.vue'
 import { vxm } from '@/store'
 
 @Component({
   components: {
     ValidationObserver,
     AdultRegistration,
-    ChildRegistration
+    ChildRegistration,
+    VolunteerRegistration
   }
 })
 export default class extends Vue {
   $refs!: {
     adultRegistrationForm: InstanceType<typeof AdultRegistration>
     childRegistrationForm: InstanceType<typeof ChildRegistration>
+    volunteerRegistrationForm: InstanceType<typeof VolunteerRegistration>
   }
 
   adultRegistrationData = vxm.registration.adultRegistration
@@ -103,6 +110,13 @@ export default class extends Vue {
 
   async validateChildRegistration () {
     const success = await this.$refs.childRegistrationForm.validate()
+    if (success) {
+      this.goForward()
+    }
+  }
+
+  async validateVolunteerRegistration () {
+    const success = await this.$refs.volunteerRegistrationForm.validate()
     if (success) {
       this.goForward()
     }

@@ -115,8 +115,7 @@ import VTextareaWithValidation from '@/components/inputs/vTextareaWithValidation
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
 import { dateOfBirthISORegex, dateOfBirthMask, dateOfBirthRegex, genders, getCurrentSchoolYear, grades } from '@/const'
 import { vxm } from '@/store'
-
-import { ChildUpdate } from '../store/registration'
+import { ChildUpdate } from '@/store/registration'
 
 @Component({
   directives: {

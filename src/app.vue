@@ -33,6 +33,10 @@ $radius: 0.5rem;
   background-size: cover;
 }
 
+.no-label .v-label {
+  display: none;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #00bfa5 #666666;

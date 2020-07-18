@@ -1,10 +1,11 @@
 import { createModule, createSubModule, mutation } from 'vuex-class-component'
 
-import { gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
+import { clubsType, gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
 
 export default class extends createModule({ namespaced: 'registration', strict: false }) {
   adultRegistration = createSubModule(AdultRegistration)
   childRegistrations = createSubModule(ChildRegistrations)
+  volunteerRegistration = createSubModule(VolunteerRegistration)
 }
 
 class AdultRegistration extends createModule({ namespaced: 'adultRegistration', strict: false }) {
@@ -246,5 +247,22 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
     if (this.children.length === 0) {
       this.children.push(new ChildRegistration())
     }
+  }
+}
+
+class VolunteerRegistration extends createModule({ namespaced: 'volunteerRegistration', strict: false }) {
+  volunteer: boolean | null = null
+  club: clubsType = null
+
+  get volunteerString () {
+    return this.volunteer === true ? 'y' : (this.volunteer === false ? 'n' : '')
+  }
+
+  set volunteerString (value: string) {
+    this.volunteer = value === 'y' ? true : (value === 'n' ? false : null)
+  }
+
+  get isValid () {
+    return typeof this.volunteer === 'boolean'
   }
 }

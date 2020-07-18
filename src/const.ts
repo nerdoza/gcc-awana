@@ -36,7 +36,14 @@ export const grades = [
   { text: '5th', value: '5' },
   { text: '6th', value: '6' }
 ]
-export const clubs = ['Puggles', 'Cubbies', 'Sparks', 'T&T']
+export type clubsType = 'p' | 'c' | 's' | 't' | null
+export const clubs = [
+  { text: 'No Preference', value: null },
+  { text: 'Puggles', value: 'p' },
+  { text: 'Cubbies', value: 'c' },
+  { text: 'Sparks', value: 's' },
+  { text: 'T&T', value: 't' }
+]
 export const states = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
 
 export const getCurrentSchoolYear = () => {
