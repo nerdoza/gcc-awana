@@ -17,7 +17,7 @@ export const zipCodeRegex = new RegExp(/^\d{5}$/)
 export const zipCodeMask = '#####'
 
 export const dateOfBirthRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
-export const dateOfBirthISORegex = new RegExp(/^(19|20)\d\d-(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])/)
+export const dateOfBirthISORegex = new RegExp(/^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])/)
 export const dateOfBirthMask = '##/##/####'
 
 export type gendersType = 'm' | 'f' | null
