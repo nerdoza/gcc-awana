@@ -42,7 +42,10 @@
             </v-row>
           </v-stepper-content>
 
-          <v-stepper-step :complete="stepStatus > 3" step="3">Additional Contacts</v-stepper-step>
+          <v-stepper-step :complete="stepStatus > 3" step="3">
+            Additional Contacts
+            <small>Other adults authorized to care for and assist in emergencies</small>
+          </v-stepper-step>
           <v-stepper-content step="3">
             <additional-contacts ref="additionalContactsForm" v-if="stepStatus === 3" />
             <v-row>
@@ -75,9 +78,17 @@
 
           <v-stepper-step :complete="stepStatus > 5" step="5">Terms &amp; Conditions</v-stepper-step>
           <v-stepper-content step="5">
-            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-            <v-btn color="primary" @click="completeStep()">Continue</v-btn>
-            <v-btn text @click="goBack()">Back</v-btn>
+            <terms ref="termsForm" v-if="stepStatus === 5" />
+            <v-row>
+              <v-col cols="auto">
+                <v-btn
+                  color="primary"
+                  @click="validateTerms()"
+                  :disabled="!termsData.approvedTerms"
+                >Continue</v-btn>
+                <v-btn text @click="goBack()">Back</v-btn>
+              </v-col>
+            </v-row>
           </v-stepper-content>
 
           <v-stepper-step :complete="stepStatus > 6" step="6">Confirm Information</v-stepper-step>
@@ -99,6 +110,7 @@ import { Component, PropSync, Vue } from 'vue-property-decorator'
 import AdditionalContacts from '@/components/registration/additionalContacts.vue'
 import AdultRegistration from '@/components/registration/adultRegistration.vue'
 import ChildRegistration from '@/components/registration/childRegistration.vue'
+import Terms from '@/components/registration/terms.vue'
 import Volunteer from '@/components/registration/volunteer.vue'
 import { vxm } from '@/store'
 
@@ -108,7 +120,8 @@ import { vxm } from '@/store'
     AdultRegistration,
     ChildRegistration,
     Volunteer,
-    AdditionalContacts
+    AdditionalContacts,
+    Terms
   }
 })
 export default class extends Vue {
@@ -117,10 +130,12 @@ export default class extends Vue {
     childRegistrationForm: InstanceType<typeof ChildRegistration>
     volunteerForm: InstanceType<typeof Volunteer>
     additionalContactsForm: InstanceType<typeof AdditionalContacts>
+    termsForm: InstanceType<typeof Terms>
   }
 
   childData = vxm.registration.childRegistrations
   additionalContactsData = vxm.registration.additionalContacts
+  termsData = vxm.registration.terms
 
   @PropSync('step', { type: Number, default: 1 }) stepStatus!: number
 
@@ -155,6 +170,13 @@ export default class extends Vue {
 
   async validateVolunteer () {
     const success = await this.$refs.volunteerForm.validate()
+    if (success) {
+      this.goForward()
+    }
+  }
+
+  async validateTerms () {
+    const success = await this.$refs.termsForm.validate()
     if (success) {
       this.goForward()
     }

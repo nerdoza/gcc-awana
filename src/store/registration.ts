@@ -7,6 +7,7 @@ export default class extends createModule({ namespaced: 'registration', strict: 
   childRegistrations = createSubModule(ChildRegistrations)
   additionalContacts = createSubModule(AdditionalContacts)
   volunteer = createSubModule(Volunteer)
+  terms = createSubModule(Terms)
 }
 
 class AdultRegistration extends createModule({ namespaced: 'adultRegistration', strict: false }) {
@@ -368,5 +369,22 @@ class Volunteer extends createModule({ namespaced: 'volunteer', strict: false })
 
   get isValid () {
     return typeof this.volunteer === 'boolean'
+  }
+}
+
+class Terms extends createModule({ namespaced: 'terms', strict: false }) {
+  approvedTerms: boolean = false
+  photoApproval: boolean | null = null
+
+  get photoApprovalString () {
+    return this.photoApproval === true ? 'y' : (this.photoApproval === false ? 'n' : '')
+  }
+
+  set photoApprovalString (value: string) {
+    this.photoApproval = value === 'y' ? true : (value === 'n' ? false : null)
+  }
+
+  get isValid () {
+    return this.approvedTerms && typeof this.photoApproval === 'boolean'
   }
 }

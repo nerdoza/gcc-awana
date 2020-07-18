@@ -37,6 +37,10 @@ $radius: 0.5rem;
   display: none;
 }
 
+.dark-label .v-label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #00bfa5 #666666;
