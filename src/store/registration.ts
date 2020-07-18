@@ -5,7 +5,8 @@ import { clubsType, gendersType, gradesType, phoneNumberRegex, schoolStartDate, 
 export default class extends createModule({ namespaced: 'registration', strict: false }) {
   adultRegistration = createSubModule(AdultRegistration)
   childRegistrations = createSubModule(ChildRegistrations)
-  volunteerRegistration = createSubModule(VolunteerRegistration)
+  additionalContacts = createSubModule(AdditionalContacts)
+  volunteer = createSubModule(Volunteer)
 }
 
 class AdultRegistration extends createModule({ namespaced: 'adultRegistration', strict: false }) {
@@ -250,7 +251,110 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
   }
 }
 
-class VolunteerRegistration extends createModule({ namespaced: 'volunteerRegistration', strict: false }) {
+export interface ContactUpdate {
+  firstName?: string
+  lastName?: string
+  primaryPhone?: string
+  relationship?: string
+  childAccess?: boolean
+}
+
+export class AdditionalContact {
+  firstName = ''
+  lastName = ''
+  primaryPhone = ''
+  relationship = ''
+  childAccess: boolean = false
+
+  constructor (state?: ContactUpdate) {
+    if (typeof state?.firstName !== 'undefined') {
+      this.firstName = state.firstName
+    }
+    if (typeof state?.lastName !== 'undefined') {
+      this.lastName = state.lastName
+    }
+    if (typeof state?.primaryPhone !== 'undefined') {
+      this.primaryPhone = state.primaryPhone
+    }
+    if (typeof state?.relationship !== 'undefined') {
+      this.relationship = state.relationship
+    }
+    if (typeof state?.childAccess !== 'undefined') {
+      this.childAccess = state.childAccess
+    }
+  }
+
+  get hasChildAccess () {
+    return this.childAccess
+  }
+
+  set hasChildAccess (value: boolean) { }
+
+  get isEmpty () {
+    return this.firstName === '' &&
+    this.lastName === '' &&
+    this.primaryPhone === '' &&
+    this.relationship === '' &&
+    !this.childAccess
+  }
+
+  get isValid () {
+    return this.firstName.length > 0 &&
+    this.lastName.length > 0 &&
+    this.primaryPhone.length > 0 &&
+    this.relationship.length > 0
+  }
+
+  update (state: ContactUpdate) {
+    if (typeof state?.firstName !== 'undefined') {
+      this.firstName = state.firstName
+    }
+    if (typeof state?.lastName !== 'undefined') {
+      this.lastName = state.lastName
+    }
+    if (typeof state?.primaryPhone !== 'undefined') {
+      this.primaryPhone = state.primaryPhone
+    }
+    if (typeof state?.relationship !== 'undefined') {
+      this.relationship = state.relationship
+    }
+    if (typeof state?.childAccess !== 'undefined') {
+      this.childAccess = state.childAccess
+    }
+  }
+}
+
+class AdditionalContacts extends createModule({ namespaced: 'additionalContacts', strict: false }) {
+  contacts = [new AdditionalContact()]
+
+  get isValid () {
+    return this.contacts.every(contact => contact.isValid || contact.isEmpty)
+  }
+
+  get isEmpty () {
+    return this.contacts.length === 1 && this.contacts[0].isEmpty
+  }
+
+  @mutation
+  addContact () {
+    this.contacts.push(new AdditionalContact())
+  }
+
+  @mutation
+  updateContact ({ index, props }: {index: number, props: ContactUpdate}) {
+    this.contacts[index].update(props)
+  }
+
+  @mutation
+  deleteContact ({ index }: { index: number }) {
+    this.contacts.splice(index, 1)
+    if (this.contacts.length === 0) {
+      this.contacts.push(new AdditionalContact())
+    }
+  }
+}
+
+class Volunteer extends createModule({ namespaced: 'volunteer', strict: false }) {
   volunteer: boolean | null = null
   club: clubsType = null
 

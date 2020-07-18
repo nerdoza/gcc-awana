@@ -10,7 +10,7 @@
       >
         <v-container>
           <v-row>
-            <v-col cols="6" md="6">
+            <v-col cols="6">
               <v-text-field-with-validation
                 rules="required"
                 label="First Name"
@@ -18,7 +18,7 @@
                 v-on:input="updateChild(index, {firstName: $event})"
               />
             </v-col>
-            <v-col cols="6" md="6">
+            <v-col cols="6">
               <v-text-field-with-validation
                 rules="required"
                 label="Last Name"
@@ -140,6 +140,10 @@ export default class extends Vue {
   readonly getCurrentSchoolYear = getCurrentSchoolYear
 
   childData = vxm.registration.childRegistrations
+
+  addChild () {
+    this.childData.addChild()
+  }
 
   updateChild (index: number, props: ChildUpdate) {
     this.childData.updateChild({ index, props })

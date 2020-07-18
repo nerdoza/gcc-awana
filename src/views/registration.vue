@@ -28,7 +28,7 @@
             <v-row>
               <v-col cols="auto">
                 <v-btn
-                  v-if="childRegistrationData.isEmpty"
+                  v-if="childData.isEmpty"
                   color="primary"
                   @click="validateChildRegistration()"
                 >Skip</v-btn>
@@ -42,26 +42,46 @@
             </v-row>
           </v-stepper-content>
 
-          <v-stepper-step :complete="stepStatus > 3" step="3">Leader Volunteer</v-stepper-step>
+          <v-stepper-step :complete="stepStatus > 3" step="3">Additional Contacts</v-stepper-step>
           <v-stepper-content step="3">
-            <volunteer-registration ref="volunteerRegistrationForm" v-if="stepStatus === 3" />
+            <additional-contacts ref="additionalContactsForm" v-if="stepStatus === 3" />
             <v-row>
               <v-col cols="auto">
-                <v-btn color="primary" @click="validateVolunteerRegistration()">Continue</v-btn>
+                <v-btn
+                  v-if="additionalContactsData.isEmpty"
+                  color="primary"
+                  @click="validateAdditionalContacts()"
+                >Skip</v-btn>
+                <v-btn v-else color="primary" @click="validateAdditionalContacts()">Continue</v-btn>
+                <v-btn text @click="goBack()">Back</v-btn>
+              </v-col>
+              <v-spacer />
+              <v-col cols="auto">
+                <v-btn color="primary" @click="addContact()">Add Contact</v-btn>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="stepStatus > 4" step="4">Leader Volunteer</v-stepper-step>
+          <v-stepper-content step="4">
+            <volunteer ref="volunteerForm" v-if="stepStatus === 4" />
+            <v-row>
+              <v-col cols="auto">
+                <v-btn color="primary" @click="validateVolunteer()">Continue</v-btn>
                 <v-btn text @click="goBack()">Back</v-btn>
               </v-col>
             </v-row>
           </v-stepper-content>
 
-          <v-stepper-step :complete="stepStatus > 4" step="4">Terms &amp; Conditions</v-stepper-step>
-          <v-stepper-content step="4">
+          <v-stepper-step :complete="stepStatus > 5" step="5">Terms &amp; Conditions</v-stepper-step>
+          <v-stepper-content step="5">
             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
             <v-btn color="primary" @click="completeStep()">Continue</v-btn>
             <v-btn text @click="goBack()">Back</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="stepStatus > 5" step="5">Confirm Information</v-stepper-step>
-          <v-stepper-content step="4">
+          <v-stepper-step :complete="stepStatus > 6" step="6">Confirm Information</v-stepper-step>
+          <v-stepper-content step="6">
             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
             <v-btn color="primary" @click="completeStep()">Continue</v-btn>
             <v-btn text @click="goBack()">Back</v-btn>
@@ -76,9 +96,10 @@
 import { ValidationObserver } from 'vee-validate'
 import { Component, PropSync, Vue } from 'vue-property-decorator'
 
+import AdditionalContacts from '@/components/registration/additionalContacts.vue'
 import AdultRegistration from '@/components/registration/adultRegistration.vue'
 import ChildRegistration from '@/components/registration/childRegistration.vue'
-import VolunteerRegistration from '@/components/registration/volunteerRegistration.vue'
+import Volunteer from '@/components/registration/volunteer.vue'
 import { vxm } from '@/store'
 
 @Component({
@@ -86,18 +107,20 @@ import { vxm } from '@/store'
     ValidationObserver,
     AdultRegistration,
     ChildRegistration,
-    VolunteerRegistration
+    Volunteer,
+    AdditionalContacts
   }
 })
 export default class extends Vue {
   $refs!: {
     adultRegistrationForm: InstanceType<typeof AdultRegistration>
     childRegistrationForm: InstanceType<typeof ChildRegistration>
-    volunteerRegistrationForm: InstanceType<typeof VolunteerRegistration>
+    volunteerForm: InstanceType<typeof Volunteer>
+    additionalContactsForm: InstanceType<typeof AdditionalContacts>
   }
 
-  adultRegistrationData = vxm.registration.adultRegistration
-  childRegistrationData = vxm.registration.childRegistrations
+  childData = vxm.registration.childRegistrations
+  additionalContactsData = vxm.registration.additionalContacts
 
   @PropSync('step', { type: Number, default: 1 }) stepStatus!: number
 
@@ -108,6 +131,10 @@ export default class extends Vue {
     }
   }
 
+  addChild () {
+    this.$refs.childRegistrationForm.addChild()
+  }
+
   async validateChildRegistration () {
     const success = await this.$refs.childRegistrationForm.validate()
     if (success) {
@@ -115,15 +142,22 @@ export default class extends Vue {
     }
   }
 
-  async validateVolunteerRegistration () {
-    const success = await this.$refs.volunteerRegistrationForm.validate()
+  addContact () {
+    this.$refs.additionalContactsForm.addContact()
+  }
+
+  async validateAdditionalContacts () {
+    const success = await this.$refs.additionalContactsForm.validate()
     if (success) {
       this.goForward()
     }
   }
 
-  addChild () {
-    this.childRegistrationData.addChild()
+  async validateVolunteer () {
+    const success = await this.$refs.volunteerForm.validate()
+    if (success) {
+      this.goForward()
+    }
   }
 
   goBack () {

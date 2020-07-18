@@ -73,7 +73,7 @@ export default class extends Vue {
 
   readonly clubs = clubs
 
-  volunteerData = vxm.registration.volunteerRegistration
+  volunteerData = vxm.registration.volunteer
 
   async validate () {
     const formValidation = await this.$refs.form.validate()

@@ -5,7 +5,7 @@ import VuexPersistence from 'vuex-persist'
 
 import { isDevelopment } from '@/const'
 
-import RegistrationStore, { ChildRegistration, ChildSerializedState } from './registration'
+import RegistrationStore, { AdditionalContact, ChildRegistration, ChildSerializedState, ContactUpdate } from './registration'
 
 Vue.use(Vuex)
 
@@ -18,6 +18,9 @@ const vuexPersist = new VuexPersistence({
     const state = typeof serializedState === 'string' ? JSON.parse(serializedState) : {}
     if (typeof state?.registration?.childRegistrations?.children !== 'undefined') {
       state.registration.childRegistrations.children = state.registration.childRegistrations.children.map((child: ChildSerializedState) => new ChildRegistration(child))
+    }
+    if (typeof state?.registration?.additionalContacts?.contacts !== 'undefined') {
+      state.registration.additionalContacts.contacts = state.registration.additionalContacts.contacts.map((contact: ContactUpdate) => new AdditionalContact(contact))
     }
     return state
   }
