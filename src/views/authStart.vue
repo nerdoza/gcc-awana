@@ -3,7 +3,7 @@
     <v-col cols="12" sm="8" md="6" lg="4" xl="2">
       <v-card class="elevation-12">
         <v-toolbar color="primary" dark flat>
-          <v-toolbar-title>Welcome</v-toolbar-title>
+          <v-toolbar-title>Sign In</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-dialog max-width="420">
             <template v-slot:activator="{ on, attrs }">
@@ -14,14 +14,20 @@
             <v-card>
               <v-card-title class="headline">Help</v-card-title>
               <v-card-text>
-                <p>This app is designed to assist parents and leaders involved in the Grace Community Church AWANA program.</p>
-                <p>If you would like to find out more about this program, contact:</p>
+                <p>Enter your mobile phone number in the field to start the sign in process.</p>
+                <p>If you already have an account created, this will sign you in. if you do not have an account yet, this will take you to the registration page where you can finish the setup process.</p>
+                <p>If you have further questions or concerns, please contact Brittany Kalmink.</p>
+                <p>
+                  <strong>Grace Community Church</strong>
+                  <br />
+                  <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
+                </p>
               </v-card-text>
             </v-card>
           </v-dialog>
         </v-toolbar>
         <v-card-text>
-          <div class="text--primary">Entering your mobile phone number below to get started.</div>
+          <div class="text--primary">Entering your mobile phone number below.</div>
           <v-form @submit.prevent="submit()">
             <v-text-field
               label="Phone"
@@ -29,7 +35,7 @@
               prepend-icon="$phone"
               type="tel"
               v-facade="phoneNumberMask"
-              v-model="phoneNumber"
+              v-model.trim="phoneNumber"
             ></v-text-field>
           </v-form>
           <div

@@ -14,7 +14,7 @@
               prepend-icon="$key"
               type="tel"
               v-facade="verificationCodeMask"
-              v-model="code"
+              v-model.trim="code"
             ></v-text-field>
           </v-form>
           <div

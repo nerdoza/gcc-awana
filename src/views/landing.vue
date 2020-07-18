@@ -11,12 +11,21 @@
               <v-img src="~@/assets/awana.svg"></v-img>
             </v-col>
           </v-row>
-          <h1 class="mb-4">Welcome!</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non eros odio. Duis malesuada semper tortor, vitae lacinia dolor ultrices a. Maecenas varius dui nisi, at placerat risus placerat id.</p>
+          <h1 class="mb-4">Welcome</h1>
+          <p>This app is meant for parents and leaders of Grace Community Church AWANA program. Through it, you will be able to register clubbers and leaders, track book progress, and receive important instructions from the AWANA directors.</p>
+          <p>If you have any questions, please contact the Church offices and ask for Brittany Kalmink.</p>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="getStarted()">Get Started</v-btn>
+          <v-list-item class="grow">
+            <v-list-item-content>
+              <v-list-item-title class="text--gray">
+                Grace Community Church
+                <br />
+                <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
+              </v-list-item-title>
+            </v-list-item-content>
+            <v-btn color="primary" @click="getStarted()">Get Started</v-btn>
+          </v-list-item>
         </v-card-actions>
       </v-card>
     </v-col>

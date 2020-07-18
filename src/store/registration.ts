@@ -164,10 +164,10 @@ export class ChildRegistration {
 
   update ({ firstName, lastName, dateOfBirth, gender, grade, hasMedical, medical }: ChildUpdate) {
     if (typeof firstName !== 'undefined') {
-      this.firstName = firstName
+      this.firstName = firstName.trim()
     }
     if (typeof lastName !== 'undefined') {
-      this.lastName = lastName
+      this.lastName = lastName.trim()
     }
     if (typeof dateOfBirth !== 'undefined') {
       this.dateOfBirth = dateOfBirth
@@ -187,6 +187,9 @@ export class ChildRegistration {
     }
     if (typeof medical !== 'undefined') {
       this.medical = medical
+      if (typeof medical === 'string') {
+        this.medical = medical.trim()
+      }
     }
 
     this.guessGrade()

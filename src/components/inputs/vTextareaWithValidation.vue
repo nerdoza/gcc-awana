@@ -1,6 +1,11 @@
 <template>
   <ValidationProvider mode="lazy" :name="$attrs.label" :rules="rules" v-slot="{ errors }">
-    <v-textarea v-model="innerValue" :error-messages="errors" v-bind="$attrs" v-on="$listeners"></v-textarea>
+    <v-textarea
+      v-model.trim="innerValue"
+      :error-messages="errors"
+      v-bind="$attrs"
+      v-on="$listeners"
+    ></v-textarea>
   </ValidationProvider>
 </template>
 
