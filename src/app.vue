@@ -11,9 +11,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import { isCordova } from '@/const'
+
 @Component
 export default class extends Vue {
-
+  mounted () {
+    if (isCordova) {
+      setTimeout(() => navigator.splashscreen.hide(), 2000)
+    }
+  }
 }
 </script>
 
