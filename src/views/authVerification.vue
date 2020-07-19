@@ -22,7 +22,12 @@
           >If you do not receive a code within 2 minutes, request a new code.</div>
         </v-card-text>
         <v-card-actions>
-          <v-btn :disabled="codeValid">Send New Code</v-btn>
+          <v-btn
+            id="resend-code-button"
+            @click="resendCode"
+            :loading="resendingCode"
+            :disabled="codeValid || resendingCode"
+          >Send New Code</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" :disabled="!codeValid" @click="submit()">Sign In</v-btn>
         </v-card-actions>
@@ -36,6 +41,7 @@ import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
 
 import { verificationCodeMask, verificationCodeRegex } from '@/const'
+import { vxm } from '@/store'
 
 @Component({
   directives: {
@@ -43,11 +49,23 @@ import { verificationCodeMask, verificationCodeRegex } from '@/const'
   }
 })
 export default class extends Vue {
+  auth = vxm.auth
   verificationCodeMask = verificationCodeMask
+  resendingCode = false
   code = ''
 
   get codeValid () {
     return verificationCodeRegex.test(this.code)
+  }
+
+  async resendCode () {
+    this.resendingCode = true
+    setTimeout(() => { this.resendingCode = false }, 7000)
+    try {
+      await this.auth.requestVerification('resend-code-button')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   submit () {

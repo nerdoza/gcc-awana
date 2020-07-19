@@ -35,7 +35,7 @@
               prepend-icon="$phone"
               type="tel"
               v-facade="phoneNumberMask"
-              v-model.trim="phoneNumber"
+              v-model.trim="auth.phoneNumber"
             ></v-text-field>
           </v-form>
           <div
@@ -44,7 +44,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" :disabled="!phoneNumberValid" @click="submit()">Send code</v-btn>
+          <v-btn
+            id="send-code-button"
+            color="primary"
+            :disabled="!phoneNumberValid || sendingCode"
+            :loading="sendingCode"
+            @click="submit()"
+          >Send code</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -55,7 +61,8 @@
 import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
 
-import { phoneNumberMask, phoneNumberRegex } from '@/const'
+import { phoneNumberMask } from '@/const'
+import { vxm } from '@/store'
 
 @Component({
   directives: {
@@ -63,15 +70,22 @@ import { phoneNumberMask, phoneNumberRegex } from '@/const'
   }
 })
 export default class extends Vue {
-  phoneNumberMask = phoneNumberMask
-  phoneNumber = ''
+  readonly phoneNumberMask = phoneNumberMask
+  auth = vxm.auth
+  sendingCode = false
 
   get phoneNumberValid () {
-    return phoneNumberRegex.test(this.phoneNumber)
+    return this.auth.isValidPhoneNumber
   }
 
-  submit () {
-    if (this.phoneNumberValid) {
+  async submit () {
+    if (this.auth.isValidPhoneNumber) {
+      this.sendingCode = true
+      try {
+        await this.auth.requestVerification('send-code-button')
+      } catch (error) {
+        console.error(error)
+      }
       this.$router.push({ name: 'AuthVerification' })
     }
   }

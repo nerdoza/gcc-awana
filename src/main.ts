@@ -1,5 +1,6 @@
 import './registerServiceWorker'
 import './plugins/veeValidate'
+import './plugins/firebase'
 
 import Vue from 'vue'
 
