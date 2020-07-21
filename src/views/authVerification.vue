@@ -88,7 +88,6 @@ export default class extends Vue {
       try {
         await this.auth.confirmVerification(this.code)
         this.auth.clearVerifier(this.verifierButtonId)
-        this.$router.push({ name: 'Registration', params: { step: '1' } })
       } catch (error) {
         this.handleError(error)
       } finally {

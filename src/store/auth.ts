@@ -1,11 +1,10 @@
-import * as firebase from 'firebase/app'
 import { action, createModule, mutation } from 'vuex-class-component'
 
 import { phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
 
-let verificationConfirmation: ((code: string) => Promise<firebase.auth.UserCredential>) | undefined
+let verificationConfirmation: ((code: string) => Promise<void>) | undefined
 
 export default class extends createModule({ namespaced: 'auth', strict: false }) {
   authenticated: boolean = false
@@ -43,17 +42,23 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
     this.clearPhoneNumber()
     await this.$store.dispatch('clear', null, { root: true })
     await firebaseProject.signOut()
-    await router.push({ name: 'Landing' })
+    await this.userSignedOut()
   }
 
   @action
   async userSignedIn () {
-    this.setAuthenticated(true)
+    if (!this.authenticated) {
+      this.setAuthenticated(true)
+      await router.push({ name: 'Registration', params: { step: '1' } })
+    }
   }
 
   @action
   async userSignedOut () {
-    this.setAuthenticated(false)
+    if (this.authenticated) {
+      this.setAuthenticated(false)
+      await router.push({ name: 'AuthStart' })
+    }
   }
 
   @mutation

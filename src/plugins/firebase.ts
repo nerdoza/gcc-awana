@@ -11,7 +11,6 @@ import { vxm } from '@/store'
 
 class FirebaseX {
   private readonly firebaseJS?: firebase.app.App | undefined
-  private readonly firebaseCordova?: any | undefined
 
   constructor () {
     if (!isCordova) {
@@ -30,16 +29,27 @@ class FirebaseX {
       firebase.auth().useDeviceLanguage()
       void this.attemptSignIn()
     } else {
-      this.firebaseCordova = window.FirebasePlugin
+      document.addEventListener('deviceready', () => {
+        void this.attemptSignIn()
+      }, false)
     }
+  }
+
+  get firebaseCordova () {
+    return window.FirebasePlugin
   }
 
   async signOut () {
     if (!isCordova) {
-      const res = await this.firebaseJS?.auth().signOut()
-      console.log(res)
+      await this.firebaseJS?.auth().signOut()
     } else {
-      // Add Cordova Code
+      try {
+        await new Promise((resolve, reject) => {
+          this.firebaseCordova.signOutUser(() => resolve(), (error: string) => reject(new Error(error)))
+        })
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 
@@ -53,7 +63,17 @@ class FirebaseX {
         }
       })
     } else {
-      // Add Cordova Code
+      await new Promise((resolve, reject) => {
+        this.firebaseCordova.isUserSignedIn(async (isSignedIn: boolean) => {
+          console.log('isSignedIn: ' + isSignedIn.toString())
+          if (isSignedIn) {
+            await vxm.auth.userSignedIn()
+          } else {
+            await vxm.auth.userSignedOut()
+          }
+          resolve()
+        }, (error: string) => reject(new Error(error)))
+      })
     }
   }
 
@@ -67,7 +87,7 @@ class FirebaseX {
     }
   }
 
-  async verifyPhoneNumber (phoneNumber: string, elementId: string, options?: {timeout?: number, fakeVerificationCode?: string}) {
+  async verifyPhoneNumber (phoneNumber: string, elementId: string, options: {timeout: number, fakeVerificationCode?: string} = { timeout: 120 }) {
     if (!isCordova) {
       let verifier
       if (this.recaptchaVerifiers.has(elementId)) {
@@ -79,11 +99,28 @@ class FirebaseX {
       if (typeof verifier !== 'undefined') {
         const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, verifier)
         return async (code: string) => {
-          return await confirmationResult.confirm(code)
+          await confirmationResult.confirm(code)
         }
       }
     } else {
-      // Add Cordova Code
+      const resolve: (code: string) => Promise<void> = await new Promise((resolve, reject) => {
+        this.firebaseCordova.verifyPhoneNumber((credential: {instantVerification: boolean, id: string, verificationId: string, code?: string}) => {
+          if (credential.instantVerification) {
+            this.firebaseCordova.signInWithCredential(credential, async () => {
+              await vxm.auth.userSignedIn()
+              resolve(async (code: string) => { })
+            }, (error: string) => reject(new Error(error)))
+          } else {
+            resolve(async (code: string) => {
+              await new Promise((resolve, reject) => {
+                credential.code = code
+                this.firebaseCordova.signInWithCredential(credential, () => resolve(), (error: string) => reject(new Error(error)))
+              })
+            })
+          }
+        }, (error: string) => reject(new Error(error)), phoneNumber, options.timeout, options?.fakeVerificationCode)
+      })
+      return resolve
     }
   }
 }
