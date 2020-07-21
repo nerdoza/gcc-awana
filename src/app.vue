@@ -12,9 +12,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import { isCordova } from '@/const'
+import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
+  created () {
+    void vxm.auth.attemptSignIn()
+  }
+
   mounted () {
     if (isCordova) {
       setTimeout(() => navigator.splashscreen.hide(), 2000)

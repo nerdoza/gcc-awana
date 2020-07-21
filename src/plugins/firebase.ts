@@ -26,12 +26,44 @@ class FirebaseX {
       this.firebaseJS = firebase.initializeApp(firebaseConfig)
       firebase.analytics()
       firebase.auth().useDeviceLanguage()
+      // void firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     } else {
       this.firebaseCordova = window.FirebasePlugin
     }
   }
 
+  async signOut () {
+    if (!isCordova) {
+      const res = await this.firebaseJS?.auth().signOut()
+      console.log(res)
+    } else {
+      // Add Cordova Code
+    }
+  }
+
+  async attemptSignIn () {
+    // To-Do: refactor to init and issue mutation to store
+    if (!isCordova) {
+      // const provider = new firebase.auth.PhoneAuthProvider()
+      firebase.auth().onAuthStateChanged((user) => {
+        console.log(user)
+      })
+      const user = this.firebaseJS?.auth().currentUser
+      console.log(user)
+    } else {
+      // Add Cordova Code
+    }
+  }
+
   private readonly recaptchaVerifiers = new Map<string, firebase.auth.RecaptchaVerifier>()
+
+  clearVerifier (elementId: string) {
+    const verifier = this.recaptchaVerifiers.get(elementId)
+    if (typeof verifier !== 'undefined') {
+      verifier.clear()
+      this.recaptchaVerifiers.delete(elementId)
+    }
+  }
 
   async verifyPhoneNumber (phoneNumber: string, elementId: string, options?: {timeout?: number, fakeVerificationCode?: string}) {
     if (!isCordova) {
@@ -44,10 +76,12 @@ class FirebaseX {
       }
       if (typeof verifier !== 'undefined') {
         const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, verifier)
-        console.log(confirmationResult)
+        return async (code: string) => {
+          return await confirmationResult.confirm(code)
+        }
       }
     } else {
-
+      // Add Cordova Code
     }
   }
 }

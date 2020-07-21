@@ -36,6 +36,7 @@
               type="tel"
               v-facade="phoneNumberMask"
               v-model.trim="auth.phoneNumber"
+              :error-messages="error"
             ></v-text-field>
           </v-form>
           <div
@@ -45,7 +46,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            id="send-code-button"
+            :id="verifierButtonId"
             color="primary"
             :disabled="!phoneNumberValid || sendingCode"
             :loading="sendingCode"
@@ -70,8 +71,10 @@ import { vxm } from '@/store'
   }
 })
 export default class extends Vue {
+  readonly verifierButtonId = 'send-code-button'
   readonly phoneNumberMask = phoneNumberMask
   auth = vxm.auth
+  error = ''
   sendingCode = false
 
   get phoneNumberValid () {
@@ -80,13 +83,28 @@ export default class extends Vue {
 
   async submit () {
     if (this.auth.isValidPhoneNumber) {
+      this.error = ''
       this.sendingCode = true
       try {
-        await this.auth.requestVerification('send-code-button')
+        await this.auth.requestVerification(this.verifierButtonId)
+        this.auth.clearVerifier(this.verifierButtonId)
+        this.$router.push({ name: 'AuthVerification' })
       } catch (error) {
-        console.error(error)
+        this.handleError(error)
+      } finally {
+        this.sendingCode = false
       }
-      this.$router.push({ name: 'AuthVerification' })
+    }
+  }
+
+  handleError (error: {code: string, message?: string}) {
+    console.error(error)
+    const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
+    switch (errorCode) {
+      case 'auth/invalid-phone-number':
+        this.auth.phoneNumber = ''
+        this.error = 'Invalid phone number. Re-type phone number.'
+        break
     }
   }
 }
