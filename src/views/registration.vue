@@ -4,6 +4,23 @@
       <v-card class="elevation-12">
         <v-toolbar color="primary" dark flat>
           <v-toolbar-title>Registration</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="signOutDialog" persistent max-width="290">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>$signOut</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="headline">Sign Out</v-card-title>
+              <v-card-text>This will clear the registration form data and completely sign you out.</v-card-text>
+              <v-card-actions>
+                <v-btn color="primary" @click="signOutDialog = false">Cancel</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="signOut">Sign Out</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
         <v-stepper v-model="stepStatus" vertical>
           <v-stepper-step :complete="stepStatus > 1" step="1">
@@ -37,7 +54,9 @@
               </v-col>
               <v-spacer />
               <v-col cols="auto">
-                <v-btn color="primary" @click="addChild()">Add Child</v-btn>
+                <v-btn color="primary" @click="addChild()">
+                  <v-icon>$addUser</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-stepper-content>
@@ -60,7 +79,9 @@
               </v-col>
               <v-spacer />
               <v-col cols="auto">
-                <v-btn color="primary" @click="addContact()">Add Contact</v-btn>
+                <v-btn color="primary" @click="addContact()">
+                  <v-icon>$addUser</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-stepper-content>
@@ -133,17 +154,29 @@ export default class extends Vue {
     termsForm: InstanceType<typeof Terms>
   }
 
+  signOutDialog = false
   childData = vxm.registration.childRegistrations
   additionalContactsData = vxm.registration.additionalContacts
   termsData = vxm.registration.terms
 
   @PropSync('step', { type: Number, default: 1 }) stepStatus!: number
 
+  mounted () {
+    if (vxm.auth.phoneNumber !== null) {
+      vxm.registration.adultRegistration.primaryPhone = vxm.auth.phoneNumber
+    }
+  }
+
   async validateAdultRegistration () {
     const success = await this.$refs.adultRegistrationForm.validate()
     if (success) {
       this.goForward()
     }
+  }
+
+  signOut () {
+    this.signOutDialog = false
+    vxm.auth.signOut()
   }
 
   addChild () {

@@ -35,7 +35,8 @@
               prepend-icon="$phone"
               type="tel"
               v-facade="phoneNumberMask"
-              v-model.trim="phoneNumber"
+              v-model.trim="auth.phoneNumber"
+              :error-messages="error"
             ></v-text-field>
           </v-form>
           <div
@@ -44,7 +45,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" :disabled="!phoneNumberValid" @click="submit()">Send code</v-btn>
+          <v-btn
+            :id="verifierButtonId"
+            color="primary"
+            :disabled="!phoneNumberValid || sendingCode"
+            :loading="sendingCode"
+            @click="submit()"
+          >Send code</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -55,7 +62,8 @@
 import { facade } from 'vue-input-facade'
 import { Component, Vue } from 'vue-property-decorator'
 
-import { phoneNumberMask, phoneNumberRegex } from '@/const'
+import { phoneNumberMask } from '@/const'
+import { vxm } from '@/store'
 
 @Component({
   directives: {
@@ -63,16 +71,41 @@ import { phoneNumberMask, phoneNumberRegex } from '@/const'
   }
 })
 export default class extends Vue {
-  phoneNumberMask = phoneNumberMask
-  phoneNumber = ''
+  readonly verifierButtonId = 'send-code-button'
+  readonly phoneNumberMask = phoneNumberMask
+  auth = vxm.auth
+  error = ''
+  sendingCode = false
 
   get phoneNumberValid () {
-    return phoneNumberRegex.test(this.phoneNumber)
+    return this.auth.isValidPhoneNumber
   }
 
-  submit () {
-    if (this.phoneNumberValid) {
-      this.$router.push({ name: 'AuthVerification' })
+  async submit () {
+    if (this.auth.isValidPhoneNumber) {
+      this.error = ''
+      this.sendingCode = true
+      try {
+        await this.auth.requestVerification(this.verifierButtonId)
+        this.auth.clearVerifier(this.verifierButtonId)
+        this.$router.push({ name: 'AuthVerification' })
+      } catch (error) {
+        this.handleError(error)
+      } finally {
+        this.sendingCode = false
+      }
+    }
+  }
+
+  handleError (error: {code: string, message?: string}) {
+    const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
+    switch (errorCode) {
+      case 'auth/invalid-phone-number':
+        this.auth.clearPhoneNumber()
+        this.error = 'Invalid phone number. Re-type phone number.'
+        break
+      default:
+        throw errorCode
     }
   }
 }

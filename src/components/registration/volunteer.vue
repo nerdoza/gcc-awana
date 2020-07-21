@@ -47,7 +47,7 @@
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
 import { facade } from 'vue-input-facade'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Ref, Vue } from 'vue-property-decorator'
 
 import VRadioGroupWithValidation from '@/components/inputs/vRadioGroupWithValidation.vue'
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
@@ -67,16 +67,14 @@ import { vxm } from '@/store'
   }
 })
 export default class extends Vue {
-  $refs!: {
-    form: InstanceType<typeof ValidationObserver>
-  }
+ @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   readonly clubs = clubs
 
   volunteerData = vxm.registration.volunteer
 
   async validate () {
-    const formValidation = await this.$refs.form.validate()
+    const formValidation = await this.form.validate()
     return this.volunteerData.isValid && formValidation
   }
 }

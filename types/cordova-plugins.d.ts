@@ -4,3 +4,7 @@ interface Navigator {
     show (): void
   }
 }
+
+interface Window {
+  FirebasePlugin: any
+}

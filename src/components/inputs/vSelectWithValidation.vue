@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { ValidationProvider } from 'vee-validate'
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -23,6 +23,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 export default class extends Vue {
   innerValue = ''
 
+  @Ref('stateSelect') readonly stateSelectComponent !: Vue
   @Prop([String, Object]) readonly rules!: string | {required?: boolean, regex?: string | RegExp, oneOf?: string[]}
   @Prop([String]) readonly value!: string
 
@@ -41,8 +42,7 @@ export default class extends Vue {
   }
 
   onSelectMounted () {
-    const stateSelect = this.$refs.stateSelect as Vue
-    const input = stateSelect.$el.querySelector('.v-select__selections input')
+    const input = this.stateSelectComponent.$el.querySelector('.v-select__selections input')
     if (input) {
       (
         input.removeAttribute('readonly')

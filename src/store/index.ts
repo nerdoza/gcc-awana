@@ -5,6 +5,7 @@ import VuexPersistence from 'vuex-persist'
 
 import { isDevelopment } from '@/const'
 
+import AuthStore from './auth'
 import RegistrationStore, { AdditionalContact, ChildRegistration, ChildSerializedState, ContactUpdate } from './registration'
 
 Vue.use(Vuex)
@@ -28,7 +29,13 @@ const vuexPersist = new VuexPersistence({
 
 const store = new Store({
   modules: {
+    ...extractVuexModule(AuthStore),
     ...extractVuexModule(RegistrationStore)
+  },
+  actions: {
+    clear: async (context: any) => {
+      await context.dispatch('registration/clear')
+    }
   },
   mutations: {
     RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION
@@ -40,5 +47,6 @@ const store = new Store({
 export default store
 
 export const vxm = {
-  registration: createProxy(store, RegistrationStore)
+  registration: createProxy(store, RegistrationStore),
+  auth: createProxy(store, AuthStore)
 }

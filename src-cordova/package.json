@@ -15,6 +15,9 @@
   "dependencies": {
     "cordova-android": "~8.1.0",
     "cordova-ios": "~5.1.1",
+    "cordova-plugin-androidx": "^2.0.0",
+    "cordova-plugin-androidx-adapter": "^1.1.1",
+    "cordova-plugin-firebasex": "^10.1.2",
     "cordova-plugin-splashscreen": "^5.0.4"
   },
   "devDependencies": {
@@ -23,7 +26,14 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-splashscreen": {}
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-firebasex": {
+        "IOS_STRIP_DEBUG": "true",
+        "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true",
+        "FIREBASE_PERFORMANCE_COLLECTION_ENABLED": "true",
+        "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED": "true",
+        "SETUP_RECAPTCHA_VERIFICATION": "true"
+      }
     },
     "platforms": [
       "android",

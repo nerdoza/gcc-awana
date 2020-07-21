@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bayssmekanique.gcc.awana" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.zachcardoza.gcc.awana" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 	<name>GCC AWANA</name>
+  <description>Grace Community Church AWANA Club</description>
 	<hook type="after_prepare" src="../node_modules/vue-cli-plugin-cordova/serve-config-hook.js"/>
 	<content src="index.html"/>
 	<access origin="*"/>
@@ -8,6 +9,7 @@
 	<allow-intent href="https://*/*"/>
 	<allow-intent href="tel:*"/>
 	<allow-intent href="sms:*"/>
+  <engine name="ios" spec="^6.1.0"/>
 	<platform name="ios">
 		<icon src="res/icon/ios/icon-1024.png" width="1024" height="1024"/>
 		<icon src="res/icon/ios/icon-small.png" width="29" height="29"/>
@@ -36,7 +38,10 @@
 		<splash src="res/screen/ios/Default@2x~ipad~anyany.png"/>
 		<splash src="res/screen/ios/Default@2x~ipad~comany.png"/>
 	</platform>
+  <engine name="android" spec="^9.0.0" />
 	<platform name="android">
+    <preference name="android-targetSdkVersion" value="28"/>
+    <preference name="android-minSdkVersion" value="21"/>
 		<preference name="SplashMaintainAspectRatio" value="true"/>
 		<preference name="SplashShowOnlyFirstTime" value="false"/>
 		<icon density="ldpi" src="res/icon/android/ldpi.png"/>
@@ -53,4 +58,11 @@
 		<splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png"/>
 	</platform>
   <preference name="AutoHideSplashScreen" value="false"/>
+  <plugin name="cordova-plugin-firebasex" spec="https://github.com/dpa99c/cordova-plugin-firebase" >
+        <variable name="IOS_STRIP_DEBUG" value="true" />
+        <variable name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="true" />
+        <variable name="FIREBASE_PERFORMANCE_COLLECTION_ENABLED" value="true" />
+        <variable name="FIREBASE_CRASHLYTICS_COLLECTION_ENABLED" value="true" />
+        <variable name="SETUP_RECAPTCHA_VERIFICATION" value="true" />
+    </plugin>
 </widget>

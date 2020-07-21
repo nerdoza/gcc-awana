@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { isWeb } from '@/const'
+import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Landing from '@/views/landing.vue'
@@ -41,10 +42,21 @@ const routes: RouteConfig[] = [
   }
 ]
 
+const unauthenticatedRoutes = ['Landing', 'AuthStart', 'AuthVerification']
+
 const router = new VueRouter({
   mode: isWeb ? 'history' : 'hash',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (!vxm.auth.authenticated && !unauthenticatedRoutes.includes(to.name ?? '')) {
+    return next({ name: 'AuthStart' })
+  } else if (vxm.auth.authenticated && unauthenticatedRoutes.includes(to.name ?? '')) {
+    return next({ name: 'Registration', params: { step: '1' } })
+  }
+  next()
 })
 
 export default router
