@@ -54,7 +54,9 @@
               </v-col>
               <v-spacer />
               <v-col cols="auto">
-                <v-btn color="primary" @click="addChild()">Add Child</v-btn>
+                <v-btn color="primary" @click="addChild()">
+                  <v-icon>$addUser</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-stepper-content>
@@ -77,7 +79,9 @@
               </v-col>
               <v-spacer />
               <v-col cols="auto">
-                <v-btn color="primary" @click="addContact()">Add Contact</v-btn>
+                <v-btn color="primary" @click="addContact()">
+                  <v-icon>$addUser</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-stepper-content>
