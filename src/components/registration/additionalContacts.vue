@@ -64,7 +64,7 @@
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
 import { facade } from 'vue-input-facade'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Ref, Vue } from 'vue-property-decorator'
 
 import VTextareaWithValidation from '@/components/inputs/vTextareaWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
@@ -83,9 +83,7 @@ import { ContactUpdate } from '@/store/registration'
   }
 })
 export default class extends Vue {
-  $refs!: {
-    form: InstanceType<typeof ValidationObserver>
-  }
+  @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   readonly phoneNumberRegex = phoneNumberRegex
   readonly phoneNumberMask = phoneNumberMask
@@ -109,7 +107,7 @@ export default class extends Vue {
       return true
     }
 
-    const formValidation = await this.$refs.form.validate()
+    const formValidation = await this.form.validate()
     return this.additionalContactsData.isValid && formValidation
   }
 }

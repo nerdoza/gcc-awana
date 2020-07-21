@@ -32,6 +32,11 @@ const store = new Store({
     ...extractVuexModule(AuthStore),
     ...extractVuexModule(RegistrationStore)
   },
+  actions: {
+    clear: async (context: any) => {
+      await context.dispatch('registration/clear')
+    }
+  },
   mutations: {
     RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION
   },

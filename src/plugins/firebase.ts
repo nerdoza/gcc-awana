@@ -7,6 +7,8 @@ import 'firebase/analytics'
 import 'firebase/auth'
 import 'firebase/firestore'
 
+import { vxm } from '@/store'
+
 class FirebaseX {
   private readonly firebaseJS?: firebase.app.App | undefined
   private readonly firebaseCordova?: any | undefined
@@ -26,7 +28,7 @@ class FirebaseX {
       this.firebaseJS = firebase.initializeApp(firebaseConfig)
       firebase.analytics()
       firebase.auth().useDeviceLanguage()
-      // void firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      void this.attemptSignIn()
     } else {
       this.firebaseCordova = window.FirebasePlugin
     }
@@ -42,14 +44,14 @@ class FirebaseX {
   }
 
   async attemptSignIn () {
-    // To-Do: refactor to init and issue mutation to store
     if (!isCordova) {
-      // const provider = new firebase.auth.PhoneAuthProvider()
-      firebase.auth().onAuthStateChanged((user) => {
-        console.log(user)
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user !== null) {
+          await vxm.auth.userSignedIn()
+        } else {
+          await vxm.auth.userSignedOut()
+        }
       })
-      const user = this.firebaseJS?.auth().currentUser
-      console.log(user)
     } else {
       // Add Cordova Code
     }

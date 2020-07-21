@@ -3,20 +3,16 @@ import { action, createModule, mutation } from 'vuex-class-component'
 
 import { phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
+import router from '@/router'
 
 let verificationConfirmation: ((code: string) => Promise<firebase.auth.UserCredential>) | undefined
 
 export default class extends createModule({ namespaced: 'auth', strict: false }) {
+  authenticated: boolean = false
   phoneNumber: string | null = null
-  refreshToken: string | null = null
 
   get isValidPhoneNumber () {
     return this.phoneNumber !== null && phoneNumberRegex.test(this.phoneNumber)
-  }
-
-  @action
-  async attemptSignIn () {
-    await firebaseProject.attemptSignIn()
   }
 
   @action
@@ -34,15 +30,39 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
   @action
   async confirmVerification (code: string) {
     if (typeof verificationConfirmation !== 'undefined') {
-      const user = await verificationConfirmation(code)
-      console.log(user)
+      await verificationConfirmation(code)
+      // To-Do: Handle user data
+      await this.userSignedIn()
     } else {
       throw new Error('auth/unknown-verification-request')
     }
   }
 
+  @action
+  async signOut () {
+    this.clearPhoneNumber()
+    await this.$store.dispatch('clear', null, { root: true })
+    await firebaseProject.signOut()
+    await router.push({ name: 'Landing' })
+  }
+
+  @action
+  async userSignedIn () {
+    this.setAuthenticated(true)
+  }
+
+  @action
+  async userSignedOut () {
+    this.setAuthenticated(false)
+  }
+
   @mutation
-  setUserFromCredential (credential: firebase.auth.UserCredential) {
-    this.refreshToken = credential.user?.refreshToken ?? null
+  clearPhoneNumber () {
+    this.phoneNumber = ''
+  }
+
+  @mutation
+  setAuthenticated (authenticated: boolean) {
+    this.authenticated = authenticated
   }
 }

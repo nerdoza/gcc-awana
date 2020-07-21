@@ -1,4 +1,4 @@
-import { createModule, createSubModule, mutation } from 'vuex-class-component'
+import { action, createModule, createSubModule, mutation } from 'vuex-class-component'
 
 import { clubsType, gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
 
@@ -8,6 +8,15 @@ export default class extends createModule({ namespaced: 'registration', strict: 
   additionalContacts = createSubModule(AdditionalContacts)
   volunteer = createSubModule(Volunteer)
   terms = createSubModule(Terms)
+
+  @action
+  async clear () {
+    this.adultRegistration.clear()
+    this.childRegistrations.clear()
+    this.additionalContacts.clear()
+    this.volunteer.clear()
+    this.terms.clear()
+  }
 }
 
 class AdultRegistration extends createModule({ namespaced: 'adultRegistration', strict: false }) {
@@ -18,7 +27,7 @@ class AdultRegistration extends createModule({ namespaced: 'adultRegistration', 
   state = ''
   zip = ''
   email = ''
-  primaryPhone = '+1 (559) 801-8823'
+  primaryPhone = ''
   altPhone = ''
 
   get isValid () {
@@ -31,6 +40,19 @@ class AdultRegistration extends createModule({ namespaced: 'adultRegistration', 
      this.email.length > 0 &&
      phoneNumberRegex.test(this.primaryPhone) &&
      (this.altPhone.length === 0 || phoneNumberRegex.test(this.altPhone))
+  }
+
+  @mutation
+  clear () {
+    this.firstName = ''
+    this.lastName = ''
+    this.streetAddress = ''
+    this.city = ''
+    this.state = ''
+    this.zip = ''
+    this.email = ''
+    this.primaryPhone = ''
+    this.altPhone = ''
   }
 }
 
@@ -250,6 +272,11 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
       this.children.push(new ChildRegistration())
     }
   }
+
+  @mutation
+  clear () {
+    this.children.splice(0, this.children.length)
+  }
 }
 
 export interface ContactUpdate {
@@ -353,6 +380,11 @@ class AdditionalContacts extends createModule({ namespaced: 'additionalContacts'
       this.contacts.push(new AdditionalContact())
     }
   }
+
+  @mutation
+  clear () {
+    this.contacts.splice(0, this.contacts.length)
+  }
 }
 
 class Volunteer extends createModule({ namespaced: 'volunteer', strict: false }) {
@@ -370,6 +402,12 @@ class Volunteer extends createModule({ namespaced: 'volunteer', strict: false })
   get isValid () {
     return typeof this.volunteer === 'boolean'
   }
+
+  @mutation
+  clear () {
+    this.volunteer = null
+    this.club = null
+  }
 }
 
 class Terms extends createModule({ namespaced: 'terms', strict: false }) {
@@ -386,5 +424,11 @@ class Terms extends createModule({ namespaced: 'terms', strict: false }) {
 
   get isValid () {
     return this.approvedTerms && typeof this.photoApproval === 'boolean'
+  }
+
+  @mutation
+  clear () {
+    this.approvedTerms = false
+    this.photoApproval = null
   }
 }

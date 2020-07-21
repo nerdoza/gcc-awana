@@ -86,7 +86,7 @@
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
 import { facade } from 'vue-input-facade'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Ref, Vue } from 'vue-property-decorator'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
@@ -104,9 +104,7 @@ import { vxm } from '@/store'
   }
 })
 export default class extends Vue {
-  $refs!: {
-    form: InstanceType<typeof ValidationObserver>
-  }
+  @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   readonly zipCodeRegex = zipCodeRegex
   readonly zipCodeMask = zipCodeMask
@@ -117,7 +115,7 @@ export default class extends Vue {
   adultData = vxm.registration.adultRegistration
 
   async validate () {
-    const formValidation = await this.$refs.form.validate()
+    const formValidation = await this.form.validate()
     return this.adultData.isValid && formValidation
   }
 }

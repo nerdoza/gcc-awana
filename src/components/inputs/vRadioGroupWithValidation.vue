@@ -5,7 +5,6 @@
       :error-messages="errors"
       v-bind="$attrs"
       v-on="$listeners"
-      ref="stateSelect"
     >
       <slot></slot>
     </v-radio-group>

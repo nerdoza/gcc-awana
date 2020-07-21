@@ -98,13 +98,14 @@ export default class extends Vue {
   }
 
   handleError (error: {code: string, message?: string}) {
-    console.error(error)
     const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
     switch (errorCode) {
       case 'auth/invalid-phone-number':
-        this.auth.phoneNumber = ''
+        this.auth.clearPhoneNumber()
         this.error = 'Invalid phone number. Re-type phone number.'
         break
+      default:
+        throw errorCode
     }
   }
 }

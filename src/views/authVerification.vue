@@ -98,7 +98,6 @@ export default class extends Vue {
   }
 
   handleError (error: {code: string, message?: string}) {
-    console.error(error)
     this.code = ''
     const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
     switch (errorCode) {
@@ -109,6 +108,8 @@ export default class extends Vue {
         this.error = 'No verification request submitted. Requesting a new code now.'
         void this.resendCode()
         break
+      default:
+        throw errorCode
     }
   }
 }

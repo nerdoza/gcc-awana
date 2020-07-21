@@ -108,7 +108,7 @@
 <script lang="ts">
 import { ValidationObserver } from 'vee-validate'
 import { facade } from 'vue-input-facade'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Ref, Vue } from 'vue-property-decorator'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextareaWithValidation from '@/components/inputs/vTextareaWithValidation.vue'
@@ -129,9 +129,7 @@ import { ChildUpdate } from '@/store/registration'
   }
 })
 export default class extends Vue {
-  $refs!: {
-    form: InstanceType<typeof ValidationObserver>
-  }
+  @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   readonly dateOfBirthMask = dateOfBirthMask
   readonly dateOfBirthRegex = dateOfBirthRegex
@@ -178,7 +176,7 @@ export default class extends Vue {
       return true
     }
 
-    const formValidation = await this.$refs.form.validate()
+    const formValidation = await this.form.validate()
     return this.childData.isValid && formValidation
   }
 }
