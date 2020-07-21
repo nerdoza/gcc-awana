@@ -1,0 +1,66 @@
+on: 
+  push:
+    branches:
+      - master
+
+name: Master
+
+jobs:
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
+      - name: Check Version
+        id: check
+        uses: EndBug/version-check@v1
+        with:
+          diff-search: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install AWS CLI
+        if: steps.check.outputs.changed == 'true'
+        uses: chrislennon/action-aws-cli@v1.1
+
+      - name: Setting Secrets
+        if: steps.check.outputs.changed == 'true'
+        env:
+          NPMRM: ${{ secrets.NPMRC }}
+          CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
+          CORDOVA_KEYSTORE: ${{ secrets.CORDOVA_KEYSTORE }}
+        run: |
+          echo "$NPMRC" >> .npmrc
+          echo "$CORDOVA_BUILD" >> ./src-cordova/build.json
+          echo "$CORDOVA_KEYSTORE" >> ./src-cordova/prod.keystore
+
+      - name: Install Dependencies
+        if: steps.check.outputs.changed == 'true'
+        run: npm ci
+
+      - name: Build
+        if: steps.check.outputs.changed == 'true'
+        run: npm run web:build
+
+      - name: Publish
+        if: steps.check.outputs.changed == 'true'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: node ./.scripts/s3-push.js
+
+      - name: Create Release
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.check.outputs.version }}
+          release_name: Release v${{ steps.check.outputs.version }}
