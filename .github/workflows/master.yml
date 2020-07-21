@@ -33,7 +33,7 @@ jobs:
       - name: Setting Secrets
         if: steps.check.outputs.changed == 'true'
         env:
-          NPMRM: ${{ secrets.NPMRC }}
+          NPMRC: ${{ secrets.NPMRC }}
           CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
           CORDOVA_KEYSTORE: ${{ secrets.CORDOVA_KEYSTORE }}
         run: |
