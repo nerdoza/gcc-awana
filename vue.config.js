@@ -5,5 +5,10 @@ module.exports = {
   },
   transpileDependencies: [
     'vuetify'
-  ]
+  ],
+  pwa: {
+    name: 'GCC AWANA',
+    themeColor: '#00bfa5',
+    msTileColor: '#00bfa5'
+  }
 }
