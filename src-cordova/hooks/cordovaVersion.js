@@ -1,3 +1,5 @@
-const { version } = require('../package.json')
+const { version } = require('../../package.json')
 const cordovaSetVersion = require('cordova-set-version')
-cordovaSetVersion('./config.xml', version)
+const buildSegments = version.split('.').map(v => parseInt(v))
+const buildNumber = (10 * buildSegments[2]) + (10000 * buildSegments[1]) + (10000000 * buildSegments[0])
+cordovaSetVersion('../src-cordova/config.xml', version, buildNumber)
