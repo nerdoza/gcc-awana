@@ -50,7 +50,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: node ./.scripts/s3-push.js
+        run: node ./.scripts/s3Push.js
 
       - name: Create Release
         uses: actions/create-release@v1
