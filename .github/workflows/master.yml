@@ -7,8 +7,8 @@ name: Master
 
 jobs:
 
-  release:
-    name: Release
+  web:
+    name: Web Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -27,8 +27,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Install AWS CLI
-        if: steps.check.outputs.changed == 'true'
         uses: chrislennon/action-aws-cli@v1.1
+        if: steps.check.outputs.changed == 'true'
 
       - name: Setting Secrets
         if: steps.check.outputs.changed == 'true'
@@ -57,10 +57,56 @@ jobs:
         run: node ./.scripts/s3-push.js
 
       - name: Create Release
-        if: steps.check.outputs.changed == 'true'
         uses: actions/create-release@v1
+        if: steps.check.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.check.outputs.version }}
           release_name: Release v${{ steps.check.outputs.version }}
+
+  android:
+    name: Android Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
+      - name: Check Version
+        id: check
+        uses: EndBug/version-check@v1
+        with:
+          diff-search: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup JDK 1.8
+        uses: actions/setup-java@v1
+        if: steps.check.outputs.changed == 'true'
+        with:
+          java-version: 1.8
+
+      - name: Setup MIPS build process
+        if: steps.check.outputs.changed == 'true'
+        run: sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/darwin-x86_64
+
+      - name: Install Dependencies
+        if: steps.check.outputs.changed == 'true'
+        run: npm ci
+
+      - name: Build
+        if: steps.check.outputs.changed == 'true'
+        run: npm run android:build
+
+      - name: Publish to Google Play
+        uses: r0adkll/upload-google-play@v1
+        if: steps.check.outputs.changed == 'true'
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.zachcardoza.gcc.awana
+          releaseFile: 'src-cordova/platforms/android/app/build/outputs/apk/release/app-release.apk'
+          track: beta
