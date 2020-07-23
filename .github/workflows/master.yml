@@ -34,12 +34,8 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         env:
           NPMRC: ${{ secrets.NPMRC }}
-          CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
-          CORDOVA_KEYSTORE: ${{ secrets.CORDOVA_KEYSTORE }}
         run: |
           echo "$NPMRC" >> .npmrc
-          echo "$CORDOVA_BUILD" >> ./src-cordova/build.json
-          echo "$CORDOVA_KEYSTORE" >> ./src-cordova/prod.keystore
 
       - name: Install Dependencies
         if: steps.check.outputs.changed == 'true'
@@ -93,6 +89,17 @@ jobs:
       - name: Setup MIPS build process
         if: steps.check.outputs.changed == 'true'
         run: sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/darwin-x86_64
+
+      - name: Setting Secrets
+        if: steps.check.outputs.changed == 'true'
+        env:
+          NPMRC: ${{ secrets.NPMRC }}
+          CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
+          CORDOVA_KEYSTORE: ${{ secrets.CORDOVA_KEYSTORE }}
+        run: |
+          echo "$NPMRC" >> .npmrc
+          echo "$CORDOVA_BUILD" >> ./src-cordova/build.json
+          echo "$CORDOVA_KEYSTORE" >> ./src-cordova/prod.keystore
 
       - name: Install Dependencies
         if: steps.check.outputs.changed == 'true'
