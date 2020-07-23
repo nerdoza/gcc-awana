@@ -107,6 +107,10 @@ jobs:
           npm ci
           npm install -g cordova@9
 
+      - name: Prepare Cordova
+        if: steps.check.outputs.changed == 'true'
+        run: npm run cordova:prepare
+
       - name: Build
         if: steps.check.outputs.changed == 'true'
         run: npm run android:build
