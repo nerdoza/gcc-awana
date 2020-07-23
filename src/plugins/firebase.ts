@@ -47,9 +47,7 @@ class FirebaseX {
         await new Promise((resolve, reject) => {
           this.firebaseCordova.signOutUser(() => resolve(), (error: string) => reject(new Error(error)))
         })
-      } catch (error) {
-        console.error(error)
-      }
+      } catch (error) { }
     }
   }
 
@@ -65,7 +63,6 @@ class FirebaseX {
     } else {
       await new Promise((resolve, reject) => {
         this.firebaseCordova.isUserSignedIn(async (isSignedIn: boolean) => {
-          console.log('isSignedIn: ' + isSignedIn.toString())
           if (isSignedIn) {
             await vxm.auth.userSignedIn()
           } else {

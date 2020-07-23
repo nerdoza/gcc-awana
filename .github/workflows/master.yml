@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Use Node.js v14
+      - name: Setup Node.js v14
         uses: actions/setup-node@v2-beta
         with:
           node-version: 14
@@ -30,7 +30,7 @@ jobs:
         uses: chrislennon/action-aws-cli@v1.1
         if: steps.check.outputs.changed == 'true'
 
-      - name: Setting Secrets
+      - name: Set Secrets
         if: steps.check.outputs.changed == 'true'
         env:
           NPMRC: ${{ secrets.NPMRC }}
@@ -45,7 +45,7 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         run: npm run web:build
 
-      - name: Publish
+      - name: Publish to S3
         if: steps.check.outputs.changed == 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -68,7 +68,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Use Node.js v14
+      - name: Setup Node.js v14
         uses: actions/setup-node@v2-beta
         with:
           node-version: 14
@@ -90,7 +90,7 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         run: sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/darwin-x86_64
 
-      - name: Setting Secrets
+      - name: Set Secrets
         if: steps.check.outputs.changed == 'true'
         env:
           NPMRC: ${{ secrets.NPMRC }}
@@ -104,6 +104,10 @@ jobs:
       - name: Install Dependencies
         if: steps.check.outputs.changed == 'true'
         run: npm ci
+
+      - name: Prepare Cordova
+        if: steps.check.outputs.changed == 'true'
+        run: npm run cordova:prepare
 
       - name: Build
         if: steps.check.outputs.changed == 'true'

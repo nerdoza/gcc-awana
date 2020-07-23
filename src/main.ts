@@ -14,6 +14,7 @@ Vue.config.productionTip = false
 const ignoredMessage = 'The .native modifier for v-on is only valid on components but it was used on <svg>.'
 Vue.config.warnHandler = (message, vm, componentTrace) => {
   if (message !== ignoredMessage) {
+    // eslint-disable-next-line no-console
     console.error(message + componentTrace)
   }
 }
