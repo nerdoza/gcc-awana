@@ -19,7 +19,6 @@ pnpm-debug.log*
 /src-cordova/platforms
 /src-cordova/plugins
 /src-cordova/www
-/src-cordova/*.keystore
 /src-cordova/build.json
 /public/cordova.js
 
