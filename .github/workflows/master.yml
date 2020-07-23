@@ -103,11 +103,9 @@ jobs:
 
       - name: Install Dependencies
         if: steps.check.outputs.changed == 'true'
-        run: npm ci
-
-      - name: Prepare Cordova
-        if: steps.check.outputs.changed == 'true'
-        run: npm run cordova:prepare
+        run: |
+          npm ci
+          npm install -g cordova@9
 
       - name: Build
         if: steps.check.outputs.changed == 'true'
