@@ -6,6 +6,7 @@ import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Landing from '@/views/landing.vue'
+import Payment from '@/views/payment.vue'
 import Registration from '@/views/registration.vue'
 
 Vue.use(VueRouter)
@@ -35,6 +36,11 @@ const routes: RouteConfig[] = [
   {
     path: '/registration',
     redirect: '/registration/1'
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment
   },
   {
     path: '/*',

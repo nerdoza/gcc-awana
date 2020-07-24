@@ -1,45 +1,47 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6" lg="4" xl="2">
-      <v-card class="elevation-12">
-        <v-toolbar color="primary" dark flat>
-          <v-toolbar-title>Verification</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <div class="text--primary">Enter the code you received below.</div>
-          <v-form @submit.prevent="submit()">
-            <v-text-field
-              label="Code"
-              name="code"
-              prepend-icon="$key"
-              type="tel"
-              v-facade="verificationCodeMask"
-              v-model.trim="code"
-              :error-messages="error"
-            ></v-text-field>
-          </v-form>
-          <div
-            class="text--primary"
-          >If you do not receive a code within 2 minutes, request a new code.</div>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            :id="verifierButtonId"
-            @click="resendCode"
-            :loading="resendingCode"
-            :disabled="codeValid || resendingCode"
-          >Send New Code</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            :disabled="!codeValid || verifyingCode"
-            :loading="verifyingCode"
-            @click="submit()"
-          >Sign In</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-container fluid class="fill-height">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-card class="elevation-12">
+          <v-toolbar color="primary" dark flat>
+            <v-toolbar-title>Verification</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <div class="text--primary">Enter the code you received below.</div>
+            <v-form @submit.prevent="submit()">
+              <v-text-field
+                label="Code"
+                name="code"
+                prepend-icon="$key"
+                type="tel"
+                v-facade="verificationCodeMask"
+                v-model.trim="code"
+                :error-messages="error"
+              ></v-text-field>
+            </v-form>
+            <div
+              class="text--primary"
+            >If you do not receive a code within 2 minutes, request a new code.</div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              :id="verifierButtonId"
+              @click="resendCode"
+              :loading="resendingCode"
+              :disabled="codeValid || resendingCode"
+            >Send New Code</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              :disabled="!codeValid || verifyingCode"
+              :loading="verifyingCode"
+              @click="submit()"
+            >Sign In</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

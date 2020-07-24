@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <v-container fluid class="fill-height">
+      <transition name="slide">
         <router-view></router-view>
-      </v-container>
+      </transition>
     </v-main>
   </v-app>
 </template>
@@ -25,6 +25,7 @@ export default class extends Vue {
 
 <style lang="scss">
 $radius: 0.5rem;
+$transition-timing: 0.3s;
 
 .v-application--wrap {
   background-image: url("~@/assets/background.jpg");
@@ -39,6 +40,10 @@ $radius: 0.5rem;
 
 .dark-label .v-label {
   color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.v-stepper__step__step .v-icon.v-icon.fa-check {
+  font-size: 1rem;
 }
 
 * {
@@ -58,5 +63,36 @@ $radius: 0.5rem;
 *::-webkit-scrollbar-thumb {
   border-radius: $radius;
   background-color: #00bfa5;
+}
+
+.slide-leave-active {
+  transition-property: transform, opacity;
+  transition-duration: $transition-timing;
+}
+
+.slide-leave {
+  opacity: 100;
+  transform: translateX(0);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20%);
+}
+
+.slide-enter-active {
+  transition-property: transform, opacity;
+  transition-duration: $transition-timing;
+  transition-delay: $transition-timing/2;
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+.slide-enter-to {
+  opacity: 100;
+  transform: translateX(0);
 }
 </style>
