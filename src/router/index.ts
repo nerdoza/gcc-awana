@@ -34,10 +34,6 @@ const routes: RouteConfig[] = [
     props: route => ({ step: +(route.params.step ?? 1) })
   },
   {
-    path: '/registration',
-    redirect: '/registration/1'
-  },
-  {
     path: '/payment',
     name: 'Payment',
     component: Payment
@@ -57,10 +53,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const defaultRoute = vxm.auth.defaultRoute
   if (!vxm.auth.authenticated && !unauthenticatedRoutes.includes(to.name ?? '')) {
-    return next({ name: 'AuthStart' })
+    return next(defaultRoute)
   } else if (vxm.auth.authenticated && unauthenticatedRoutes.includes(to.name ?? '')) {
-    return next({ name: 'Registration', params: { step: '1' } })
+    return next(defaultRoute)
   }
   next()
 })

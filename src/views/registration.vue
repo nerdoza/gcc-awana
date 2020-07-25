@@ -24,7 +24,7 @@
             </v-dialog>
           </v-toolbar>
           <v-stepper v-model="stepStatus" vertical>
-            <v-stepper-step :complete="lastStepCompleted >= 1" step="1">
+            <v-stepper-step :complete="registrationData.step >= 1" step="1">
               Adult Registartion
               <small>Fill with your personal information</small>
             </v-stepper-step>
@@ -37,7 +37,7 @@
               </v-row>
             </v-stepper-content>
 
-            <v-stepper-step :complete="lastStepCompleted >= 2" step="2">
+            <v-stepper-step :complete="registrationData.step >= 2" step="2">
               Child Registartion
               <small>Fill with your child's information</small>
             </v-stepper-step>
@@ -62,7 +62,7 @@
               </v-row>
             </v-stepper-content>
 
-            <v-stepper-step :complete="lastStepCompleted >= 3" step="3">
+            <v-stepper-step :complete="registrationData.step >= 3" step="3">
               Additional Contacts
               <small>Other adults authorized to care for and assist in emergencies</small>
             </v-stepper-step>
@@ -87,7 +87,7 @@
               </v-row>
             </v-stepper-content>
 
-            <v-stepper-step :complete="lastStepCompleted >= 4" step="4">Leader Volunteer</v-stepper-step>
+            <v-stepper-step :complete="registrationData.step >= 4" step="4">Leader Volunteer</v-stepper-step>
             <v-stepper-content step="4">
               <volunteer ref="volunteerForm" v-if="stepStatus === 4" />
               <v-row>
@@ -98,7 +98,7 @@
               </v-row>
             </v-stepper-content>
 
-            <v-stepper-step :complete="lastStepCompleted >= 5" step="5">Terms &amp; Conditions</v-stepper-step>
+            <v-stepper-step :complete="registrationData.step >= 5" step="5">Terms &amp; Conditions</v-stepper-step>
             <v-stepper-content step="5">
               <terms ref="termsForm" v-if="stepStatus === 5" />
               <v-row>
@@ -113,7 +113,7 @@
               </v-row>
             </v-stepper-content>
 
-            <v-stepper-step :complete="lastStepCompleted >= 6" step="6">Confirm Information</v-stepper-step>
+            <v-stepper-step :complete="registrationData.step >= 6" step="6">Confirm Information</v-stepper-step>
             <v-stepper-content step="6">
               <review v-if="stepStatus === 6" />
               <v-row>
@@ -173,11 +173,8 @@ export default class extends Vue {
 
   @Watch('stepStatus', { immediate: true })
   onStepChanged (value: number) {
-    if (value > this.lastStepCompleted) {
-      this.lastStepCompleted = value
-    }
-    if (value === 6) {
-      this.registrationData.isReviewing = true
+    if (this.registrationData.step > this.lastStepCompleted) {
+      this.registrationData.step = value
     }
   }
 
@@ -244,7 +241,7 @@ export default class extends Vue {
   }
 
   goForward () {
-    const step = !this.registrationData.isReviewing ? (this.stepStatus + 1).toString() : '6'
+    const step = this.registrationData.step < 6 ? (this.stepStatus + 1).toString() : '6'
     this.$router.push({ name: 'Registration', params: { step } })
   }
 }

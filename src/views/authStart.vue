@@ -89,7 +89,6 @@ export default class extends Vue {
       this.sendingCode = true
       try {
         await this.auth.requestVerification(this.verifierButtonId)
-        this.auth.clearVerifier(this.verifierButtonId)
         this.$router.push({ name: 'AuthVerification' })
       } catch (error) {
         this.handleError(error)
@@ -109,6 +108,10 @@ export default class extends Vue {
       default:
         throw errorCode
     }
+  }
+
+  beforeDestroy () {
+    this.auth.clearVerifier(this.verifierButtonId)
   }
 }
 </script>

@@ -1,8 +1,10 @@
+import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
 import { phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
+import { vxm } from '@/store'
 
 let verificationConfirmation: ((code: string) => Promise<void>) | undefined
 
@@ -12,6 +14,22 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
 
   get isValidPhoneNumber () {
     return this.phoneNumber !== null && phoneNumberRegex.test(this.phoneNumber)
+  }
+
+  get defaultRoute () {
+    const route: Location = { name: '' }
+    if (!this.authenticated) {
+      route.name = 'AuthStart'
+      return route
+    }
+
+    if (vxm.registration.step < 6) {
+      route.name = 'Registration'
+      route.params = { step: vxm.registration.step.toString() }
+    } else {
+      route.name = 'Payment'
+    }
+    return route
   }
 
   @action
@@ -49,7 +67,7 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
   async userSignedIn () {
     if (!this.authenticated) {
       this.setAuthenticated(true)
-      await router.push({ name: 'Registration', params: { step: '1' } })
+      await router.push(this.defaultRoute)
     }
   }
 
@@ -57,7 +75,7 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
   async userSignedOut () {
     if (this.authenticated) {
       this.setAuthenticated(false)
-      await router.push({ name: 'AuthStart' })
+      await router.push(this.defaultRoute)
     }
   }
 

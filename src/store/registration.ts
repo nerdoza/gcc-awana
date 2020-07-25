@@ -3,7 +3,7 @@ import { action, createModule, createSubModule, mutation } from 'vuex-class-comp
 import { clubsType, gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
 
 export default class extends createModule({ namespaced: 'registration', strict: false }) {
-  isReviewing = false
+  step = 1
   adultRegistration = createSubModule(AdultRegistration)
   childRegistrations = createSubModule(ChildRegistrations)
   additionalContacts = createSubModule(AdditionalContacts)

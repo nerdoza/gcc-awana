@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Registration</v-toolbar-title>
+            <v-toolbar-title>Payment</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-dialog v-model="signOutDialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
@@ -40,6 +40,8 @@ import { vxm } from '@/store'
 @Component
 export default class extends Vue {
   signOutDialog = false
+
+  registrationData = vxm.registration
 
   signOut () {
     this.signOutDialog = false
