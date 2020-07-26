@@ -1,0 +1,87 @@
+// Variables
+$radius: 0.5rem;
+$transition-timing: 0.3s;
+$primaryColor: #00bfa5;
+$backgroundColor: #212121;
+
+// Global Overrides
+.no-label .v-label {
+  display: none;
+}
+
+.dark-label .v-label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.v-stepper__step__step .v-icon.v-icon.fa-check {
+  font-size: 1rem;
+}
+
+// Global Styles
+#background {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("~@/assets/images/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#app {
+  background-color: transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $primaryColor $backgroundColor;
+}
+
+*::-webkit-scrollbar {
+  width: $radius;
+  height: $radius;
+}
+
+*::-webkit-scrollbar-track {
+  background: $backgroundColor;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: $radius;
+  background-color: $primaryColor;
+}
+
+// Animations
+.slide-leave-active {
+  transition-property: transform, opacity;
+  transition-duration: $transition-timing;
+  position: absolute;
+  overflow: hidden;
+}
+
+.slide-leave {
+  opacity: 100;
+  transform: translateX(0);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20%);
+}
+
+.slide-enter-active {
+  transition-property: transform, opacity;
+  transition-duration: $transition-timing;
+  position: absolute;
+  overflow: hidden;
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+.slide-enter-to {
+  opacity: 100;
+  transform: translateX(0);
+}

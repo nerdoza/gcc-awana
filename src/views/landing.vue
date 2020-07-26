@@ -6,10 +6,10 @@
           <v-card-text>
             <v-row align="center" justify="center">
               <v-col cols="5">
-                <v-img src="~@/assets/gcc.png"></v-img>
+                <v-img src="~@/assets/images/gcc.png"></v-img>
               </v-col>
               <v-col cols="5">
-                <v-img src="~@/assets/awana.svg"></v-img>
+                <v-img src="~@/assets/images/awana.svg"></v-img>
               </v-col>
             </v-row>
             <h1 class="mb-4">Welcome</h1>
