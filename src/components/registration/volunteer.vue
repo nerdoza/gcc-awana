@@ -5,26 +5,29 @@
         <v-container>
           <v-row>
             <v-col cols="12" class="mb-0">
-              <p>AWANA Club is made possible through awesome volunteer leadership.</p>
+              <p>AWANA Club is made possible through awesome volunteer leadership. Perks of leading include:</p>
               <ul class="mb-4">
-                <li>Play a role in the beginning phases of discipleship</li>
-                <li>Leaders receive a $5 discount per a child</li>
-                <li>Leaders can bring 2-3 year olds to Puggles program</li>
+                <li>Playing a role in the beginning phases of discipleship</li>
+                <li>Receive a $5 discount per a child</li>
+                <li :class="{'red--text': highlight }">
+                  Puggles program for 2-3 year olds (
+                  <em>exclusively for leaders</em>)
+                </li>
               </ul>
               <p class="mb-0">Would you like to be an AWANA Club leader?</p>
             </v-col>
-            <v-col cols="4" sm="3" class="my-0">
+            <v-col cols="4" sm="4" class="my-0 py-0">
               <v-radio-group-with-validation
                 v-model="volunteerData.volunteerString"
                 class="my-0 no-label"
-                rules="required"
+                :rules="{required: true, oneOf:options}"
                 label="Selection"
               >
                 <v-radio label="Yes" value="y"></v-radio>
                 <v-radio label="No" value="n"></v-radio>
               </v-radio-group-with-validation>
             </v-col>
-            <v-col cols="8" sm="4" class="my-0">
+            <v-col cols="8" sm="4" class="my-0 py-0">
               <v-select-with-validation
                 v-if="volunteerData.volunteer"
                 v-model.trim="volunteerData.club"
@@ -72,6 +75,15 @@ export default class extends Vue {
   readonly clubs = clubs
 
   volunteerData = vxm.registration.volunteer
+  childrenData = vxm.registration.childRegistrations
+
+  get options () {
+    return this.childrenData.hasPuggle ? ['y'] : ['y', 'n']
+  }
+
+  get highlight () {
+    return this.volunteerData.volunteer === false && !this.volunteerData.isValid
+  }
 
   async validate () {
     const formValidation = await this.form.validate()

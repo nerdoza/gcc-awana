@@ -17,7 +17,7 @@
                   volunteers to secure the services of a licensed physician to provide the care necessary for my child's well being. I assume
                   responsibility for all costs connected to any accident or treatment of my child.
                 </li>
-                <li class="mb-2">
+                <li class="mb-2" v-if="!childrenData.isEmpty">
                   <v-radio-group-with-validation
                     v-model="termsData.photoApprovalString"
                     class="my-0 dark-label"
@@ -72,6 +72,7 @@ export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   termsData = vxm.registration.terms
+  childrenData = vxm.registration.childRegistrations
 
   async validate () {
     const formValidation = await this.form.validate()

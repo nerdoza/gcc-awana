@@ -29,7 +29,7 @@ $transition-timing: 0.3s;
 
 .v-application--wrap {
   background-image: url("~@/assets/background.jpg");
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
 }

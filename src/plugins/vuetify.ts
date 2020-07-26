@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit, faKey, faMobileAlt, faSignOutAlt, faTrash, faUserPlus } from '@fortawesome/pro-duotone-svg-icons'
+import { faEdit, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
 import { faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -8,7 +8,7 @@ import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle)
+library.add(faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle)
 
 Vue.use(Vuetify)
 
@@ -42,7 +42,8 @@ export default new Vuetify({
       trash: icon('fad', 'trash'),
       signOut: icon('fad', 'sign-out-alt'),
       addUser: icon('fad', 'user-plus'),
-      edit: icon('fad', 'edit')
+      edit: icon('fad', 'edit'),
+      stars: icon('fad', 'stars')
     }
   }
 })

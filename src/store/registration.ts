@@ -1,6 +1,7 @@
 import { action, createModule, createSubModule, mutation } from 'vuex-class-component'
 
 import { clubsType, gendersType, gradesType, phoneNumberRegex, schoolStartDate, zipCodeRegex } from '@/const'
+import { vxm } from '@/store'
 
 export default class extends createModule({ namespaced: 'registration', strict: false }) {
   step = 1
@@ -12,6 +13,7 @@ export default class extends createModule({ namespaced: 'registration', strict: 
 
   @action
   async clear () {
+    this.step = 1
     this.adultRegistration.clear()
     this.childRegistrations.clear()
     this.additionalContacts.clear()
@@ -256,6 +258,10 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
     return this.children.length === 1 && this.children[0].isEmpty
   }
 
+  get hasPuggle () {
+    return this.children.some(child => child.club === 'Puggles')
+  }
+
   @mutation
   addChild () {
     this.children.push(new ChildRegistration())
@@ -277,6 +283,7 @@ class ChildRegistrations extends createModule({ namespaced: 'childRegistrations'
   @mutation
   clear () {
     this.children.splice(0, this.children.length)
+    this.children.push(new ChildRegistration())
   }
 }
 
@@ -385,6 +392,7 @@ class AdditionalContacts extends createModule({ namespaced: 'additionalContacts'
   @mutation
   clear () {
     this.contacts.splice(0, this.contacts.length)
+    this.contacts.push(new AdditionalContact())
   }
 }
 
@@ -401,7 +409,7 @@ class Volunteer extends createModule({ namespaced: 'volunteer', strict: false })
   }
 
   get isValid () {
-    return typeof this.volunteer === 'boolean'
+    return typeof this.volunteer === 'boolean' && (this.volunteer || !vxm.registration.childRegistrations.hasPuggle)
   }
 
   @mutation
@@ -424,7 +432,7 @@ class Terms extends createModule({ namespaced: 'terms', strict: false }) {
   }
 
   get isValid () {
-    return this.approvedTerms && typeof this.photoApproval === 'boolean'
+    return this.approvedTerms && (vxm.registration.childRegistrations.isEmpty || typeof this.photoApproval === 'boolean')
   }
 
   @mutation

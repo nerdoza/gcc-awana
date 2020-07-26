@@ -23,11 +23,16 @@
             {{ adultData.streetAddress }}
             <br />
             {{ adultData.city }}, {{ adultData.state }} {{ adultData.zip }}
+            <br v-if="volunteerData.volunteer" />
+            <v-chip v-if="volunteerData.volunteer" color="primary" label>
+              <v-icon left>$stars</v-icon>
+              <strong>Leader</strong>
+            </v-chip>
           </v-col>
         </v-row>
       </v-container>
     </v-card>
-    <v-card class="mb-6" outlined elevation="2">
+    <v-card class="mb-6" outlined elevation="2" v-if="!childData.isEmpty">
       <v-toolbar color="primary" dark flat>
         <v-toolbar-title>Child Registration</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -57,7 +62,7 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-card class="mb-6" outlined elevation="2">
+    <v-card class="mb-6" outlined elevation="2" v-if="!additionalContactsData.isEmpty">
       <v-toolbar color="primary" dark flat>
         <v-toolbar-title>Additional Contacts</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -95,6 +100,7 @@ import { vxm } from '@/store'
 @Component
 export default class extends Vue {
   adultData = vxm.registration.adultRegistration
+  volunteerData = vxm.registration.volunteer
   childData = vxm.registration.childRegistrations
   additionalContactsData = vxm.registration.additionalContacts
 
