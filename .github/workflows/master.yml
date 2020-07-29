@@ -123,3 +123,66 @@ jobs:
           packageName: com.zachcardoza.gcc.awana
           releaseFile: 'src-cordova/platforms/android/app/build/outputs/apk/release/app-release.apk'
           track: beta
+
+  ios:
+    name: iOS Build
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
+      - name: Check Version
+        id: check
+        uses: EndBug/version-check@v1
+        with:
+          diff-search: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Secrets
+        if: steps.check.outputs.changed == 'true'
+        env:
+          NPMRC: ${{ secrets.NPMRC }}
+          CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
+        run: |
+          echo "$NPMRC" >> .npmrc
+          echo "$CORDOVA_BUILD" >> ./src-cordova/build.json
+
+      - name: Import Code-Signing Certs and Keys
+        if: steps.check.outputs.changed == 'true
+        uses: apple-actions/import-codesign-certs@v1
+        with: 
+          p12-file-base64: ${{ secrets.APPLE_CODE_SIGNING_CERT_P12_B64 }}
+          p12-password: ${{ secrets.APPLE_CODE_SIGNING_CERT_P12_PASSWORD }}
+      
+      - name: Import Provisioning Profiles
+        if: steps.check.outputs.changed == 'true
+        uses: Apple-Actions/download-provisioning-profiles@v1
+        with:
+          bundle-id: com.keiser.mseries.group
+          issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
+
+      - name: Install Dependencies
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          npm ci
+          npm install -g cordova@9
+
+      - name: Build
+        if: steps.check.outputs.changed == 'true'
+        run: npm run ios:build
+
+      - name: Push to TestFlight
+        if: steps.check.outputs.changed == 'true
+        uses: Apple-Actions/upload-testflight-build@master
+        with:
+          app-path: "src-cordova/platforms/ios/build/device/GCC AWANA.ipa"
+          issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
