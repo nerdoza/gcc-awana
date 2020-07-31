@@ -174,7 +174,7 @@ jobs:
       - name: Push to TestFlight
         uses: Apple-Actions/upload-testflight-build@master
         with:
-          app-path: "src-cordova/platforms/ios/build/device/GCC AWANA.ipa"
+          app-path: "src-cordova/platforms/ios/build/emulator/GCC AWANA.app"
           issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
           api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
