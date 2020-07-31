@@ -1,0 +1,46 @@
+on: 
+  push:
+    branches:
+      - ios
+
+name: Test
+
+jobs:
+  check:
+    name: Check Release
+    runs-on: ubuntu-latest    
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
+      - name: Check Version
+        id: check
+        uses: EndBug/version-check@v1
+        with:
+          diff-search: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  test1:
+    name: Test 1
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+  test2:
+    name: Test 2
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
