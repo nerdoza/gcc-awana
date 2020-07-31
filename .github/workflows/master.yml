@@ -7,9 +7,11 @@ name: Master
 
 jobs:
 
-  web:
-    name: Web Build
-    runs-on: ubuntu-latest
+  check:
+    name: Check Version
+    runs-on: ubuntu-latest    
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -25,28 +27,37 @@ jobs:
         with:
           diff-search: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  web:
+    name: Web Build
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
       
       - name: Install AWS CLI
         uses: chrislennon/action-aws-cli@v1.1
-        if: steps.check.outputs.changed == 'true'
 
       - name: Set Secrets
-        if: steps.check.outputs.changed == 'true'
         env:
           NPMRC: ${{ secrets.NPMRC }}
         run: |
           echo "$NPMRC" >> .npmrc
 
       - name: Install Dependencies
-        if: steps.check.outputs.changed == 'true'
         run: npm ci
 
       - name: Build
-        if: steps.check.outputs.changed == 'true'
         run: npm run web:build
 
       - name: Publish to S3
-        if: steps.check.outputs.changed == 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -54,7 +65,6 @@ jobs:
 
       - name: Create Release
         uses: actions/create-release@v1
-        if: steps.check.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -63,6 +73,8 @@ jobs:
 
   android:
     name: Android Build
+    needs: check
+    if: needs.check.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -73,25 +85,15 @@ jobs:
         with:
           node-version: 14
 
-      - name: Check Version
-        id: check
-        uses: EndBug/version-check@v1
-        with:
-          diff-search: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup JDK 1.8
         uses: actions/setup-java@v1
-        if: steps.check.outputs.changed == 'true'
         with:
           java-version: 1.8
 
       - name: Setup MIPS build process
-        if: steps.check.outputs.changed == 'true'
         run: sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/darwin-x86_64
 
       - name: Set Secrets
-        if: steps.check.outputs.changed == 'true'
         env:
           NPMRC: ${{ secrets.NPMRC }}
           CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
@@ -102,24 +104,72 @@ jobs:
           echo "$CORDOVA_KEYSTORE" >> ./src-cordova/prod.keystore
 
       - name: Install Dependencies
-        if: steps.check.outputs.changed == 'true'
         run: |
           npm ci
           npm install -g cordova@9
 
       - name: Prepare Cordova
-        if: steps.check.outputs.changed == 'true'
         run: npm run cordova:prepare
 
       - name: Build
-        if: steps.check.outputs.changed == 'true'
         run: npm run android:build
 
       - name: Publish to Google Play
         uses: r0adkll/upload-google-play@v1
-        if: steps.check.outputs.changed == 'true'
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.zachcardoza.gcc.awana
           releaseFile: 'src-cordova/platforms/android/app/build/outputs/apk/release/app-release.apk'
           track: beta
+
+  ios:
+    name: iOS Build
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js v14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
+      - name: Set Secrets
+        env:
+          NPMRC: ${{ secrets.NPMRC }}
+          CORDOVA_BUILD: ${{ secrets.CORDOVA_BUILD }}
+        run: |
+          echo "$NPMRC" >> .npmrc
+          echo "$CORDOVA_BUILD" >> ./src-cordova/build.json
+
+      - name: Import Code-Signing Certs and Keys
+        uses: apple-actions/import-codesign-certs@v1
+        with: 
+          p12-file-base64: ${{ secrets.APPLE_CODE_SIGNING_CERT_P12_B64 }}
+          p12-password: ${{ secrets.APPLE_CODE_SIGNING_CERT_P12_PASSWORD }}
+      
+      - name: Import Provisioning Profiles
+        uses: Apple-Actions/download-provisioning-profiles@v1
+        with:
+          bundle-id: com.keiser.mseries.group
+          issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g cordova@9
+
+      - name: Build
+        run: npm run ios:build
+
+      - name: Push to TestFlight
+        uses: Apple-Actions/upload-testflight-build@master
+        with:
+          app-path: "src-cordova/platforms/ios/build/device/GCC AWANA.ipa"
+          issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
