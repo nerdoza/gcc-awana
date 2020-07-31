@@ -169,12 +169,12 @@ jobs:
         run: npm run cordova:prepare
 
       - name: Build
-        run: npm run ios:build
+        run: npm run ios:build:cli
 
       - name: Push to TestFlight
         uses: Apple-Actions/upload-testflight-build@master
         with:
-          app-path: "src-cordova/platforms/ios/build/emulator/GCC AWANA.app"
+          app-path: "src-cordova/platforms/ios/build/device/GCC AWANA.ipa"
           issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
           api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
