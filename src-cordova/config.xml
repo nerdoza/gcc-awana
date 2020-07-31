@@ -13,6 +13,7 @@
   <engine name="ios" spec="^6.1.0"/>
   <engine name="android" spec="^9.0.0"/>
   <platform name="ios">
+    <preference name="UIWebViewBounce" value="false" />
     <icon height="1024" src="res/icon/ios/icon-1024.png" width="1024"/>
     <icon height="29" src="res/icon/ios/icon-small.png" width="29"/>
     <icon height="58" src="res/icon/ios/icon-small@2x.png" width="58"/>
@@ -58,6 +59,7 @@
     <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png"/>
     <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png"/>
   </platform>
+  <preference name="DisallowOverscroll" value="true" />
   <preference name="AutoHideSplashScreen" value="false"/>
   <plugin name="cordova-plugin-firebasex" spec="https://github.com/dpa99c/cordova-plugin-firebase">
     <variable name="IOS_STRIP_DEBUG" value="true"/>
