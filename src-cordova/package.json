@@ -14,10 +14,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-android": "~8.1.0",
-    "cordova-ios": "~5.1.1",
+    "cordova-ios": "^6.1.0",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
-    "cordova-plugin-firebasex": "^10.1.2",
+    "cordova-plugin-firebasex": "^10.1.2-cli",
     "cordova-plugin-splashscreen": "^5.0.4"
   },
   "devDependencies": {
