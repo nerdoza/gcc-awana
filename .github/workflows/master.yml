@@ -153,7 +153,7 @@ jobs:
       - name: Import Provisioning Profiles
         uses: Apple-Actions/download-provisioning-profiles@v1
         with:
-          bundle-id: com.keiser.mseries.group
+          bundle-id: com.zachcardoza.gcc.awana
           issuer-id: ${{ secrets.APPLE_STORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPLE_STORE_KEY_ID }}
           api-private-key: ${{ secrets.APPLE_STORE_PRIVATE_KEY }}
