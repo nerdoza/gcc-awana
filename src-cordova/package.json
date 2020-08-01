@@ -1,24 +1,14 @@
 {
-  "name": "com.bayssmekanique.gcc.awana",
+  "name": "com.zachcardoza.gcc.awana",
   "displayName": "GCC AWANA",
   "version": "0.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "ecosystem:cordova"
-  ],
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
   "dependencies": {
     "cordova-android": "~8.1.0",
     "cordova-ios": "^6.1.0",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-firebasex": "^10.1.2-cli",
-    "cordova-plugin-splashscreen": "^5.0.4"
+    "cordova-plugin-splashscreen": "^6.0.0"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "~1.3.4"
