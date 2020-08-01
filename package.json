@@ -14,7 +14,7 @@
     "ios:build": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-ios",
     "ios:build:cli": "npm run ios:build:www && cd src-cordova && cordova build ios --release --device",
     "ios:build:www": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-only-www-ios",
-    "ios:build:run": "npm run ios:build:www && cd src-cordova && cordova run ios",
+    "ios:build:run": "npm run ios:build:www && cd src-cordova && cordova run ios --device",
     "ios:dev": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-serve-ios",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",

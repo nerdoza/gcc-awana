@@ -13,7 +13,12 @@
   <engine name="ios" spec="^6.1.0"/>
   <engine name="android" spec="^9.0.0"/>
   <platform name="ios">
-    <preference name="UIWebViewBounce" value="false" />
+    <preference name="UIWebViewBounce" value="false"/>
+    <preference name="WKWebViewOnly" value="true"/>
+    <feature name="CDVWKWebViewEngine">
+      <param name="ios-package" value="CDVWKWebViewEngine"/>
+    </feature>
+    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine"/>
     <config-file parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
       <false />
     </config-file>
@@ -62,8 +67,9 @@
     <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png"/>
     <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png"/>
   </platform>
-  <preference name="DisallowOverscroll" value="true" />
+  <preference name="DisallowOverscroll" value="true"/>
   <preference name="AutoHideSplashScreen" value="false"/>
+  <preference name="ShowSplashScreenSpinner" value="false"/>
   <plugin name="cordova-plugin-firebasex" spec="https://github.com/dpa99c/cordova-plugin-firebase">
     <variable name="IOS_STRIP_DEBUG" value="true"/>
     <variable name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="true"/>
