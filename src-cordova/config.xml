@@ -14,6 +14,9 @@
   <engine name="android" spec="^9.0.0"/>
   <platform name="ios">
     <preference name="UIWebViewBounce" value="false" />
+    <config-file parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
+      <false />
+    </config-file>
     <icon height="1024" src="res/icon/ios/icon-1024.png" width="1024"/>
     <icon height="29" src="res/icon/ios/icon-small.png" width="29"/>
     <icon height="58" src="res/icon/ios/icon-small@2x.png" width="58"/>
