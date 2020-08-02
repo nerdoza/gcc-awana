@@ -23,11 +23,10 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
       return route
     }
 
-    if (vxm.registration.step < 6) {
-      route.name = 'Registration'
-      route.params = { step: vxm.registration.step.toString() }
+    if (!vxm.user.isValid) {
+      route.name = 'SignUp'
     } else {
-      route.name = 'Payment'
+      route.name = 'Dashboard'
     }
     return route
   }
