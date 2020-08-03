@@ -1,11 +1,7 @@
 <template>
-  <v-app>
-    <v-main>
-      <transition name="slide">
-        <router-view></router-view>
-      </transition>
-    </v-main>
-  </v-app>
+  <transition name="slide">
+    <router-view></router-view>
+  </transition>
 </template>
 
 <script lang="ts">

@@ -1,14 +1,14 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEdit, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
-import { faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion } from '@fortawesome/pro-solid-svg-icons'
+import { faBars, faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle)
+library.add(faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle)
 
 Vue.use(Vuetify)
 
