@@ -1,19 +1,19 @@
 <template>
   <v-app class="dashboard">
     <v-navigation-drawer v-model="drawer" app>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>$user</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>{{ user.fullName }}</v-list-item-title>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
       <v-list>
         <v-list-item link>
           <v-list-item-icon>
-            <v-icon>$calendar</v-icon>
+            <v-icon class="fa-fw">$user</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>{{ user.fullName }}</v-list-item-title>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item :to="{ name: 'Dashboard'}">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$calendar</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -23,7 +23,7 @@
 
         <v-list-item link>
           <v-list-item-icon>
-            <v-icon>$homeHeart</v-icon>
+            <v-icon class="fa-fw">$homeHeart</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -33,11 +33,21 @@
 
         <v-list-item link>
           <v-list-item-icon>
-            <v-icon>$students</v-icon>
+            <v-icon class="fa-fw">$students</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>Leader Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$director</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Director Tools</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -46,7 +56,7 @@
     <v-app-bar id="app-nav" app dark flat color="primary">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-toolbar-title>GCC AWANA Club</v-toolbar-title>
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -73,6 +83,21 @@ export default class extends Vue {
   drawer = false
 
   user = vxm.user
+
+  get title () {
+    switch (this.$store.state.route.name) {
+      case 'Account':
+        return 'Account Settings'
+      case 'Dashboard':
+        return 'Weekly Updates'
+      case 'ParentTools':
+        return 'Parent Tools'
+      case 'LeaderTools':
+        return 'Leader Tools'
+      case 'DirectorTools':
+        return 'Director Tools'
+    }
+  }
 }
 </script>
 

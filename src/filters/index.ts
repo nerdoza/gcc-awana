@@ -1,5 +1,2 @@
-import Vue from 'vue'
-
-import gradeFilter from '@/filters/grade'
-
-Vue.filter('grade', gradeFilter)
+import '@/filters/grade'
+import '@/filters/date'

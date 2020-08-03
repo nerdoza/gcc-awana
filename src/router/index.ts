@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
-import News from '@/components/dashboard/news.vue'
+import Updates from '@/components/dashboard/updates.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
@@ -40,7 +40,7 @@ const routes: RouteConfig[] = [
       {
         path: '',
         name: 'Dashboard',
-        component: News
+        component: Updates
       }
     ]
   },
