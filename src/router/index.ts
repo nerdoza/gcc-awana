@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
+import News from '@/components/dashboard/news.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
@@ -34,8 +35,14 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: News
+      }
+    ]
   },
   {
     path: '/*',
