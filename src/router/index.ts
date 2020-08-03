@@ -5,9 +5,9 @@ import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
+import Dashboard from '@/views/dashboard.vue'
 import Landing from '@/views/landing.vue'
-import Payment from '@/views/payment.vue'
-import Registration from '@/views/registration.vue'
+import SignUp from '@/views/signUp.vue'
 
 Vue.use(VueRouter)
 
@@ -28,15 +28,14 @@ const routes: RouteConfig[] = [
     component: AuthVerification
   },
   {
-    path: '/registration/:step',
-    name: 'Registration',
-    component: Registration,
-    props: route => ({ step: +(route.params.step ?? 1) })
+    path: '/sign-up',
+    name: 'SignUp',
+    component: SignUp
   },
   {
-    path: '/payment',
-    name: 'Payment',
-    component: Payment
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
   },
   {
     path: '/*',
