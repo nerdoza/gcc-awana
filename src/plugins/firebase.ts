@@ -31,31 +31,7 @@ class FirebaseX {
     } else {
       document.addEventListener('deviceready', () => {
         void this.attemptSignIn()
-
-        this.firebaseCordova.getId((appInstanceId: string) => {
-          // eslint-disable-next-line no-console
-          console.log('Instance ID: ' + appInstanceId)
-        })
-
-        this.firebaseCordova.getToken((fcmToken: string) => {
-          // eslint-disable-next-line no-console
-          console.log('FCM Token: ' + fcmToken)
-        })
-
-        this.firebaseCordova.grantPermission((hasPermission: boolean) => {
-          // eslint-disable-next-line no-console
-          console.log('Has Permission: ' + hasPermission.toString())
-        })
-
-        this.firebaseCordova.getAPNSToken((apnsToken: string) => {
-          // eslint-disable-next-line no-console
-          console.log('APNS Token: ' + apnsToken)
-        })
-
-        this.firebaseCordova.onMessageReceived((message: {messageType: string, tap?: string}) => {
-          // eslint-disable-next-line no-console
-          console.log(message)
-        })
+        void this.setupNotifications()
       }, false)
     }
   }
@@ -95,6 +71,16 @@ class FirebaseX {
           }
           resolve()
         }, (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  setupNotifications () {
+    if (isCordova) {
+      this.firebaseCordova.grantPermission(() => {})
+
+      this.firebaseCordova.onMessageReceived((message: {title: string, body: string}) => {
+        vxm.notification.push({ title: message.title, message: message.body })
       })
     }
   }

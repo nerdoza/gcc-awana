@@ -1,14 +1,14 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarAlt, faEdit, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus, faUsersClass, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
-import { faBars, faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion, faUser } from '@fortawesome/pro-solid-svg-icons'
+import { faBars, faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion, faTimes, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faVideo, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
+library.add(faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
 
 Vue.use(Vuetify)
 
@@ -49,7 +49,8 @@ export default new Vuetify({
       students: icon('fad', 'users-class'),
       calendar: icon('fad', 'calendar-alt'),
       director: icon('fad', 'whistle'),
-      video: icon('fad', 'video')
+      video: icon('fad', 'video'),
+      close: icon('fas', 'times')
     }
   }
 })

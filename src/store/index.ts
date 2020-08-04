@@ -6,6 +6,7 @@ import VuexPersistence from 'vuex-persist'
 import { isDevelopment } from '@/const'
 
 import AuthStore from './auth'
+import NotificationStore from './notification'
 import UserStore from './user'
 
 Vue.use(Vuex)
@@ -20,7 +21,8 @@ const vuexPersist = new VuexPersistence({
 const store = new Store({
   modules: {
     ...extractVuexModule(AuthStore),
-    ...extractVuexModule(UserStore)
+    ...extractVuexModule(UserStore),
+    ...extractVuexModule(NotificationStore)
   },
   actions: {
     clear: async (context: any) => {
@@ -38,5 +40,6 @@ export default store
 
 export const vxm = {
   user: createProxy(store, UserStore),
-  auth: createProxy(store, AuthStore)
+  auth: createProxy(store, AuthStore),
+  notification: createProxy(store, NotificationStore)
 }
