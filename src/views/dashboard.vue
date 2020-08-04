@@ -53,7 +53,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar id="app-nav" app dark flat color="primary">
+    <v-app-bar id="app-nav" app dark color="primary">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
@@ -61,7 +61,7 @@
       <v-spacer></v-spacer>
 
       <v-btn icon>
-        <v-icon>$stars</v-icon>
+        <v-icon></v-icon>
       </v-btn>
     </v-app-bar>
 

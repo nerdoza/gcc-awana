@@ -1,6 +1,6 @@
 <template>
   <v-card class="elevation-12 pb-2">
-    <v-toolbar color="primary" dark flat>
+    <v-toolbar color="primary" flat dark>
       <v-toolbar-title>{{ clubDate | date('MMMM do') }} Club</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-icon v-if="isCurrentWeek">$stars</v-icon>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { isFuture, isPast, isToday, sub } from 'date-fns'
+import { isFuture, isToday } from 'date-fns'
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
 import cubbiesImg from '@/assets/images/cubbies.png'
@@ -43,12 +43,8 @@ export default class extends Vue {
     return this.update.targetDate
   }
 
-  get startDate () {
-    return sub(this.update.targetDate, { days: 7 })
-  }
-
   get isCurrentWeek () {
-    return isToday(this.clubDate) || (isFuture(this.clubDate) && isPast(this.startDate))
+    return isToday(this.clubDate) || isFuture(this.clubDate)
   }
 
   get clubs () {
@@ -74,7 +70,7 @@ export default class extends Vue {
     if (this.update.sparks) {
       clubs.push({
         name: 'Sparks',
-        color: 'yellow lighten-3',
+        color: 'amber lighten-3',
         img: sparksImg,
         update: this.update.sparks
       })
@@ -83,7 +79,7 @@ export default class extends Vue {
     if (this.update.tnt) {
       clubs.push({
         name: 'T&T',
-        color: 'blue-grey lighten-3',
+        color: 'deep-purple lighten-3',
         img: tntImg,
         update: this.update.tnt
       })
