@@ -20,7 +20,8 @@
         "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true",
         "FIREBASE_PERFORMANCE_COLLECTION_ENABLED": "true",
         "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED": "true",
-        "SETUP_RECAPTCHA_VERIFICATION": "true"
+        "SETUP_RECAPTCHA_VERIFICATION": "true",
+        "ANDROID_ICON_ACCENT": "#00bfa5"
       }
     },
     "platforms": [
