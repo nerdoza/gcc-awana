@@ -87,10 +87,5 @@ export default class extends Vue {
 
     return clubs
   }
-
-  @Watch('update')
-  onValueChanged (val: string) {
-    console.log(val)
-  }
 }
 </script>

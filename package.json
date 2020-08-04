@@ -1,6 +1,6 @@
 {
   "name": "gcc-awana",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "scripts": {
     "lint": "vue-cli-service lint",
@@ -9,6 +9,7 @@
     "android:build:run": "npm run android:build:www && cd src-cordova && cordova run android",
     "android:dev": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-serve-android",
     "cordova:prepare": "vue-cli-service cordova-prepare",
+    "cordova:version": "node ./.scripts/cordovaVersion.js",
     "electron:build": "vue-cli-service electron:build",
     "electron:dev": "vue-cli-service electron:serve",
     "ios:build": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-ios",

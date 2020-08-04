@@ -111,7 +111,9 @@ jobs:
           npm install -g cordova@9
 
       - name: Prepare Cordova
-        run: npm run cordova:prepare
+        run: |
+        npm run cordova:version
+        npm run cordova:prepare
 
       - name: Build
         run: npm run android:build
@@ -166,7 +168,9 @@ jobs:
           npm install -g cordova@9
 
       - name: Prepare Cordova
-        run: npm run cordova:prepare
+        run: |
+        npm run cordova:version
+        npm run cordova:prepare
 
       - name: Build
         run: npm run ios:build:cli

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget android-versionCode="20060" id="com.zachcardoza.gcc.awana" ios-CFBundleVersion="20060" osx-CFBundleVersion="20060" version="0.2.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.zachcardoza.gcc.awana" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>GCC AWANA</name>
   <description>Grace Community Church AWANA Club</description>
   <hook src="../node_modules/vue-cli-plugin-cordova/serve-config-hook.js" type="after_prepare"/>
-  <hook src="hooks/cordovaVersion.js" type="before_build"/>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
