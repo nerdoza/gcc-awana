@@ -5,6 +5,10 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   lastName = ''
   email = ''
 
+  get fullName () {
+    return this.firstName + ' ' + this.lastName
+  }
+
   get isValid () {
     return this.firstName.length > 0 &&
      this.lastName.length > 0

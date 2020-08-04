@@ -13,7 +13,8 @@ Vue.use(Vuex)
 const vuexPersist = new VuexPersistence({
   strictMode: isDevelopment,
   key: isDevelopment ? 'vuex-v1-dev' : 'vuex-v1-prod',
-  storage: window.localStorage
+  storage: window.localStorage,
+  reducer: (state: any) => ({ auth: state.auth })
 })
 
 const store = new Store({

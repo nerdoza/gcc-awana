@@ -1,35 +1,76 @@
 <template>
-  <v-container fluid class="fill-height">
-    <v-row class="dashboard-view" align="center" justify="center">
-      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-        <v-card class="elevation-12">
-          <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Dashboard</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-dialog v-model="signOutDialog" persistent max-width="290">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon>$signOut</v-icon>
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title class="headline">Sign Out</v-card-title>
-                <v-card-text>This will completely sign you out.</v-card-text>
-                <v-card-actions>
-                  <v-btn color="primary" @click="signOutDialog = false">Cancel</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" @click="signOut">Sign Out</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-          <div>
-            <h1>Hello!</h1>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-app class="dashboard">
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$user</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>{{ user.fullName }}</v-list-item-title>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item :to="{ name: 'Dashboard'}">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$calendar</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Weekly Updates</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$homeHeart</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Parent Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$students</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Leader Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$director</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Director Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar id="app-nav" app dark color="primary">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon></v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
@@ -39,11 +80,40 @@ import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
-  signOutDialog = false
+  drawer = false
 
-  signOut () {
-    this.signOutDialog = false
-    vxm.auth.signOut()
+  user = vxm.user
+
+  get title () {
+    switch (this.$store.state.route.name) {
+      case 'Account':
+        return 'Account Settings'
+      case 'Dashboard':
+        return 'Weekly Updates'
+      case 'ParentTools':
+        return 'Parent Tools'
+      case 'LeaderTools':
+        return 'Leader Tools'
+      case 'DirectorTools':
+        return 'Director Tools'
+    }
   }
 }
 </script>
+
+<style lang="scss">
+.dashboard {
+  .v-app-bar.v-app-bar--fixed {
+    height: auto !important;
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .v-main {
+    margin-top: env(safe-area-inset-top) !important;
+  }
+
+  .v-navigation-drawer__content {
+    padding-top: env(safe-area-inset-top) !important;
+  }
+}
+</style>
