@@ -31,6 +31,7 @@ class FirebaseX {
     } else {
       document.addEventListener('deviceready', () => {
         void this.attemptSignIn()
+        void this.setupNotifications()
       }, false)
     }
   }
@@ -70,6 +71,16 @@ class FirebaseX {
           }
           resolve()
         }, (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  setupNotifications () {
+    if (isCordova) {
+      this.firebaseCordova.grantPermission(() => {})
+
+      this.firebaseCordova.onMessageReceived((message: {title: string, body: string}) => {
+        vxm.notification.push({ title: message.title, message: message.body })
       })
     }
   }

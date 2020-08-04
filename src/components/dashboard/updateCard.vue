@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { isFuture, isToday } from 'date-fns'
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import cubbiesImg from '@/assets/images/cubbies.png'
 import gccImg from '@/assets/images/gcc_arms.png'

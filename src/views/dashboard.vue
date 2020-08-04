@@ -70,15 +70,21 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <notification></notification>
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import Notification from '@/components/dashboard/notification.vue'
 import { vxm } from '@/store'
 
-@Component
+@Component({
+  components: {
+    Notification
+  }
+})
 export default class extends Vue {
   drawer = false
 

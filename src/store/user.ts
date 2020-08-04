@@ -9,6 +9,10 @@ export default class extends createModule({ namespaced: 'user', strict: false })
     return this.firstName + ' ' + this.lastName
   }
 
+  get isEmpty () {
+    return this.firstName === '' && this.lastName === ''
+  }
+
   get isValid () {
     return this.firstName.length > 0 &&
      this.lastName.length > 0
