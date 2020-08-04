@@ -112,8 +112,8 @@ jobs:
 
       - name: Prepare Cordova
         run: |
-        npm run cordova:version
-        npm run cordova:prepare
+          npm run cordova:version
+          npm run cordova:prepare
 
       - name: Build
         run: npm run android:build
@@ -169,8 +169,8 @@ jobs:
 
       - name: Prepare Cordova
         run: |
-        npm run cordova:version
-        npm run cordova:prepare
+          npm run cordova:version
+          npm run cordova:prepare
 
       - name: Build
         run: npm run ios:build:cli
