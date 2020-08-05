@@ -87,7 +87,7 @@ export default class extends Vue {
 
   async submit () {
     if (await this.validate()) {
-      await vxm.user.setProfile()
+      void vxm.user.setProfile()
       this.$router.push({ name: 'Dashboard' })
     }
   }
