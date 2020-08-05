@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import UpdateCard from '@/components/dashboard/updateCard.vue'
+import UpdateCard from '@/components/cards/updateCard.vue'
 
 @Component({
   components: {

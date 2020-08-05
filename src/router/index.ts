@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
+import Admin from '@/components/dashboard/admin.vue'
+import Director from '@/components/dashboard/director.vue'
+import Leader from '@/components/dashboard/leader.vue'
+import Parent from '@/components/dashboard/parent.vue'
 import Updates from '@/components/dashboard/updates.vue'
+import User from '@/components/dashboard/user.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
@@ -39,8 +44,37 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: '',
-        name: 'Dashboard',
+        redirect: 'updates'
+      },
+      {
+        path: 'user',
+        name: 'User',
+        component: User
+      },
+      {
+        path: 'updates',
+        name: 'Updates',
         component: Updates
+      },
+      {
+        path: 'parent',
+        name: 'ParentTools',
+        component: Parent
+      },
+      {
+        path: 'leader',
+        name: 'LeaderTools',
+        component: Leader
+      },
+      {
+        path: 'director',
+        name: 'DirectorTools',
+        component: Director
+      },
+      {
+        path: 'admin',
+        name: 'AdminTools',
+        component: Admin
       }
     ]
   },
