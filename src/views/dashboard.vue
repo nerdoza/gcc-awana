@@ -1,6 +1,6 @@
 <template>
-  <v-app class="dashboard">
-    <v-navigation-drawer v-model="drawer" app>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" app temporary>
       <v-list>
         <v-list-item link>
           <v-list-item-icon>

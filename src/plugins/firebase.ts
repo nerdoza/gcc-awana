@@ -9,8 +9,16 @@ import 'firebase/firestore'
 
 import { vxm } from '@/store'
 
+export interface User {
+  uid: string
+  name: string
+  email: string
+  phoneNumber: string
+}
+
 class FirebaseX {
-  private readonly firebaseJS?: firebase.app.App | undefined
+  private readonly firebaseJS: firebase.app.App
+  private readonly jsDB: firebase.firestore.Firestore
 
   constructor () {
     if (!isCordova) {
@@ -25,10 +33,14 @@ class FirebaseX {
         measurementId: 'G-0RHL0D8M8D'
       }
       this.firebaseJS = firebase.initializeApp(firebaseConfig)
+      this.jsDB = firebase.firestore()
       firebase.analytics()
       firebase.auth().useDeviceLanguage()
       void this.attemptSignIn()
     } else {
+      this.firebaseJS = {} as unknown as firebase.app.App
+      this.jsDB = {} as unknown as firebase.firestore.Firestore
+
       document.addEventListener('deviceready', () => {
         void this.attemptSignIn()
         void this.setupNotifications()
@@ -56,7 +68,8 @@ class FirebaseX {
     if (!isCordova) {
       firebase.auth().onAuthStateChanged(async (user) => {
         if (user !== null) {
-          await vxm.auth.userSignedIn()
+          const user = await this.getCurrentUser()
+          await vxm.auth.userSignedIn(user)
         } else {
           await vxm.auth.userSignedOut()
         }
@@ -65,12 +78,40 @@ class FirebaseX {
       await new Promise((resolve, reject) => {
         this.firebaseCordova.isUserSignedIn(async (isSignedIn: boolean) => {
           if (isSignedIn) {
-            await vxm.auth.userSignedIn()
+            const user = await this.getCurrentUser()
+            await vxm.auth.userSignedIn(user)
           } else {
             await vxm.auth.userSignedOut()
           }
           resolve()
         }, (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async getCurrentUser (): Promise<User> {
+    if (!isCordova) {
+      return await new Promise((resolve, reject) => {
+        const user = this.firebaseJS.auth().currentUser
+        if (user === null) {
+          reject(new Error('unknown user'))
+        } else {
+          resolve({
+            name: user.displayName ?? '',
+            email: user.email ?? '',
+            phoneNumber: user.phoneNumber ?? '',
+            uid: user.uid
+          })
+        }
+      })
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.getCurrentUser((user: any) => resolve({
+          name: user.name ?? '',
+          email: user.email ?? '',
+          phoneNumber: user.phoneNumber ?? '',
+          uid: user.uid
+        }), (error: string) => reject(new Error(error)))
       })
     }
   }
@@ -115,7 +156,8 @@ class FirebaseX {
         this.firebaseCordova.verifyPhoneNumber((credential: {instantVerification: boolean, id: string, verificationId: string, code?: string}) => {
           if (credential.instantVerification) {
             this.firebaseCordova.signInWithCredential(credential, async () => {
-              await vxm.auth.userSignedIn()
+              const user = await this.getCurrentUser()
+              await vxm.auth.userSignedIn(user)
               resolve(async (code: string) => { })
             }, (error: string) => reject(new Error(error)))
           } else {
@@ -129,6 +171,38 @@ class FirebaseX {
         }, (error: string) => reject(new Error(error)), phoneNumber, options.timeout, options?.fakeVerificationCode)
       })
       return resolve
+    }
+  }
+
+  async fetchDocument (documentId: string, collection: string) {
+    if (!isCordova) {
+      return await this.jsDB.collection(collection).doc(documentId).get()
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async updateUserName (name: string) {
+    if (!isCordova) {
+      const user = this.firebaseJS.auth().currentUser
+      await user?.updateProfile({ displayName: name })
+    } else {
+      await new Promise((resolve, reject) => {
+        this.firebaseCordova.updateUserProfile({ name }, () => resolve(), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async updateUserEmail (email: string) {
+    if (!isCordova) {
+      const user = this.firebaseJS.auth().currentUser
+      await user?.updateEmail(email)
+    } else {
+      await new Promise((resolve, reject) => {
+        this.firebaseCordova.updateUserEmail(email, () => resolve(), (error: string) => reject(new Error(error)))
+      })
     }
   }
 }
