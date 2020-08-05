@@ -15,7 +15,7 @@ const vuexPersist = new VuexPersistence({
   strictMode: isDevelopment,
   key: isDevelopment ? 'vuex-v1-dev' : 'vuex-v1-prod',
   storage: window.localStorage,
-  reducer: (state: any) => ({ auth: { authenticated: state.auth.authenticated } })
+  reducer: (state: any) => ({ auth: { authenticated: state.auth.authenticated }, user: state.user })
 })
 
 const store = new Store({

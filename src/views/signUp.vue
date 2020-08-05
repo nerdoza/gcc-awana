@@ -76,7 +76,6 @@ import { vxm } from '@/store'
 export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
-  signOutDialog = false
   user = vxm.user
   auth = vxm.auth
 
@@ -88,7 +87,7 @@ export default class extends Vue {
   async submit () {
     if (await this.validate()) {
       void vxm.user.setProfile()
-      this.$router.push({ name: 'Dashboard' })
+      this.$router.push({ name: 'Updates' })
     }
   }
 }

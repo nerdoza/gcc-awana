@@ -23,6 +23,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   @action
   async setProfile () {
     try {
+      console.log('Pushing Profile Update')
       await firebaseProject.updateUserName(this.firstName + ' ' + this.lastName)
       await firebaseProject.updateUserEmail(this.email)
     } catch (error) {

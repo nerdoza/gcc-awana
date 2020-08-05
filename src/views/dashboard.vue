@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" app temporary>
-      <v-list>
-        <v-list-item link>
+      <v-list nav>
+        <v-list-item :to="{ name: 'User'}">
           <v-list-item-icon>
             <v-icon class="fa-fw">$user</v-icon>
           </v-list-item-icon>
@@ -11,7 +11,7 @@
 
         <v-divider></v-divider>
 
-        <v-list-item :to="{ name: 'Dashboard'}">
+        <v-list-item :to="{ name: 'Updates'}">
           <v-list-item-icon>
             <v-icon class="fa-fw">$calendar</v-icon>
           </v-list-item-icon>
@@ -21,7 +21,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item :to="{ name: 'ParentTools'}">
           <v-list-item-icon>
             <v-icon class="fa-fw">$homeHeart</v-icon>
           </v-list-item-icon>
@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item :to="{ name: 'LeaderTools'}">
           <v-list-item-icon>
             <v-icon class="fa-fw">$students</v-icon>
           </v-list-item-icon>
@@ -41,7 +41,17 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item :to="{ name: 'AdminTools'}">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$admin</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Admin Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="{ name: 'DirectorTools'}">
           <v-list-item-icon>
             <v-icon class="fa-fw">$director</v-icon>
           </v-list-item-icon>
@@ -51,6 +61,12 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <template v-slot:append>
+        <v-btn tile block dark large color="primary" @click="drawer = false">
+          <v-icon left dark>$left</v-icon>Close
+        </v-btn>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar id="app-nav" app dark color="primary">
@@ -92,14 +108,16 @@ export default class extends Vue {
 
   get title () {
     switch (this.$store.state.route.name) {
-      case 'Account':
-        return 'Account Settings'
-      case 'Dashboard':
+      case 'User':
+        return 'User Settings'
+      case 'Updates':
         return 'Weekly Updates'
       case 'ParentTools':
         return 'Parent Tools'
       case 'LeaderTools':
         return 'Leader Tools'
+      case 'AdminTools':
+        return 'Admin Tools'
       case 'DirectorTools':
         return 'Director Tools'
     }

@@ -45,7 +45,7 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
     if (!vxm.user.isEmpty) {
       route.name = 'SignUp'
     } else {
-      route.name = 'Dashboard'
+      route.name = 'Updates'
     }
     return route
   }
@@ -75,7 +75,7 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
 
   @action
   async signOut () {
-    await this.$store.dispatch('clear', null, { root: true })
+    await vxm.user.clear()
     await firebaseProject.signOut()
     await this.userSignedOut()
   }
