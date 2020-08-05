@@ -15,7 +15,7 @@
                   </v-col>
                 </v-row>
                 <h1 class="mb-4">Welcome</h1>
-                <p>This app is meant for parents and leaders of Grace Community Church AWANA program. Through it, you will be able to register clubbers and leaders, track book progress, and receive important instructions from the AWANA directors.</p>
+                <p>This app is meant for parents and leaders of Grace Community Church AWANA program. Track book progress, calculate clubber's points, and receive important instructions from the AWANA directors all in one place.</p>
                 <p>If you have any questions, please contact the Church offices and ask for Brittany Kalmink.</p>
               </v-card-text>
               <v-card-actions>

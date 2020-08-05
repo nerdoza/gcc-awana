@@ -76,9 +76,35 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon></v-icon>
-      </v-btn>
+      <v-dialog max-width="420">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>$info</v-icon>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="headline">Help</v-card-title>
+          <v-card-text class="pb-0">
+            <p>This app is created and supported by the AWANA Directors at Grace Community Church. We will do our best to help you with any questions or issues you have.</p>
+            <p>
+              <strong>Grace Community Church</strong>
+              <br />
+              <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
+            </p>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <div class="pl-4 text-caption" @click="aboutTapped">App Version: {{appVersion}}</div>
+          </v-card-actions>
+          <v-img
+            v-if="aboutTap >= 10"
+            src="~@/assets/images/easterEggs/asa.jpg"
+            contain
+            aspect-ratio="0.75"
+            class="px-4"
+          ></v-img>
+        </v-card>
+      </v-dialog>
     </v-app-bar>
 
     <v-main>
@@ -102,7 +128,9 @@ import { vxm } from '@/store'
   }
 })
 export default class extends Vue {
+  appVersion = process.env.VUE_APP_VERSION ?? ''
   drawer = false
+  aboutTap = 0
 
   user = vxm.user
 
@@ -121,6 +149,10 @@ export default class extends Vue {
       case 'DirectorTools':
         return 'Director Tools'
     }
+  }
+
+  aboutTapped () {
+    this.aboutTap++
   }
 }
 </script>

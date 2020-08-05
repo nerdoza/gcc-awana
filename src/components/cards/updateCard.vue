@@ -79,7 +79,7 @@ export default class extends Vue {
     if (this.update.tnt) {
       clubs.push({
         name: 'T&T',
-        color: 'deep-purple lighten-3',
+        color: 'grey lighten-2',
         img: tntImg,
         update: this.update.tnt
       })
