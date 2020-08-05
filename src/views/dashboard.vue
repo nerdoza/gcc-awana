@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="dashboard">
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list nav>
         <v-list-item :to="{ name: 'User'}">
