@@ -42,7 +42,7 @@ export default class extends createModule({ namespaced: 'auth', strict: false })
       return route
     }
 
-    if (!vxm.user.isEmpty) {
+    if (vxm.user.isEmpty) {
       route.name = 'SignUp'
     } else {
       route.name = 'Updates'

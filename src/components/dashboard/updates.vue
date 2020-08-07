@@ -23,19 +23,19 @@ export default class extends Vue {
     {
       targetDate: new Date('08/05/2020'),
       general: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur a erat nam at lectus.'
+        text: 'Join us for week 1 of AWANA! Meet your leaders and fellow clubbers, and get started on your verses.'
       },
       cubbies: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur a erat nam at lectus.',
+        text: 'This week we are starting with the fundamentals of the Gospel. Who is Jesus and why does he love us?',
         video: 'http://www.youtube.com'
       },
       sparks: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur a erat nam at lectus.',
+        text: 'Mr. Sparky welcomes everyone with a great puppet-show inspired by Jonah and the whale.',
         video: 'http://www.youtube.com'
       },
       tnt: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur a erat nam at lectus.',
-        video: 'http://www.youtube.com'
+        text: 'Agents of Grace 1.1 dives into God as our Savior. Why do we need saving? Find out more as you explore what it means to put your hope in Jesus!',
+        video: 'https://player.vimeo.com/video/281657526'
       }
     },
     {

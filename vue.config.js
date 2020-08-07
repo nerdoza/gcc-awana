@@ -9,6 +9,20 @@ module.exports = {
     'vuetify'
   ],
   pwa: {
+    assetsVersion: '1',
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      swSrc: 'src/sw.js',
+      exclude: [
+        /\.map$/,
+        /^manifest.*\.js?$/,
+        /img\/icons\//,
+        /\.ico$/,
+        /\.html$/,
+        /\.txt$/,
+        /\.json$/
+      ]
+    },
     name: 'GCC AWANA',
     themeColor: '#00bfa5',
     msTileColor: '#00bfa5',

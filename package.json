@@ -20,6 +20,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "web:build": "vue-cli-service build",
+    "web:build:run": "npm run web:build && http-server ./dist",
     "web:dev": "vue-cli-service serve"
   },
   "main": "background.js",
@@ -73,6 +74,7 @@
     "eslint-plugin-simple-import-sort": "^5.0.3",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
+    "http-server": "^0.12.3",
     "node-cmd": "^3.0.0",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",

@@ -6,7 +6,7 @@ import { isProduction, isWeb } from '@/const'
 if (isWeb && isProduction) {
   const baseUrl = (process.env.BASE_URL ?? './')
 
-  register(`${baseUrl}service-worker.js`, {
+  register(`${baseUrl}sw.js`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
