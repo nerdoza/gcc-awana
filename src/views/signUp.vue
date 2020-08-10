@@ -37,7 +37,7 @@
                       </v-col>
                       <v-col cols="12" md="6">
                         <v-text-field
-                          v-model.trim="auth.phoneNumber"
+                          v-model.trim="user.phoneNumber"
                           label="Mobile Phone Number"
                           autocomplete="tel"
                           disabled
@@ -77,11 +77,10 @@ export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
   user = vxm.user
-  auth = vxm.auth
 
   async validate () {
     const formValidation = await this.form.validate()
-    return this.user.isValid && formValidation
+    return this.user.userIsValid && formValidation
   }
 
   async submit () {

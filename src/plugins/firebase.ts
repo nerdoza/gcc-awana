@@ -69,9 +69,9 @@ class FirebaseX {
       firebase.auth().onAuthStateChanged(async (user) => {
         if (user !== null) {
           const user = await this.getCurrentUser()
-          await vxm.auth.userSignedIn(user)
+          await vxm.user.userSignedIn(user)
         } else {
-          await vxm.auth.userSignedOut()
+          await vxm.user.userSignedOut()
         }
       })
     } else {
@@ -79,9 +79,9 @@ class FirebaseX {
         this.firebaseCordova.isUserSignedIn(async (isSignedIn: boolean) => {
           if (isSignedIn) {
             const user = await this.getCurrentUser()
-            await vxm.auth.userSignedIn(user)
+            await vxm.user.userSignedIn(user)
           } else {
-            await vxm.auth.userSignedOut()
+            await vxm.user.userSignedOut()
           }
           resolve()
         }, (error: string) => reject(new Error(error)))
@@ -157,7 +157,7 @@ class FirebaseX {
           if (credential.instantVerification) {
             this.firebaseCordova.signInWithCredential(credential, async () => {
               const user = await this.getCurrentUser()
-              await vxm.auth.userSignedIn(user)
+              await vxm.user.userSignedIn(user)
               resolve(async (code: string) => { })
             }, (error: string) => reject(new Error(error)))
           } else {
@@ -180,6 +180,36 @@ class FirebaseX {
     } else {
       return await new Promise((resolve, reject) => {
         this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async setDocument (documentId: string, collection: string, document: object) {
+    if (!isCordova) {
+      return await this.jsDB.collection(collection).doc(documentId).set(document)
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.setDocumentInFirestoreCollection(documentId, document, collection, () => resolve(), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async updateDocument (documentId: string, collection: string, document: object) {
+    if (!isCordova) {
+      return await this.jsDB.collection(collection).doc(documentId).update(document)
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.updateDocumentInFirestoreCollection(documentId, document, collection, () => resolve(), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async deleteDocument (documentId: string, collection: string) {
+    if (!isCordova) {
+      return await this.jsDB.collection(collection).doc(documentId).delete()
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.deleteDocumentFromFirestoreCollection(documentId, collection, () => resolve(), (error: string) => reject(new Error(error)))
       })
     }
   }

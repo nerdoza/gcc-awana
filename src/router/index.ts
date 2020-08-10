@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
-import Admin from '@/components/dashboard/admin.vue'
-import Director from '@/components/dashboard/director.vue'
-import Leader from '@/components/dashboard/leader.vue'
-import Parent from '@/components/dashboard/parent.vue'
-import Updates from '@/components/dashboard/updates.vue'
-import User from '@/components/dashboard/user.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Dashboard from '@/views/dashboard.vue'
+import Admin from '@/views/dashboard/admin.vue'
+import Director from '@/views/dashboard/director.vue'
+import Leader from '@/views/dashboard/leader.vue'
+import Parent from '@/views/dashboard/parent.vue'
+import SuperUser from '@/views/dashboard/superUser.vue'
+import Updates from '@/views/dashboard/updates.vue'
+import User from '@/views/dashboard/user.vue'
 import Landing from '@/views/landing.vue'
 import SignUp from '@/views/signUp.vue'
 
@@ -75,6 +76,11 @@ const routes: RouteConfig[] = [
         path: 'admin',
         name: 'AdminTools',
         component: Admin
+      },
+      {
+        path: 'super',
+        name: 'SuperUserTools',
+        component: SuperUser
       }
     ]
   },
@@ -93,10 +99,10 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const defaultRoute = vxm.auth.defaultRoute
-  if (!vxm.auth.authenticated && !unauthenticatedRoutes.includes(to.name ?? '')) {
+  const defaultRoute = vxm.user.defaultRoute
+  if (!vxm.user.authenticated && !unauthenticatedRoutes.includes(to.name ?? '')) {
     return next(defaultRoute)
-  } else if (vxm.auth.authenticated && unauthenticatedRoutes.includes(to.name ?? '')) {
+  } else if (vxm.user.authenticated && unauthenticatedRoutes.includes(to.name ?? '')) {
     return next(defaultRoute)
   }
   next()
