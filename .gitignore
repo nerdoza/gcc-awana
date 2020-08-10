@@ -9,3 +9,6 @@ npm-debug.log*
 
 # Log Files
 *-debug.log
+
+# Export Files
+exports
