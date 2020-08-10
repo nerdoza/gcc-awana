@@ -6,7 +6,6 @@
     "pflannery.vscode-versionlens",
     "octref.vetur",
     "dbaeumer.vscode-eslint",
-    "hediet.vscode-drawio",
-    "toba.vsfire"
+    "hediet.vscode-drawio"
   ]
 }
