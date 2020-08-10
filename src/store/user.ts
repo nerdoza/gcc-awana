@@ -182,7 +182,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   setRole (role?: UserRole) {
     if (typeof role !== 'undefined') {
       this.leader = role.leader
-      this.club = role.club as ClubsType
+      this.club = role.club
       this.admin = role.admin
       this.director = role.director
       this.super = role.super

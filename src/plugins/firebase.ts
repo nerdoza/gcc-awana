@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/sort */
-import { isCordova } from '@/const'
+import { isCordova, isDevelopment } from '@/const'
 
 import * as firebase from 'firebase/app'
 
@@ -34,6 +34,12 @@ class FirebaseX {
       }
       this.firebaseJS = firebase.initializeApp(firebaseConfig)
       this.jsDB = firebase.firestore()
+      if (isDevelopment) {
+        this.jsDB.settings({
+          host: '127.0.0.1:8080',
+          ssl: false
+        })
+      }
       firebase.analytics()
       firebase.auth().useDeviceLanguage()
       void this.attemptSignIn()
