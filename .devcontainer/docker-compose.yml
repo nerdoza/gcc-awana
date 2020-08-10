@@ -1,0 +1,20 @@
+version: '3'
+volumes:
+  node_modules:
+services:
+  gcc-awana-firebase:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../:/workspace
+      - node_modules:/workspace/node_modules
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    ports:
+      - "4000:4000"
+      - "5001:5001"
+      - "9000:9000"
+      - "8085:8085"
+      - "5000:5000"
+      - "8080:8080"
+      - "9005:9005"

@@ -1,6 +1,17 @@
 {
-  "name": "Node.js 12 & TypeScript",
-  "dockerFile": "Dockerfile",
+  "name": "Node.js 12 + Firebase",
+  "service": "gcc-awana-firebase",
+  "appPort": [
+    4000,
+    5001,
+    9000,
+    8085,
+    5000,
+    8080,
+    9005
+  ],
+  "workspaceFolder": "/workspace",
+  "dockerComposeFile": "docker-compose.yml",
   "shutdownAction": "stopContainer",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
