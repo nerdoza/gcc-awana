@@ -174,12 +174,18 @@ class FirebaseX {
     }
   }
 
-  async fetchDocument (documentId: string, collection: string) {
+  async getDocument (documentId: string, collection: string) {
     if (!isCordova) {
-      return await this.jsDB.collection(collection).doc(documentId).get()
+      return (await this.jsDB.collection(collection).doc(documentId).get())?.data()
     } else {
       return await new Promise((resolve, reject) => {
-        this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), (error: string) => {
+          if (error === 'No document found in collection') {
+            resolve()
+          } else {
+            reject(new Error(error))
+          }
+        })
       })
     }
   }

@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'LeaderTools'}">
+        <v-list-item :to="{ name: 'LeaderTools'}" v-if="user.leader">
           <v-list-item-icon>
             <v-icon class="fa-fw">$students</v-icon>
           </v-list-item-icon>
@@ -41,7 +41,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'AdminTools'}">
+        <v-list-item :to="{ name: 'AdminTools'}" v-if="user.admin">
           <v-list-item-icon>
             <v-icon class="fa-fw">$admin</v-icon>
           </v-list-item-icon>
@@ -51,7 +51,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'DirectorTools'}">
+        <v-list-item :to="{ name: 'DirectorTools'}" v-if="user.director">
           <v-list-item-icon>
             <v-icon class="fa-fw">$director</v-icon>
           </v-list-item-icon>
@@ -61,7 +61,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'SuperUserTools'}">
+        <v-list-item :to="{ name: 'SuperUserTools'}" v-if="user.super">
           <v-list-item-icon>
             <v-icon class="fa-fw">$superUser</v-icon>
           </v-list-item-icon>

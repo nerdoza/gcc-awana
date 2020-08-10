@@ -24,6 +24,11 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   firstName = ''
   lastName = ''
   email = ''
+  leader = false
+  club: ClubsType = ''
+  admin = false
+  director = false
+  super = false
 
   get fullName () {
     return this.firstName + ' ' + this.lastName
@@ -103,7 +108,14 @@ export default class extends createModule({ namespaced: 'user', strict: false })
       await router.push(this.defaultRoute)
     }
 
-    await this.updateDBProfile()
+    void this.getRoles()
+    void this.updateDBProfile()
+  }
+
+  @action
+  async getRoles () {
+    const role = await firebaseProject.getDocument(this.uid, 'userRoles') as UserRole | undefined
+    this.setRole(role)
   }
 
   @action
@@ -163,6 +175,23 @@ export default class extends createModule({ namespaced: 'user', strict: false })
       this.firstName = ''
       this.lastName = ''
       this.email = ''
+    }
+  }
+
+  @mutation
+  setRole (role?: UserRole) {
+    if (typeof role !== 'undefined') {
+      this.leader = role.leader
+      this.club = role.club as ClubsType
+      this.admin = role.admin
+      this.director = role.director
+      this.super = role.super
+    } else {
+      this.leader = false
+      this.club = ''
+      this.admin = false
+      this.director = false
+      this.super = false
     }
   }
 }
