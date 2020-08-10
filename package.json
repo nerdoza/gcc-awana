@@ -2,7 +2,10 @@
   "name": "gcc-awana-firebase",
   "version": "0.0.1",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "start": "firebase emulators:start",
+    "thin": "firebase emulators:start --only firestore"
+  },
   "dependencies": {},
   "devDependencies": {}
 }

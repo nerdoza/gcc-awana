@@ -1,5 +1,5 @@
 {
-  "name": "Node.js 12 + Firebase",
+  "name": "Firebase Emulator",
   "service": "gcc-awana-firebase",
   "appPort": [
     4000,
