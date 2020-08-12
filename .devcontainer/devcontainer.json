@@ -21,8 +21,6 @@
     "streetsidesoftware.code-spell-checker",
     "eg2.vscode-npm-script",
     "pflannery.vscode-versionlens",
-    "octref.vetur",
-    "dbaeumer.vscode-eslint",
     "hediet.vscode-drawio"
   ]
 }
