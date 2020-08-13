@@ -102,7 +102,8 @@ const routes: RouteConfig[] = [
   }
 ]
 
-const unauthenticatedRoutes = ['Landing', 'AuthStart', 'AuthVerification', 'Terms', 'Privacy']
+const unauthenticatedRoutes = ['Landing', 'AuthStart', 'AuthVerification']
+const openRoutes = ['Terms', 'Privacy']
 
 const router = new VueRouter({
   mode: isWeb ? 'history' : 'hash',
@@ -112,6 +113,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const defaultRoute = vxm.user.defaultRoute
+  if (openRoutes.includes(to.name ?? '')) {
+    return next()
+  }
   if (!vxm.user.authenticated && !unauthenticatedRoutes.includes(to.name ?? '')) {
     return next(defaultRoute)
   } else if (vxm.user.authenticated && unauthenticatedRoutes.includes(to.name ?? '')) {
