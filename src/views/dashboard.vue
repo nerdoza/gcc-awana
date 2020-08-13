@@ -2,7 +2,7 @@
   <v-app class="dashboard">
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list nav>
-        <v-list-item :to="{ name: 'User'}">
+        <v-list-item :to="{ name: 'User' }">
           <v-list-item-icon>
             <v-icon class="fa-fw">$user</v-icon>
           </v-list-item-icon>
@@ -11,7 +11,7 @@
 
         <v-divider></v-divider>
 
-        <v-list-item :to="{ name: 'Updates'}">
+        <v-list-item :to="{ name: 'Updates' }">
           <v-list-item-icon>
             <v-icon class="fa-fw">$calendar</v-icon>
           </v-list-item-icon>
@@ -21,7 +21,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'ParentTools'}">
+        <v-list-item :to="{ name: 'ParentTools' }">
           <v-list-item-icon>
             <v-icon class="fa-fw">$homeHeart</v-icon>
           </v-list-item-icon>
@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'LeaderTools'}" v-if="user.leader">
+        <v-list-item :to="{ name: 'LeaderTools' }" v-if="user.leader">
           <v-list-item-icon>
             <v-icon class="fa-fw">$students</v-icon>
           </v-list-item-icon>
@@ -41,7 +41,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'AdminTools'}" v-if="user.admin">
+        <v-list-item :to="{ name: 'AdminTools' }" v-if="user.admin">
           <v-list-item-icon>
             <v-icon class="fa-fw">$admin</v-icon>
           </v-list-item-icon>
@@ -51,7 +51,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'DirectorTools'}" v-if="user.director">
+        <v-list-item :to="{ name: 'DirectorTools' }" v-if="user.director">
           <v-list-item-icon>
             <v-icon class="fa-fw">$director</v-icon>
           </v-list-item-icon>
@@ -61,7 +61,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'SuperUserTools'}" v-if="user.super">
+        <v-list-item :to="{ name: 'SuperUserTools' }" v-if="user.super">
           <v-list-item-icon>
             <v-icon class="fa-fw">$superUser</v-icon>
           </v-list-item-icon>
@@ -100,6 +100,11 @@
               <strong>Grace Community Church</strong>
               <br />
               <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
+            </p>
+            <p>
+              <router-link :to="{ name: 'Terms' }">Terms &amp; Conditions</router-link>
+              <br />
+              <router-link :to="{ name: 'Privacy' }">Privacy Policy</router-link>
             </p>
           </v-card-text>
           <v-divider></v-divider>

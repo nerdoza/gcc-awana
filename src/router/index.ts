@@ -14,7 +14,9 @@ import SuperUser from '@/views/dashboard/superUser.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import Landing from '@/views/landing.vue'
+import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
+import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +25,16 @@ const routes: RouteConfig[] = [
     path: '/',
     name: 'Landing',
     component: Landing
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: Terms
+  },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: Privacy
   },
   {
     path: '/auth',
@@ -90,7 +102,7 @@ const routes: RouteConfig[] = [
   }
 ]
 
-const unauthenticatedRoutes = ['Landing', 'AuthStart', 'AuthVerification']
+const unauthenticatedRoutes = ['Landing', 'AuthStart', 'AuthVerification', 'Terms', 'Privacy']
 
 const router = new VueRouter({
   mode: isWeb ? 'history' : 'hash',
