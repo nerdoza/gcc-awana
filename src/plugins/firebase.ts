@@ -16,6 +16,21 @@ export interface User {
   phoneNumber: string
 }
 
+export interface CollectionFilter {
+  where?: Array<{
+    fieldPath: string
+    opStr: firebase.firestore.WhereFilterOp
+    value: any
+  }>
+  orderBy?: Array<{
+    fieldPath: string
+    directionStr?: firebase.firestore.OrderByDirection
+  }>
+  limit?: Array<{
+    limit: number
+  }>
+}
+
 class FirebaseX {
   private readonly firebaseJS: firebase.app.App
   private readonly jsDB: firebase.firestore.Firestore
@@ -36,7 +51,7 @@ class FirebaseX {
       this.jsDB = firebase.firestore()
       if (isDevelopment) {
         this.jsDB.settings({
-          host: '127.0.0.1:8080',
+          host: '192.168.1.28:8080',
           ssl: false
         })
       }
@@ -222,6 +237,61 @@ class FirebaseX {
     } else {
       return await new Promise((resolve, reject) => {
         this.firebaseCordova.deleteDocumentFromFirestoreCollection(documentId, collection, () => resolve(), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
+  async getCollection (collection: string, filters?: CollectionFilter) {
+    if (!isCordova) {
+      const ref = this.jsDB.collection(collection)
+      if (typeof filters !== 'undefined') {
+        if (typeof filters.where !== 'undefined') {
+          filters.where.forEach(filter => {
+            ref.where(filter.fieldPath, filter.opStr, filter.value)
+          })
+        }
+        if (typeof filters.orderBy !== 'undefined') {
+          filters.orderBy.forEach(filter => {
+            ref.orderBy(filter.fieldPath, filter.directionStr)
+          })
+        }
+        if (typeof filters.limit !== 'undefined') {
+          filters.limit.forEach(filter => {
+            ref.limit(filter.limit)
+          })
+        }
+      }
+      const docQuery = await ref.get()
+      const result: {[id: string]: any} = {}
+      docQuery.forEach(d => { result[d.id] = d.data() })
+      return result
+    } else {
+      return await new Promise((resolve, reject) => {
+        const cordovaFilter: any[][] = []
+        if (typeof filters !== 'undefined') {
+          if (typeof filters.where !== 'undefined') {
+            filters.where.forEach(filter => {
+              cordovaFilter.push(['where', filter.fieldPath, filter.opStr, filter.value])
+            })
+          }
+          if (typeof filters.orderBy !== 'undefined') {
+            filters.orderBy.forEach(filter => {
+              cordovaFilter.push(['orderBy', filter.fieldPath, filter.directionStr])
+            })
+          }
+          if (typeof filters.limit !== 'undefined') {
+            filters.limit.forEach(filter => {
+              cordovaFilter.push(['limit', filter.limit])
+            })
+          }
+        }
+        this.firebaseCordova.fetchFirestoreCollection(collection, cordovaFilter, (documents: any) => resolve(documents), (error: string) => {
+          if (error === 'No document found in collection') {
+            resolve()
+          } else {
+            reject(new Error(error))
+          }
+        })
       })
     }
   }
