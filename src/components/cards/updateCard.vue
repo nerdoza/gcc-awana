@@ -1,7 +1,11 @@
 <template>
   <v-card class="elevation-12 pb-2">
     <v-toolbar color="primary" flat dark>
-      <v-toolbar-title>{{ clubDate | date('MMMM do') }} Club</v-toolbar-title>
+      <v-toolbar-title>
+        {{ clubDate | date('MMMM do') }}
+        <template v-if="update.type === 'club'">Club</template>
+        <template v-if="update.type === 'general'">Update</template>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-icon v-if="isCurrentWeek">$stars</v-icon>
     </v-toolbar>

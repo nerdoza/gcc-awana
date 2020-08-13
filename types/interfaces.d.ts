@@ -1,5 +1,6 @@
 interface ClubUpdates {
   targetDate: Date
+  type?: 'club' | 'general'
   general?: ClubSpecificUpdate
   cubbies?: ClubSpecificUpdate
   sparks?: ClubSpecificUpdate
