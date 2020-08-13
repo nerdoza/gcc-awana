@@ -38,7 +38,7 @@
                     prepend-icon="$phone"
                     type="tel"
                     v-facade="phoneNumberMask"
-                    v-model.trim="auth.phoneNumber"
+                    v-model.trim="user.phoneNumber"
                     :error-messages="error"
                   ></v-text-field>
                 </v-form>
@@ -79,20 +79,20 @@ import { vxm } from '@/store'
 export default class extends Vue {
   readonly verifierButtonId = 'send-code-button'
   readonly phoneNumberMask = phoneNumberMask
-  auth = vxm.auth
+  user = vxm.user
   error = ''
   sendingCode = false
 
   get phoneNumberValid () {
-    return this.auth.isValidPhoneNumber
+    return this.user.phoneNumberIsValid
   }
 
   async submit () {
-    if (this.auth.isValidPhoneNumber) {
+    if (this.user.phoneNumberIsValid) {
       this.error = ''
       this.sendingCode = true
       try {
-        await this.auth.requestVerification(this.verifierButtonId)
+        await this.user.requestVerification(this.verifierButtonId)
         this.$router.push({ name: 'AuthVerification' })
       } catch (error) {
         this.handleError(error)
@@ -106,7 +106,7 @@ export default class extends Vue {
     const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
     switch (errorCode) {
       case 'auth/invalid-phone-number':
-        this.auth.clearPhoneNumber()
+        this.user.clearPhoneNumber()
         this.error = 'Invalid phone number. Re-type phone number.'
         break
       default:
@@ -115,7 +115,7 @@ export default class extends Vue {
   }
 
   beforeDestroy () {
-    this.auth.clearVerifier(this.verifierButtonId)
+    this.user.clearVerifier(this.verifierButtonId)
   }
 }
 </script>

@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'LeaderTools'}">
+        <v-list-item :to="{ name: 'LeaderTools'}" v-if="user.leader">
           <v-list-item-icon>
             <v-icon class="fa-fw">$students</v-icon>
           </v-list-item-icon>
@@ -41,7 +41,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'AdminTools'}">
+        <v-list-item :to="{ name: 'AdminTools'}" v-if="user.admin">
           <v-list-item-icon>
             <v-icon class="fa-fw">$admin</v-icon>
           </v-list-item-icon>
@@ -51,13 +51,23 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'DirectorTools'}">
+        <v-list-item :to="{ name: 'DirectorTools'}" v-if="user.director">
           <v-list-item-icon>
             <v-icon class="fa-fw">$director</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>Director Tools</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="{ name: 'SuperUserTools'}" v-if="user.super">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$superUser</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Super User Tools</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -119,7 +129,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import Notification from '@/components/dashboard/notification.vue'
+import Notification from '@/components/notification.vue'
 import { vxm } from '@/store'
 
 @Component({
@@ -148,6 +158,8 @@ export default class extends Vue {
         return 'Admin Tools'
       case 'DirectorTools':
         return 'Director Tools'
+      case 'SuperUserTools':
+        return 'Super User Tools'
     }
   }
 

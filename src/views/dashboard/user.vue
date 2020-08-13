@@ -32,7 +32,7 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field
-                      v-model.trim="auth.phoneNumber"
+                      v-model.trim="user.phoneNumber"
                       label="Mobile Phone Number"
                       autocomplete="tel"
                       disabled
@@ -93,7 +93,6 @@ export default class extends Vue {
   readonly debouncedSave = debounce(() => { void vxm.user.setProfile() }, 3000)
 
   signOutDialog = false
-  auth = vxm.auth
   user = vxm.user
 
   async validate () {
@@ -123,7 +122,7 @@ export default class extends Vue {
 
   signOut () {
     this.signOutDialog = false
-    vxm.auth.signOut()
+    vxm.user.signOut()
   }
 }
 </script>

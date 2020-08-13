@@ -62,7 +62,7 @@ import { vxm } from '@/store'
 })
 export default class extends Vue {
   readonly verifierButtonId = 'resend-code-button'
-  auth = vxm.auth
+  user = vxm.user
   verificationCodeMask = verificationCodeMask
   resendingCode = false
   verifyingCode = false
@@ -78,7 +78,7 @@ export default class extends Vue {
     // This timeout is a safety measure as sometimes the verification request hangs without a catchable error (just a window alert)
     setTimeout(() => { this.resendingCode = false }, 10000)
     try {
-      await this.auth.requestVerification(this.verifierButtonId)
+      await this.user.requestVerification(this.verifierButtonId)
       this.error = ''
     } catch (error) {
       this.handleError(error)
@@ -92,7 +92,7 @@ export default class extends Vue {
       this.error = ''
       this.verifyingCode = true
       try {
-        await this.auth.confirmVerification(this.code)
+        await this.user.confirmVerification(this.code)
       } catch (error) {
         this.handleError(error)
       } finally {
@@ -118,7 +118,7 @@ export default class extends Vue {
   }
 
   beforeDestroy () {
-    this.auth.clearVerifier(this.verifierButtonId)
+    this.user.clearVerifier(this.verifierButtonId)
   }
 }
 </script>
