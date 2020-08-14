@@ -9,11 +9,27 @@ import 'firebase/firestore'
 
 import { vxm } from '@/store'
 
-export interface User {
+export interface AuthUser {
   uid: string
   name: string
   email: string
   phoneNumber: string
+}
+
+export interface User {
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
+  updatedAt: string
+}
+
+export interface UserRole {
+  leader: boolean
+  club: ClubsType
+  admin: boolean
+  director: boolean
+  super: boolean
 }
 
 export interface CollectionFilter {
@@ -51,7 +67,7 @@ class FirebaseX {
       this.jsDB = firebase.firestore()
       if (isDevelopment) {
         this.jsDB.settings({
-          host: '192.168.1.28:8080',
+          host: 'localhost:8080',
           ssl: false
         })
       }
@@ -110,7 +126,7 @@ class FirebaseX {
     }
   }
 
-  async getCurrentUser (): Promise<User> {
+  async getCurrentUser (): Promise<AuthUser> {
     if (!isCordova) {
       return await new Promise((resolve, reject) => {
         const user = this.firebaseJS.auth().currentUser

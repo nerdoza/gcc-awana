@@ -2,7 +2,7 @@ import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
 import { phoneNumberRegex } from '@/const'
-import firebaseProject, { User } from '@/plugins/firebase'
+import firebaseProject, { AuthUser } from '@/plugins/firebase'
 import router from '@/router'
 
 let verificationConfirmation: ((code: string) => Promise<void>) | undefined
@@ -100,7 +100,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   }
 
   @action
-  async userSignedIn (user: User) {
+  async userSignedIn (user: AuthUser) {
     const alreadyAuthorized = this.authenticated
     this.setAuth({ authenticated: true, user })
 
@@ -161,7 +161,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   }
 
   @mutation
-  setAuth (params: {authenticated: boolean, user?: User}) {
+  setAuth (params: {authenticated: boolean, user?: AuthUser}) {
     this.authenticated = params.authenticated
     this.uid = params.user?.uid ?? ''
     this.phoneNumber = strippedToFormattedPhoneNumber(params.user?.phoneNumber ?? '')

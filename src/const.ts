@@ -41,13 +41,29 @@ export const verificationCodeMask = '######'
 //   return grades.find(v => v.value === value)?.text
 // }
 
-// export const clubs = [
+// export const Clubs = [
 //   { text: 'No Preference', value: '' },
 //   { text: 'Puggles', value: 'p' },
 //   { text: 'Cubbies', value: 'c' },
 //   { text: 'Sparks', value: 's' },
 //   { text: 'T&T', value: 't' }
 // ]
+
+export const getClubByValue = (value: string) => {
+  switch (value) {
+    case 'p':
+      return 'Puggles'
+    case 'c':
+      return 'Cubbies'
+    case 's':
+      return 'Sparks'
+    case 'b':
+      return 'Boy\'s T&T'
+    case 'g':
+      return 'Girl\'s T&T'
+  }
+  return ''
+}
 // export const states = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
 
 // export const getCurrentSchoolYear = () => {
