@@ -22,8 +22,7 @@ service cloud.firestore {
 
     match /userRoles/{userId} {
       allow get: if isOwner(userId) || isSuper();
-      allow list: if isSuper();
-      allow create, update, delete: if isSuper();
+      allow create, list, update, delete: if isSuper();
     }
   }
 }
