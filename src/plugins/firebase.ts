@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/sort */
-import { isCordova, isDevelopment } from '@/const'
+import { isCordova, isDevelopment, AuthUser } from '@/const'
 
 import * as firebase from 'firebase/app'
 
@@ -8,29 +8,6 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 import { vxm } from '@/store'
-
-export interface AuthUser {
-  uid: string
-  name: string
-  email: string
-  phoneNumber: string
-}
-
-export interface User {
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  updatedAt: string
-}
-
-export interface UserRole {
-  leader: boolean
-  club: ClubsType
-  admin: boolean
-  director: boolean
-  super: boolean
-}
 
 export interface CollectionFilter {
   where?: Array<{

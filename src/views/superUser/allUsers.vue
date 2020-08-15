@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid class="all-users-list fill-height">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-card-title>
-            Users
+            App Users
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -20,49 +20,36 @@
             :search="search"
             :items-per-page="15"
             @click:row="editUser"
+            :loading="loading"
+            loading-text="Loading Users..."
           ></v-data-table>
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="userDialog" max-width="700px" transition="dialog-bottom-transition">
+      <edit-user-role v-if="userDialog" :user="focusUser" v-on:close="userDialog = false"></edit-user-role>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import { getClubByValue } from '@/const'
-import firebaseProject, { User, UserRole } from '@/plugins/firebase'
+import EditUserRole from '@/components/cards/editUserCard.vue'
+import { CombinedUser, getFullname, getRoleSnippet, User, UserRole } from '@/const'
+import firebaseProject from '@/plugins/firebase'
 
-interface CombinedUser extends User {
-  role: UserRole
-}
-
-const getFullname = (user: CombinedUser) => user.firstName + ' ' + user.lastName
-
-const getRoleSnippet = (user: CombinedUser) => {
-  if (typeof user.role === 'undefined') {
-    return 'Parent'
+@Component({
+  components: {
+    EditUserRole
   }
-
-  const club = getClubByValue(user.role.club)
-
-  if (user.role.director) {
-    return (club === '' ? 'General' : club + ' ') + 'Director'
-  }
-
-  if (user.role.admin) {
-    return 'Administrator'
-  }
-
-  if (user.role.leader) {
-    return (club === '' ? 'Floating' : club) + ' Leader'
-  }
-}
-
-@Component
+})
 export default class extends Vue {
   users: {[index: string]: CombinedUser} = {}
+  loading = false
   search = ''
+  userDialog = false
+  focusUser : null | {uid: string, user: CombinedUser} = null
 
   readonly headers = [
     { text: 'Name', value: 'user.fullName' },
@@ -75,7 +62,7 @@ export default class extends Vue {
       user: {
         ...this.users[uid],
         fullName: getFullname(this.users[uid]),
-        roleSnippet: getRoleSnippet(this.users[uid])
+        roleSnippet: getRoleSnippet(this.users[uid].role)
       }
     }))
   }
@@ -85,21 +72,40 @@ export default class extends Vue {
   }
 
   async refreshData () {
+    this.loading = true
     const combinedUser: {[index: string]: CombinedUser} = {}
     const users = await firebaseProject.getCollection('users') as {[index: string]: User}
     const userRoles = await firebaseProject.getCollection('userRoles') as {[index: string]: UserRole}
     Object.keys(users).forEach(uid => {
       combinedUser[uid] = {
         ...users[uid],
-        role: userRoles[uid]
+        role: userRoles[uid] ?? {
+          leader: false,
+          club: '',
+          admin: false,
+          director: false,
+          super: false
+        }
       }
     })
 
     this.users = combinedUser
+    this.loading = false
   }
 
-  editUser ({ uid }: {uid: string, user: CombinedUser}) {
-    console.log(uid)
+  editUser (user: {uid: string, user: CombinedUser}) {
+    this.userDialog = true
+    this.focusUser = user
   }
 }
 </script>
+
+<style lang="scss">
+.all-users-list {
+  tr:hover,
+  tr:active,
+  tr:focus {
+    cursor: pointer;
+  }
+}
+</style>

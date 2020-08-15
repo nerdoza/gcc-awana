@@ -61,7 +61,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-group>
+        <v-list-group v-if="user.super" :value="isDirOpen('Super')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon class="fa-fw">$superUser</v-icon>
@@ -73,8 +73,12 @@
           </template>
 
           <v-list-item :to="{ name: 'SuperAllUsers' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$users</v-icon>
+            </v-list-item-icon>
+
             <v-list-item-content>
-              <v-list-item-title>User Managment</v-list-item-title>
+              <v-list-item-title>App User Managment</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -163,6 +167,10 @@ export default class extends Vue {
 
   aboutTapped () {
     this.aboutTap++
+  }
+
+  isDirOpen (dirName: string) {
+    return (this.$store.state.route.name as string).startsWith(dirName)
   }
 }
 </script>

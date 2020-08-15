@@ -109,7 +109,7 @@ const routes: RouteConfig[] = [
         name: 'SuperAllUsers',
         component: SuperAllUsers,
         meta: {
-          title: 'User Managment'
+          title: 'App User Management'
         }
       }
     ]

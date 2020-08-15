@@ -1,8 +1,8 @@
 import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { phoneNumberRegex } from '@/const'
-import firebaseProject, { AuthUser } from '@/plugins/firebase'
+import { AuthUser, phoneNumberRegex } from '@/const'
+import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
 
 let verificationConfirmation: ((code: string) => Promise<void>) | undefined
