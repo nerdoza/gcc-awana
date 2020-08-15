@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBookUser, faCalendarAlt, faEdit, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
+import { faBookUser, faCalendarAlt, faCloudDownload, faEdit, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
 import { faArrowLeft, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faQuestion, faSearch, faTimes, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -8,7 +8,7 @@ import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
+library.add(faCloudDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
 
 Vue.use(Vuetify)
 
@@ -55,7 +55,8 @@ export default new Vuetify({
       left: icon('fas', 'arrow-left'),
       superUser: icon('fad', 'users-cog'),
       search: icon('fas', 'search'),
-      users: icon('fad', 'users')
+      users: icon('fad', 'users'),
+      download: icon('fad', 'cloud-download')
     }
   }
 })

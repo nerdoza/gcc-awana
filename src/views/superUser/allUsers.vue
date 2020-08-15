@@ -5,6 +5,9 @@
         <v-card class="elevation-12">
           <v-card-title>
             App Users
+            <v-btn icon class="ml-2" @click="download">
+              <v-icon>$download</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -36,7 +39,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import EditUserRole from '@/components/cards/editUserCard.vue'
-import { CombinedUser, getFullname, getRoleSnippet, User, UserRole } from '@/const'
+import { CombinedUser, getClubByValue, getFullname, getRoleSnippet, User, UserRole } from '@/const'
+import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
 @Component({
@@ -96,6 +100,18 @@ export default class extends Vue {
   editUser (user: {uid: string, user: CombinedUser}) {
     this.userDialog = true
     this.focusUser = user
+  }
+
+  download () {
+    const data = Object.keys(this.users).map(uid => ({
+      'First Name': this.users[uid].firstName,
+      'Last Name': this.users[uid].lastName,
+      Phone: this.users[uid].phoneNumber,
+      Email: this.users[uid].email,
+      Role: getRoleSnippet(this.users[uid].role)
+    }))
+
+    createCSV(data, 'app_users.csv')
   }
 }
 </script>
