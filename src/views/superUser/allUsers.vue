@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="all-users-list fill-height">
+  <v-container fluid class="fill-height">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
@@ -9,13 +9,7 @@
               <v-icon>$download</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="$search"
-              label="Search"
-              hide-details
-              single-line
-            ></v-text-field>
+            <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
           </v-card-title>
           <v-data-table
             :headers="headers"
@@ -25,6 +19,7 @@
             @click:row="editUser"
             :loading="loading"
             loading-text="Loading Users..."
+            class="clickable"
           ></v-data-table>
         </v-card>
       </v-col>
@@ -39,7 +34,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import EditUserRole from '@/components/cards/editUserCard.vue'
-import { CombinedUser, getClubByValue, getFullname, getRoleSnippet, User, UserRole } from '@/const'
+import { getFullname, getRoleSnippet } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -56,7 +51,7 @@ export default class extends Vue {
   focusUser : null | {uid: string, user: CombinedUser} = null
 
   readonly headers = [
-    { text: 'Name', value: 'user.fullName' },
+    { text: 'Name', value: 'user.fullName', groupable: false },
     { text: 'Role', value: 'user.roleSnippet', groupable: true }
   ]
 
@@ -115,13 +110,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-.all-users-list {
-  tr:hover,
-  tr:active,
-  tr:focus {
-    cursor: pointer;
-  }
-}
-</style>

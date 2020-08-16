@@ -41,7 +41,7 @@
 import { debounce } from 'ts-debounce'
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import { ClubSelect, CombinedUser } from '@/const'
+import { ClubSelect } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import { vxm } from '@/store'
 

@@ -13,34 +13,7 @@ export const phoneNumberMask = '+1 (###) ###-####'
 export const verificationCodeRegex = new RegExp(/^\d{6}$/)
 export const verificationCodeMask = '######'
 
-export interface AuthUser {
-  uid: string
-  name: string
-  email: string
-  phoneNumber: string
-}
-
-export interface User {
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  updatedAt: string
-}
-
-export interface UserRole {
-  leader: boolean
-  club: ClubsType
-  admin: boolean
-  director: boolean
-  super: boolean
-}
-
-export interface CombinedUser extends User {
-  role: UserRole
-}
-
-export const getFullname = (user: User) => user.firstName + ' ' + user.lastName
+export const getFullname = (u: {firstName: string, lastName: string}) => u.firstName + ' ' + u.lastName
 
 export const getRoleSnippet = (userRole?: UserRole) => {
   if (typeof userRole === 'undefined') {

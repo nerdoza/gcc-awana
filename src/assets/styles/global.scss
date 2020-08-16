@@ -86,3 +86,12 @@ $backgroundColor: #212121;
   opacity: 100;
   transform: translateX(0);
 }
+
+// Overrides
+.v-data-table.clickable {
+  tr:hover,
+  tr:active,
+  tr:focus {
+    cursor: pointer;
+  }
+}

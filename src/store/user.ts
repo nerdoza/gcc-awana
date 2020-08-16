@@ -1,7 +1,7 @@
 import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { AuthUser, phoneNumberRegex } from '@/const'
+import { phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
 
@@ -25,7 +25,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   lastName = ''
   email = ''
   leader = false
-  club: ClubsType = ''
+  club: Club = '' as Club.None
   admin = false
   director = false
   super = false
@@ -188,7 +188,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
       this.super = role.super
     } else {
       this.leader = false
-      this.club = ''
+      this.club = '' as Club.None
       this.admin = false
       this.director = false
       this.super = false

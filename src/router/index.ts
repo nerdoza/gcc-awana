@@ -15,6 +15,7 @@ import User from '@/views/dashboard/user.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
+import SuperAllClubbers from '@/views/superUser/allClubbers.vue'
 import SuperAllUsers from '@/views/superUser/allUsers.vue'
 import Terms from '@/views/terms.vue'
 
@@ -105,11 +106,19 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'super/all',
+        path: 'super/users',
         name: 'SuperAllUsers',
         component: SuperAllUsers,
         meta: {
           title: 'App User Management'
+        }
+      },
+      {
+        path: 'super/clubbers',
+        name: 'SuperAllClubbers',
+        component: SuperAllClubbers,
+        meta: {
+          title: 'Clubber Management'
         }
       }
     ]

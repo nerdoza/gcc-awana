@@ -33,7 +33,7 @@
 
         <v-list-item :to="{ name: 'LeaderTools' }" v-if="user.leader">
           <v-list-item-icon>
-            <v-icon class="fa-fw">$students</v-icon>
+            <v-icon class="fa-fw">$leader</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -79,6 +79,16 @@
 
             <v-list-item-content>
               <v-list-item-title>App User Managment</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'SuperAllClubbers' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$clubbers</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Managment</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>

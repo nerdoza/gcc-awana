@@ -1,0 +1,106 @@
+<template>
+  <v-container fluid class="fill-height">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-card class="elevation-12">
+          <v-card-title>
+            Clubbers
+            <v-btn icon class="ml-2" @click="download">
+              <v-icon>$download</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn @click="download" class="mr-4 secondary">
+              <v-icon class="mr-2">$import</v-icon>Import
+            </v-btn>
+            <v-btn @click="download" class="primary">
+              <v-icon class="mr-2">$addUser</v-icon>New Clubber
+            </v-btn>
+          </v-card-title>
+          <v-card-actions>
+            <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+          </v-card-actions>
+          <v-data-table
+            :headers="headers"
+            :items="clubbersList"
+            :search="search"
+            :items-per-page="15"
+            @click:row="editClubber"
+            :loading="loading"
+            loading-text="Loading Clubbers..."
+            class="clickable"
+          ></v-data-table>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-dialog v-model="clubberDialog" max-width="700px" transition="dialog-bottom-transition">
+      <edit-clubber v-if="clubberDialog" :user="focusClubber" v-on:close="clubberDialog = false"></edit-clubber>
+    </v-dialog>
+  </v-container>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+import EditClubber from '@/components/cards/editClubberCard.vue'
+import { getFullname } from '@/const'
+import { createCSV } from '@/lib/csv'
+import firebaseProject from '@/plugins/firebase'
+
+@Component({
+  components: {
+    EditClubber
+  }
+})
+export default class extends Vue {
+  clubbers: {[index: string]: Clubber} = {}
+  loading = false
+  search = ''
+  clubberDialog = false
+  focusClubber : null | {uid: string, clubber: Clubber} = null
+
+  readonly headers = [
+    { text: 'Name', value: 'clubber.fullName' },
+    { text: 'Grade', value: 'clubber.grade', groupable: true },
+    { text: 'Club', value: 'clubber.club', groupable: true }
+  ]
+
+  get clubbersList () {
+    return Object.keys(this.clubbers).map(uid => ({
+      uid,
+      clubber: {
+        ...this.clubbers[uid],
+        fullName: getFullname(this.clubbers[uid])
+      }
+    }))
+  }
+
+  async mounted () {
+    await this.refreshData()
+  }
+
+  async refreshData () {
+    this.loading = true
+    this.clubbers = await firebaseProject.getCollection('clubbers') as {[index: string]: Clubber}
+
+    this.loading = false
+  }
+
+  editClubber (clubber: {uid: string, clubber: Clubber}) {
+    this.clubberDialog = true
+    this.focusClubber = clubber
+  }
+
+  download () {
+    const data = Object.keys(this.clubbers).map(uid => ({
+      'First Name': this.clubbers[uid].firstName,
+      'Last Name': this.clubbers[uid].lastName,
+      Club: this.clubbers[uid].club,
+      Birthday: this.clubbers[uid].birthday,
+      Gender: this.clubbers[uid].gender,
+      Grade: this.clubbers[uid].grade
+    }))
+
+    createCSV(data, 'clubbers.csv')
+  }
+}
+</script>

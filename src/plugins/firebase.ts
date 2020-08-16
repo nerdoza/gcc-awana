@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/sort */
-import { isCordova, isDevelopment, AuthUser } from '@/const'
+import { isCordova, isDevelopment } from '@/const'
 
 import * as firebase from 'firebase/app'
 
@@ -200,6 +200,16 @@ class FirebaseX {
             reject(new Error(error))
           }
         })
+      })
+    }
+  }
+
+  async addDocument (collection: string, document: object) {
+    if (!isCordova) {
+      return await this.jsDB.collection(collection).add(document)
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.addDocumentInFirestoreCollection(document, collection, () => resolve(), (error: string) => reject(new Error(error)))
       })
     }
   }
