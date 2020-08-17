@@ -13,6 +13,72 @@ export const phoneNumberMask = '+1 (###) ###-####'
 export const verificationCodeRegex = new RegExp(/^\d{6}$/)
 export const verificationCodeMask = '######'
 
+export const dateOfBirthRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
+export const dateOfBirthMask = '##/##/####'
+
+export const getCurrentSchoolYear = () => {
+  const currentYear = (new Date()).getFullYear()
+  const currentMonth = (new Date()).getMonth()
+  return currentMonth < 5 ? currentYear - 1 : currentYear
+}
+
+export const getSchoolStartDate = () => {
+  return new Date(getCurrentSchoolYear().toString() + '-09-01')
+}
+
+export const getAgeAsOf = (birthday: string, date: Date) => {
+  const msDiff = date.getTime() - (new Date(birthday)).getTime()
+  const dateDiff = new Date(msDiff)
+  return Math.abs(dateDiff.getUTCFullYear() - 1970)
+}
+
+export const getAgeAsOfSchoolStart = (birthday: string) => {
+  return getAgeAsOf(birthday, getSchoolStartDate())
+}
+
+export const getGradeByAge = (age: number) => {
+  if (age < 5) {
+    return 'p'
+  } else if (age < 6) {
+    return 'k'
+  } else if (age < 7) {
+    return '1'
+  } else if (age < 8) {
+    return '2'
+  } else if (age < 9) {
+    return '3'
+  } else if (age < 10) {
+    return '4'
+  } else if (age < 11) {
+    return '5'
+  }
+  return '6'
+}
+
+export const getClubByGrade = (grade: Grade, age: number, gender: Gender) => {
+  switch (grade) {
+    case 'p':
+      if (age < 3) {
+        return 'p'
+      } else if (age < 5) {
+        return 'c'
+      } else {
+        return 's'
+      }
+    case 'k':
+    case '1':
+    case '2':
+      return 's'
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+      return gender === 'f' ? 'g' : 'b'
+    default:
+      return ''
+  }
+}
+
 export const getFullname = (u: {firstName: string, lastName: string}) => u.firstName + ' ' + u.lastName
 
 export const getRoleSnippet = (userRole?: UserRole) => {
@@ -37,7 +103,7 @@ export const getRoleSnippet = (userRole?: UserRole) => {
   return 'Parent'
 }
 
-export const getClubByValue = (value: string) => {
+export const getClubByValue = (value: Club) => {
   switch (value) {
     case 'p':
       return 'Puggles'
@@ -53,11 +119,54 @@ export const getClubByValue = (value: string) => {
   return ''
 }
 
-export const ClubSelect = [
-  { text: 'General', value: '' },
+export const getGradeByValue = (value: Grade) => {
+  switch (value) {
+    case 'p':
+      return 'Pre'
+    case 'k':
+      return 'K'
+    case '1':
+      return '1st'
+    case '2':
+      return '2nd'
+    case '3':
+      return '3rd'
+    case '4':
+      return '4th'
+    case '5':
+      return '5th'
+    case '6':
+      return '6th'
+  }
+  return ''
+}
+
+export const clubSelect = [
   { text: 'Puggles', value: 'p' },
   { text: 'Cubbies', value: 'c' },
   { text: 'Sparks', value: 's' },
   { text: 'Boy\'s T&T', value: 'b' },
   { text: 'Girl\'s T&T', value: 'g' }
 ]
+
+export const genderSelect = [
+  { text: 'Male', value: 'm' },
+  { text: 'Female', value: 'f' }
+]
+
+export const gradeSelect = [
+  { text: 'Pre', value: 'p' },
+  { text: 'K', value: 'k' },
+  { text: '1st', value: '1' },
+  { text: '2nd', value: '2' },
+  { text: '3rd', value: '3' },
+  { text: '4th', value: '4' },
+  { text: '5th', value: '5' },
+  { text: '6th', value: '6' }
+]
+
+export const firestoreCollections = {
+  users: 'users',
+  userRoles: 'userRoles',
+  clubbers: 'clubbers'
+}

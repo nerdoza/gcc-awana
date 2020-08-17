@@ -9,10 +9,10 @@
               <v-icon>$download</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="download" class="mr-4 secondary">
-              <v-icon class="mr-2">$import</v-icon>Import
+            <v-btn icon @click="download" class="mr-4">
+              <v-icon>$import</v-icon>
             </v-btn>
-            <v-btn @click="download" class="primary">
+            <v-btn @click="createClubber" class="primary">
               <v-icon class="mr-2">$addUser</v-icon>New Clubber
             </v-btn>
           </v-card-title>
@@ -32,8 +32,19 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="clubberDialog" max-width="700px" transition="dialog-bottom-transition">
-      <edit-clubber v-if="clubberDialog" :user="focusClubber" v-on:close="clubberDialog = false"></edit-clubber>
+    <v-dialog v-model="clubberEditDialog" max-width="700px" transition="dialog-bottom-transition">
+      <edit-clubber
+        v-if="clubberEditDialog"
+        :user="focusClubber"
+        v-on:close="clubberEditDialog = false"
+      ></edit-clubber>
+    </v-dialog>
+    <v-dialog v-model="clubberCreateDialog" max-width="700px" transition="dialog-bottom-transition">
+      <create-clubber
+        v-if="clubberCreateDialog"
+        v-on:close="clubberCreateDialog = false"
+        v-on:create="pushNewClubber"
+      ></create-clubber>
     </v-dialog>
   </v-container>
 </template>
@@ -41,27 +52,30 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import CreateClubber from '@/components/cards/createClubberCard.vue'
 import EditClubber from '@/components/cards/editClubberCard.vue'
-import { getFullname } from '@/const'
+import { getClubByValue, getFullname, getGradeByValue } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
 @Component({
   components: {
-    EditClubber
+    EditClubber,
+    CreateClubber
   }
 })
 export default class extends Vue {
   clubbers: {[index: string]: Clubber} = {}
   loading = false
   search = ''
-  clubberDialog = false
+  clubberEditDialog = false
+  clubberCreateDialog = false
   focusClubber : null | {uid: string, clubber: Clubber} = null
 
   readonly headers = [
     { text: 'Name', value: 'clubber.fullName' },
-    { text: 'Grade', value: 'clubber.grade', groupable: true },
-    { text: 'Club', value: 'clubber.club', groupable: true }
+    { text: 'Grade', value: 'clubber.gradeName', groupable: true },
+    { text: 'Club', value: 'clubber.clubName', groupable: true }
   ]
 
   get clubbersList () {
@@ -69,6 +83,8 @@ export default class extends Vue {
       uid,
       clubber: {
         ...this.clubbers[uid],
+        clubName: getClubByValue(this.clubbers[uid].club),
+        gradeName: getGradeByValue(this.clubbers[uid].grade),
         fullName: getFullname(this.clubbers[uid])
       }
     }))
@@ -86,8 +102,17 @@ export default class extends Vue {
   }
 
   editClubber (clubber: {uid: string, clubber: Clubber}) {
-    this.clubberDialog = true
     this.focusClubber = clubber
+    this.clubberEditDialog = true
+  }
+
+  createClubber () {
+    this.clubberCreateDialog = true
+  }
+
+  pushNewClubber ({ uid, clubber }: {uid: string, clubber: Clubber}) {
+    Vue.set(this.clubbers, uid, clubber)
+    this.clubberCreateDialog = false
   }
 
   download () {

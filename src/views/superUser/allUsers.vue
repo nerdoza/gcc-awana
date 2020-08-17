@@ -93,8 +93,8 @@ export default class extends Vue {
   }
 
   editUser (user: {uid: string, user: CombinedUser}) {
-    this.userDialog = true
     this.focusUser = user
+    this.userDialog = true
   }
 
   download () {

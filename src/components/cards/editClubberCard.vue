@@ -26,13 +26,13 @@
 import { debounce } from 'ts-debounce'
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import { ClubSelect } from '@/const'
+import { clubSelect } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 
 @Component
 export default class extends Vue {
   @Prop() readonly clubber!: {uid: string, clubber: Clubber}
-  readonly clubSelect = ClubSelect
+  readonly clubSelect = clubSelect
 
   readonly debouncedSave = debounce((user) => {
     void firebaseProject.setDocument(this.clubber.uid, 'clubber', user.user.role)
