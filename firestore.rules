@@ -24,5 +24,11 @@ service cloud.firestore {
       allow get: if isOwner(userId) || isSuper();
       allow create, list, update, delete: if isSuper();
     }
+
+    match /clubbers/{userId} {
+      allow create, update: if isSuper();
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+    }
   }
 }
