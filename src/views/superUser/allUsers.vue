@@ -34,7 +34,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import EditUserRole from '@/components/cards/editUserCard.vue'
-import { getFullname, getRoleSnippet } from '@/const'
+import { firestoreCollections, getFullname, getRoleSnippet } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -73,8 +73,8 @@ export default class extends Vue {
   async refreshData () {
     this.loading = true
     const combinedUser: {[index: string]: CombinedUser} = {}
-    const users = await firebaseProject.getCollection('users') as {[index: string]: User}
-    const userRoles = await firebaseProject.getCollection('userRoles') as {[index: string]: UserRole}
+    const users = await firebaseProject.getCollection(firestoreCollections.users) as {[index: string]: User}
+    const userRoles = await firebaseProject.getCollection(firestoreCollections.userRoles) as {[index: string]: UserRole}
     Object.keys(users).forEach(uid => {
       combinedUser[uid] = {
         ...users[uid],

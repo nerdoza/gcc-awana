@@ -1,7 +1,7 @@
 import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { phoneNumberRegex } from '@/const'
+import { firestoreCollections, phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
 
@@ -114,7 +114,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
 
   @action
   async getRoles () {
-    const role = await firebaseProject.getDocument(this.uid, 'userRoles') as UserRole | undefined
+    const role = await firebaseProject.getDocument(this.uid, firestoreCollections.userRoles) as UserRole | undefined
     this.setRole(role)
   }
 
@@ -137,7 +137,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
 
   @action
   async updateDBProfile () {
-    await firebaseProject.setDocument(this.uid, 'users', {
+    await firebaseProject.setDocument(this.uid, firestoreCollections.users, {
       phoneNumber: this.phoneNumber,
       firstName: this.firstName,
       lastName: this.lastName,

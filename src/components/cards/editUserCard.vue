@@ -41,7 +41,7 @@
 import { debounce } from 'ts-debounce'
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import { clubSelect } from '@/const'
+import { clubSelect, firestoreCollections } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import { vxm } from '@/store'
 
@@ -51,8 +51,8 @@ export default class extends Vue {
   readonly clubSelect = [{ text: 'General', value: '' }, ...clubSelect]
 
   readonly debouncedSave = debounce((user) => {
-    void firebaseProject.setDocument(this.user.uid, 'userRoles', user.user.role)
-  }, 1500)
+    void firebaseProject.setDocument(this.user.uid, firestoreCollections.userRoles, user.user.role)
+  }, 500)
 
   get isCurrentSuper () {
     return this.user.uid === vxm.user.uid

@@ -35,7 +35,8 @@
     <v-dialog v-model="clubberEditDialog" max-width="700px" transition="dialog-bottom-transition">
       <edit-clubber
         v-if="clubberEditDialog"
-        :user="focusClubber"
+        :clubber="focusClubber"
+        v-on:update="updateClubber"
         v-on:close="clubberEditDialog = false"
       ></edit-clubber>
     </v-dialog>
@@ -54,7 +55,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 import CreateClubber from '@/components/cards/createClubberCard.vue'
 import EditClubber from '@/components/cards/editClubberCard.vue'
-import { getClubByValue, getFullname, getGradeByValue } from '@/const'
+import { firestoreCollections, getClubByValue, getFullname, getGradeByValue } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -96,7 +97,7 @@ export default class extends Vue {
 
   async refreshData () {
     this.loading = true
-    this.clubbers = await firebaseProject.getCollection('clubbers') as {[index: string]: Clubber}
+    this.clubbers = await firebaseProject.getCollection(firestoreCollections.clubbers) as {[index: string]: Clubber}
 
     this.loading = false
   }
@@ -106,12 +107,17 @@ export default class extends Vue {
     this.clubberEditDialog = true
   }
 
+  updateClubber ({ uid, clubber }: {uid: string, clubber: Clubber}) {
+    // console.log(clubber)
+    this.$set(this.clubbers, uid, clubber)
+  }
+
   createClubber () {
     this.clubberCreateDialog = true
   }
 
   pushNewClubber ({ uid, clubber }: {uid: string, clubber: Clubber}) {
-    Vue.set(this.clubbers, uid, clubber)
+    this.$set(this.clubbers, uid, clubber)
     this.clubberCreateDialog = false
   }
 

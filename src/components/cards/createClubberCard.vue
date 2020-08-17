@@ -11,7 +11,7 @@
       <v-form @submit.prevent="trySave">
         <v-container>
           <v-row>
-            <v-col cols="6">
+            <v-col cols="12" sm="6">
               <v-text-field-with-validation
                 label="First Name"
                 v-model="clubber.firstName"
@@ -19,14 +19,14 @@
                 autofocus
               />
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" sm="6">
               <v-text-field-with-validation
                 label="Last Name"
                 v-model="clubber.lastName"
                 rules="required"
               />
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" sm="6">
               <v-text-field-with-validation
                 label="Birthday"
                 hint="MM/DD/YYYY"
@@ -52,7 +52,7 @@
                 label="Grade"
               />
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" sm="6">
               <v-select-with-validation
                 v-model="clubber.club"
                 rules="required"
