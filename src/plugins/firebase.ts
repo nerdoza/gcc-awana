@@ -246,21 +246,21 @@ class FirebaseX {
 
   async getCollection (collection: string, filters?: CollectionFilter) {
     if (!isCordova) {
-      const ref = this.jsDB.collection(collection)
+      let ref: firebase.firestore.Query<firebase.firestore.DocumentData> = this.jsDB.collection(collection)
       if (typeof filters !== 'undefined') {
         if (typeof filters.where !== 'undefined') {
           filters.where.forEach(filter => {
-            ref.where(filter.fieldPath, filter.opStr, filter.value)
+            ref = ref.where(filter.fieldPath, filter.opStr, filter.value)
           })
         }
         if (typeof filters.orderBy !== 'undefined') {
           filters.orderBy.forEach(filter => {
-            ref.orderBy(filter.fieldPath, filter.directionStr)
+            ref = ref.orderBy(filter.fieldPath, filter.directionStr)
           })
         }
         if (typeof filters.limit !== 'undefined') {
           filters.limit.forEach(filter => {
-            ref.limit(filter.limit)
+            ref = ref.limit(filter.limit)
           })
         }
       }

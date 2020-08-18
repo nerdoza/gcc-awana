@@ -1,5 +1,5 @@
 <template>
-  <v-card tile class="edit-clubber-card">
+  <v-card tile>
     <v-toolbar flat dark color="primary">
       <v-toolbar-title>Create Clubber</v-toolbar-title>
       <v-spacer></v-spacer>

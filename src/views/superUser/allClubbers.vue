@@ -9,7 +9,7 @@
               <v-icon>$download</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn icon @click="download" class="mr-4">
+            <v-btn icon @click="openImporter" class="mr-4">
               <v-icon>$import</v-icon>
             </v-btn>
             <v-btn @click="createClubber" class="primary">
@@ -32,6 +32,13 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="clubberImportDialog" max-width="400px" transition="dialog-bottom-transition">
+      <import-clubber
+        v-if="clubberImportDialog"
+        v-on:import="refreshData"
+        v-on:close="clubberImportDialog = false"
+      ></import-clubber>
+    </v-dialog>
     <v-dialog v-model="clubberEditDialog" max-width="700px" transition="dialog-bottom-transition">
       <edit-clubber
         v-if="clubberEditDialog"
@@ -55,6 +62,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 import CreateClubber from '@/components/cards/createClubberCard.vue'
 import EditClubber from '@/components/cards/editClubberCard.vue'
+import ImportClubber from '@/components/cards/importClubbersCard.vue'
 import { firestoreCollections, getClubByValue, getFullname, getGradeByValue } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
@@ -62,7 +70,8 @@ import firebaseProject from '@/plugins/firebase'
 @Component({
   components: {
     EditClubber,
-    CreateClubber
+    CreateClubber,
+    ImportClubber
   }
 })
 export default class extends Vue {
@@ -72,6 +81,7 @@ export default class extends Vue {
   clubberEditDialog = false
   clubberCreateDialog = false
   focusClubber : null | {uid: string, clubber: Clubber} = null
+  clubberImportDialog = false
 
   readonly headers = [
     { text: 'Name', value: 'clubber.fullName' },
@@ -110,6 +120,10 @@ export default class extends Vue {
   updateClubber ({ uid, clubber }: {uid: string, clubber: Clubber}) {
     // console.log(clubber)
     this.$set(this.clubbers, uid, clubber)
+  }
+
+  openImporter () {
+    this.clubberImportDialog = true
   }
 
   createClubber () {
