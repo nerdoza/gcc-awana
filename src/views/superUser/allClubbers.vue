@@ -3,22 +3,25 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
-          <v-card-title>
+          <v-card-title class="pb-0">
             Clubbers
-            <v-btn icon class="ml-2" @click="download">
+            <v-btn dark class="secondary ml-2" @click="refreshData">
+              <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
+            </v-btn>
+            <v-btn dark class="secondary mx-2" @click="download">
               <v-icon>$download</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn icon @click="openImporter" class="mr-4">
+            <v-btn dark class="secondary mr-2" @click="openImporter">
               <v-icon>$import</v-icon>
             </v-btn>
             <v-btn @click="createClubber" class="primary">
               <v-icon class="mr-2">$addUser</v-icon>New Clubber
             </v-btn>
           </v-card-title>
-          <v-card-actions>
+          <v-card-text class="pb-0">
             <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
-          </v-card-actions>
+          </v-card-text>
           <v-data-table
             :headers="headers"
             :items="clubbersList"

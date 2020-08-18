@@ -22,10 +22,7 @@
           v-if="skipped > 0"
         >({{ skipped }} skipped)</template>
       </v-chip>
-      <v-chip color="primary" v-if="state === 'finished'">
-        Imported {{ imported }}
-        <template v-if="skipped > 0">, Skipped {{ skipped }}</template>
-      </v-chip>
+      <v-chip color="primary ml-2" v-if="state === 'finished'">{{ completedText }}</v-chip>
       <v-spacer></v-spacer>
       <v-btn
         @click="importFile"
@@ -37,7 +34,7 @@
         <v-icon class="mr-2" v-if="state === 'none'">$import</v-icon>Import
       </v-btn>
       <v-btn @click="close" class="primary mr-2 mb-2" v-if="state === 'finished'">
-        <v-icon class="mr-2">$close</v-icon>Close
+        <v-icon class="mr-2">$check</v-icon>Done
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -50,13 +47,37 @@ import { firestoreCollections } from '@/const'
 import { parseCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
+const isNotValidClubber = (data: Clubber | {[index: string]: string}) => {
+  return typeof data !== 'object' ||
+  typeof data.firstName !== 'string' ||
+  data.firstName === '' ||
+  typeof data.lastName !== 'string' ||
+  data.lastName === '' ||
+  typeof data.birthday !== 'string' ||
+  data.birthday === '' ||
+  typeof data.gender !== 'string' ||
+  data.gender === '' ||
+  typeof data.grade !== 'string' ||
+  data.grade === '' ||
+  typeof data.club !== 'string' ||
+  data.club === ''
+}
+
 @Component
 export default class extends Vue {
   file: File | null = null
-  state : 'none' | 'loading' | 'finished' = 'none'
+  state : 'none' | 'loading' | 'finished' | 'error' = 'none'
   imported = 0
   skipped = 0
   totalToImport = 0
+
+  get completedText () {
+    let output = 'Imported ' + this.imported.toString()
+    if (this.skipped > 0) {
+      output += ', Skipped ' + this.skipped.toString()
+    }
+    return output
+  }
 
   @Emit()
   close () {
@@ -75,6 +96,10 @@ export default class extends Vue {
       this.totalToImport = importData.length
       for (let i = 0; i < importData.length; i++) {
         const data = importData[i]
+        if (isNotValidClubber(data)) {
+          this.skipped++
+          continue
+        }
         const existing = await firebaseProject.getCollection(firestoreCollections.clubbers, {
           where: [
             { fieldPath: 'firstName', opStr: '==', value: data.firstName },
@@ -85,7 +110,14 @@ export default class extends Vue {
         if (Object.keys(existing).length > 0) {
           this.skipped++
         } else {
-          await firebaseProject.addDocument(firestoreCollections.clubbers, data)
+          await firebaseProject.addDocument(firestoreCollections.clubbers, {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            birthday: data.birthday,
+            gender: data.gender,
+            club: data.club,
+            grade: data.grade.toString()
+          })
           this.imported++
         }
       }

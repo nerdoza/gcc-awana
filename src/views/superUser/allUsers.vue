@@ -3,9 +3,12 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
-          <v-card-title>
+          <v-card-title class="pb-0">
             App Users
-            <v-btn icon class="ml-2" @click="download">
+            <v-btn dark class="secondary mx-2" @click="refreshData">
+              <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
+            </v-btn>
+            <v-btn dark class="secondary mr-2" @click="download">
               <v-icon>$download</v-icon>
             </v-btn>
             <v-spacer></v-spacer>

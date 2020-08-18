@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBookUser, faCalendarAlt, faChalkboardTeacher, faCloudDownload, faEdit, faFileImport, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faSpinnerThird, faStars, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
+import { faBookUser, faCalendarAlt, faChalkboardTeacher, faCloudDownload, faEdit, faFileImport, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faSpinnerThird, faStars, faSync, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
 import { faArrowLeft, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faMinus, faPaperclip, faQuestion, faSearch, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -8,7 +8,7 @@ import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faFileImport, faChalkboardTeacher, faCloudDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
+library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faFileImport, faChalkboardTeacher, faCloudDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
 
 Vue.use(Vuetify)
 
@@ -59,7 +59,8 @@ export default new Vuetify({
       download: icon('fad', 'cloud-download'),
       leader: icon('fad', 'chalkboard-teacher'),
       import: icon('fad', 'file-import'),
-      spinner: icon('fad', 'spinner-third')
+      spinner: icon('fad', 'spinner-third'),
+      sync: icon('fad', 'sync')
     }
   }
 })

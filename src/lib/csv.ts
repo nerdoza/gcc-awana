@@ -13,6 +13,7 @@ export const parseCSV = async (csvData: string | File) => {
     parse(csvData, {
       header: true,
       dynamicTyping: true,
+      skipEmptyLines: true,
       transformHeader: header => {
         return camelcase(header)
       },
