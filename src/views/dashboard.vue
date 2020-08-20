@@ -1,6 +1,6 @@
 <template>
   <v-app class="dashboard">
-    <v-navigation-drawer v-model="drawer" app temporary>
+    <v-navigation-drawer v-model="drawer" width="320" app temporary>
       <v-list nav>
         <v-list-item :to="{ name: 'User' }">
           <v-list-item-icon>
@@ -33,7 +33,7 @@
 
         <v-list-item :to="{ name: 'LeaderTools' }" v-if="user.leader">
           <v-list-item-icon>
-            <v-icon class="fa-fw">$students</v-icon>
+            <v-icon class="fa-fw">$leader</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -61,15 +61,37 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'SuperUserTools' }" v-if="user.super">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$superUser</v-icon>
-          </v-list-item-icon>
+        <v-list-group v-if="user.super" :value="isDirOpen('Super')">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$superUser</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>Super User Tools</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Super User Tools</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'SuperAllUsers' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$users</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>App User Managment</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'SuperAllClubbers' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$clubbers</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Managment</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
 
       <template v-slot:append>
@@ -124,7 +146,7 @@
 
     <v-main>
       <v-container fluid>
-        <router-view></router-view>
+        <router-view ref="router"></router-view>
       </v-container>
     </v-main>
     <notification></notification>
@@ -150,26 +172,15 @@ export default class extends Vue {
   user = vxm.user
 
   get title () {
-    switch (this.$store.state.route.name) {
-      case 'User':
-        return 'User Settings'
-      case 'Updates':
-        return 'Weekly Updates'
-      case 'ParentTools':
-        return 'Parent Tools'
-      case 'LeaderTools':
-        return 'Leader Tools'
-      case 'AdminTools':
-        return 'Admin Tools'
-      case 'DirectorTools':
-        return 'Director Tools'
-      case 'SuperUserTools':
-        return 'Super User Tools'
-    }
+    return this.$store.state.route.meta.title
   }
 
   aboutTapped () {
     this.aboutTap++
+  }
+
+  isDirOpen (dirName: string) {
+    return (this.$store.state.route.name as string).startsWith(dirName)
   }
 }
 </script>

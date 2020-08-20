@@ -10,12 +10,13 @@ import Admin from '@/views/dashboard/admin.vue'
 import Director from '@/views/dashboard/director.vue'
 import Leader from '@/views/dashboard/leader.vue'
 import Parent from '@/views/dashboard/parent.vue'
-import SuperUser from '@/views/dashboard/superUser.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
+import SuperAllClubbers from '@/views/superUser/allClubbers.vue'
+import SuperAllUsers from '@/views/superUser/allUsers.vue'
 import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
@@ -67,32 +68,58 @@ const routes: RouteConfig[] = [
       {
         path: 'updates',
         name: 'Updates',
-        component: Updates
+        component: Updates,
+        meta: {
+          title: 'Weekly Updates'
+        }
       },
       {
         path: 'parent',
         name: 'ParentTools',
-        component: Parent
+        component: Parent,
+        meta: {
+          title: 'Parent Tools'
+        }
       },
       {
         path: 'leader',
         name: 'LeaderTools',
-        component: Leader
+        component: Leader,
+        meta: {
+          title: 'Leader Tools'
+        }
       },
       {
         path: 'director',
         name: 'DirectorTools',
-        component: Director
+        component: Director,
+        meta: {
+          title: 'Director Tools'
+        }
       },
       {
         path: 'admin',
         name: 'AdminTools',
-        component: Admin
+        component: Admin,
+        meta: {
+          title: 'Admin Tools'
+        }
       },
       {
-        path: 'super',
-        name: 'SuperUserTools',
-        component: SuperUser
+        path: 'super/users',
+        name: 'SuperAllUsers',
+        component: SuperAllUsers,
+        meta: {
+          title: 'App User Management'
+        }
+      },
+      {
+        path: 'super/clubbers',
+        name: 'SuperAllClubbers',
+        component: SuperAllClubbers,
+        meta: {
+          title: 'Clubber Management'
+        }
       }
     ]
   },

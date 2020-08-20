@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Director</v-toolbar-title>
+            <v-toolbar-title>Admin</v-toolbar-title>
           </v-toolbar>
         </v-card>
       </v-col>

@@ -1,8 +1,8 @@
 import { Location } from 'vue-router'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { phoneNumberRegex } from '@/const'
-import firebaseProject, { User } from '@/plugins/firebase'
+import { firestoreCollections, phoneNumberRegex } from '@/const'
+import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
 
 let verificationConfirmation: ((code: string) => Promise<void>) | undefined
@@ -25,7 +25,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   lastName = ''
   email = ''
   leader = false
-  club: ClubsType = ''
+  club: Club = '' as Club.None
   admin = false
   director = false
   super = false
@@ -100,7 +100,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   }
 
   @action
-  async userSignedIn (user: User) {
+  async userSignedIn (user: AuthUser) {
     const alreadyAuthorized = this.authenticated
     this.setAuth({ authenticated: true, user })
 
@@ -114,7 +114,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
 
   @action
   async getRoles () {
-    const role = await firebaseProject.getDocument(this.uid, 'userRoles') as UserRole | undefined
+    const role = await firebaseProject.getDocument(this.uid, firestoreCollections.userRoles) as UserRole | undefined
     this.setRole(role)
   }
 
@@ -137,7 +137,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
 
   @action
   async updateDBProfile () {
-    await firebaseProject.setDocument(this.uid, 'users', {
+    await firebaseProject.setDocument(this.uid, firestoreCollections.users, {
       phoneNumber: this.phoneNumber,
       firstName: this.firstName,
       lastName: this.lastName,
@@ -161,7 +161,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   }
 
   @mutation
-  setAuth (params: {authenticated: boolean, user?: User}) {
+  setAuth (params: {authenticated: boolean, user?: AuthUser}) {
     this.authenticated = params.authenticated
     this.uid = params.user?.uid ?? ''
     this.phoneNumber = strippedToFormattedPhoneNumber(params.user?.phoneNumber ?? '')
@@ -188,7 +188,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
       this.super = role.super
     } else {
       this.leader = false
-      this.club = ''
+      this.club = '' as Club.None
       this.admin = false
       this.director = false
       this.super = false

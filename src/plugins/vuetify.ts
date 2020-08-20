@@ -1,14 +1,14 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBookUser, faCalendarAlt, faEdit, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faStars, faTrash, faUserPlus, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
+import { faBookUser, faCalendarAlt, faChalkboardTeacher, faCloudUploadAlt, faEdit, faFileDownload, faHomeHeart, faKey, faMobileAlt, faSignOutAlt, faSpinnerThird, faStars, faSync, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
-import { faArrowLeft, faBars, faCaretDown, faCheck, faCheckSquare, faChevronLeft, faChevronRight, faQuestion, faTimes, faUser } from '@fortawesome/pro-solid-svg-icons'
+import { faArrowLeft, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faMinus, faPaperclip, faQuestion, faSearch, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
+library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faCloudUploadAlt, faChalkboardTeacher, faFileDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart)
 
 Vue.use(Vuetify)
 
@@ -46,14 +46,21 @@ export default new Vuetify({
       stars: icon('fad', 'stars'),
       user: icon('fas', 'user'),
       homeHeart: icon('fad', 'home-heart'),
-      students: icon('fad', 'users-class'),
+      clubbers: icon('fad', 'users-class'),
       calendar: icon('fad', 'calendar-alt'),
       director: icon('fad', 'whistle'),
       video: icon('fad', 'video'),
       close: icon('fas', 'times'),
       admin: icon('fad', 'book-user'),
       left: icon('fas', 'arrow-left'),
-      superUser: icon('fad', 'users-cog')
+      superUser: icon('fad', 'users-cog'),
+      search: icon('fas', 'search'),
+      users: icon('fad', 'users'),
+      download: icon('fad', 'file-download'),
+      leader: icon('fad', 'chalkboard-teacher'),
+      import: icon('fad', 'cloud-upload-alt'),
+      spinner: icon('fad', 'spinner-third'),
+      sync: icon('fad', 'sync')
     }
   }
 })

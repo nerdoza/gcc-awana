@@ -9,13 +9,6 @@ import 'firebase/firestore'
 
 import { vxm } from '@/store'
 
-export interface User {
-  uid: string
-  name: string
-  email: string
-  phoneNumber: string
-}
-
 export interface CollectionFilter {
   where?: Array<{
     fieldPath: string
@@ -51,7 +44,7 @@ class FirebaseX {
       this.jsDB = firebase.firestore()
       if (isDevelopment) {
         this.jsDB.settings({
-          host: '192.168.1.28:8080',
+          host: 'localhost:8080',
           ssl: false
         })
       }
@@ -110,7 +103,7 @@ class FirebaseX {
     }
   }
 
-  async getCurrentUser (): Promise<User> {
+  async getCurrentUser (): Promise<AuthUser> {
     if (!isCordova) {
       return await new Promise((resolve, reject) => {
         const user = this.firebaseJS.auth().currentUser
@@ -211,6 +204,16 @@ class FirebaseX {
     }
   }
 
+  async addDocument (collection: string, document: object) {
+    if (!isCordova) {
+      return (await this.jsDB.collection(collection).add(document))?.id
+    } else {
+      return await new Promise((resolve, reject) => {
+        this.firebaseCordova.addDocumentInFirestoreCollection(document, collection, (id: string) => resolve(id), (error: string) => reject(new Error(error)))
+      })
+    }
+  }
+
   async setDocument (documentId: string, collection: string, document: object) {
     if (!isCordova) {
       return await this.jsDB.collection(collection).doc(documentId).set(document)
@@ -243,21 +246,21 @@ class FirebaseX {
 
   async getCollection (collection: string, filters?: CollectionFilter) {
     if (!isCordova) {
-      const ref = this.jsDB.collection(collection)
+      let ref: firebase.firestore.Query<firebase.firestore.DocumentData> = this.jsDB.collection(collection)
       if (typeof filters !== 'undefined') {
         if (typeof filters.where !== 'undefined') {
           filters.where.forEach(filter => {
-            ref.where(filter.fieldPath, filter.opStr, filter.value)
+            ref = ref.where(filter.fieldPath, filter.opStr, filter.value)
           })
         }
         if (typeof filters.orderBy !== 'undefined') {
           filters.orderBy.forEach(filter => {
-            ref.orderBy(filter.fieldPath, filter.directionStr)
+            ref = ref.orderBy(filter.fieldPath, filter.directionStr)
           })
         }
         if (typeof filters.limit !== 'undefined') {
           filters.limit.forEach(filter => {
-            ref.limit(filter.limit)
+            ref = ref.limit(filter.limit)
           })
         }
       }

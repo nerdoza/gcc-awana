@@ -90,7 +90,7 @@ import { vxm } from '@/store'
 export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
-  readonly debouncedSave = debounce(() => { void vxm.user.setProfile() }, 3000)
+  readonly debouncedSave = debounce(() => { void vxm.user.setProfile() }, 1500)
 
   signOutDialog = false
   user = vxm.user
