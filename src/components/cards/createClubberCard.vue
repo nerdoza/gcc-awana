@@ -1,7 +1,7 @@
 <template>
   <v-card tile>
     <v-toolbar flat dark color="primary">
-      <v-toolbar-title>Create Clubber</v-toolbar-title>
+      <v-toolbar-title>Clubber</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon dark @click="close">
         <v-icon>$close</v-icon>

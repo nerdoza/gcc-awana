@@ -3,24 +3,35 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
-          <v-card-title class="pb-0">
-            Clubbers
-            <v-btn dark class="secondary ml-2" @click="refreshData">
+          <v-toolbar color="primary" dark flat>
+            <v-toolbar-title>Clubbers</v-toolbar-title>
+            <v-btn icon class="ml-2" @click="refreshData">
               <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
             </v-btn>
-            <v-btn dark class="secondary mx-2" @click="download">
-              <v-icon>$download</v-icon>
-            </v-btn>
             <v-spacer></v-spacer>
-            <v-btn dark class="secondary mr-2" @click="openImporter">
-              <v-icon>$import</v-icon>
+            <v-btn icon @click="createClubber">
+              <v-icon>$addUser</v-icon>
             </v-btn>
-            <v-btn @click="createClubber" class="primary">
-              <v-icon class="mr-2">$addUser</v-icon>New Clubber
-            </v-btn>
-          </v-card-title>
+          </v-toolbar>
           <v-card-text class="pb-0">
-            <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+            <template v-if="!isCordova">
+              <v-row align="center" justify="center">
+                <v-col cols="12" sm="6" class="pa-0">
+                  <v-btn dark class="secondary mx-2" @click="download">
+                    <v-icon>$download</v-icon>
+                  </v-btn>
+                  <v-btn dark class="secondary mr-2" @click="openImporter">
+                    <v-icon>$import</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" sm="6" class="pa-0">
+                  <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-else>
+              <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+            </template>
           </v-card-text>
           <v-data-table
             :headers="headers"
@@ -47,6 +58,7 @@
         v-if="clubberEditDialog"
         :clubber="focusClubber"
         v-on:update="updateClubber"
+        v-on:destroy="destroyClubber"
         v-on:close="clubberEditDialog = false"
       ></edit-clubber>
     </v-dialog>
@@ -66,7 +78,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import CreateClubber from '@/components/cards/createClubberCard.vue'
 import EditClubber from '@/components/cards/editClubberCard.vue'
 import ImportClubber from '@/components/cards/importClubbersCard.vue'
-import { firestoreCollections, getClubByValue, getFullname, getGradeByValue } from '@/const'
+import { firestoreCollections, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -85,6 +97,8 @@ export default class extends Vue {
   clubberCreateDialog = false
   focusClubber : null | {uid: string, clubber: Clubber} = null
   clubberImportDialog = false
+
+  readonly isCordova = isCordova
 
   readonly headers = [
     { text: 'Name', value: 'clubber.fullName' },
@@ -121,8 +135,12 @@ export default class extends Vue {
   }
 
   updateClubber ({ uid, clubber }: {uid: string, clubber: Clubber}) {
-    // console.log(clubber)
     this.$set(this.clubbers, uid, clubber)
+  }
+
+  destroyClubber (uid: string) {
+    this.$delete(this.clubbers, uid)
+    this.clubberEditDialog = false
   }
 
   openImporter () {

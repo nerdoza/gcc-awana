@@ -1,7 +1,7 @@
 <template>
   <v-card tile class="edit-user-role-card">
     <v-toolbar flat dark color="primary">
-      <v-toolbar-title>User</v-toolbar-title>
+      <v-toolbar-title>App User</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon dark @click="close">
         <v-icon>$close</v-icon>

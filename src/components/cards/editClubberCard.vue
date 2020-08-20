@@ -63,6 +63,28 @@
         </v-container>
       </v-form>
     </validation-observer>
+    <v-card-actions>
+      <v-dialog v-model="removeClubberDialog" persistent max-width="290">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="secondary" v-bind="attrs" v-on="on">
+            <v-icon class="mr-2">$trash</v-icon>Delete
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="headline">Delete Clubber</v-card-title>
+          <v-card-text>
+            This will completely remove this clubber from the system and destroy all their data.
+            <br />
+            <br />Are you sure you want to do this?
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="removeClubberDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="removeClubber">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -98,6 +120,7 @@ export default class extends Vue {
   readonly dateOfBirthRegex = dateOfBirthRegex
 
   rawUid = this.clubber.uid
+  removeClubberDialog = false
 
   rawClubber = {
     firstName: this.clubber.clubber.firstName,
@@ -143,6 +166,17 @@ export default class extends Vue {
   @Emit()
   close () {
     return undefined
+  }
+
+  async removeClubber () {
+    this.removeClubberDialog = false
+    await firebaseProject.deleteDocument(this.rawUid, firestoreCollections.clubbers)
+    this.destroy(this.rawUid)
+  }
+
+  @Emit()
+  destroy (uid: string) {
+    return uid
   }
 }
 </script>

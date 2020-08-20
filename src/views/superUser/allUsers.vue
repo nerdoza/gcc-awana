@@ -3,17 +3,29 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
-          <v-card-title class="pb-0">
-            App Users
-            <v-btn dark class="secondary mx-2" @click="refreshData">
+          <v-toolbar color="primary" dark flat>
+            <v-toolbar-title>App Users</v-toolbar-title>
+            <v-btn icon class="ml-2" @click="refreshData">
               <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
             </v-btn>
-            <v-btn dark class="secondary mr-2" @click="download">
-              <v-icon>$download</v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
-          </v-card-title>
+          </v-toolbar>
+          <v-card-text class="pb-0">
+            <template v-if="!isCordova">
+              <v-row align="center" justify="center">
+                <v-col cols="12" sm="6" class="pa-0">
+                  <v-btn dark class="secondary mx-2" @click="download">
+                    <v-icon>$download</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" sm="6" class="pa-0">
+                  <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-else>
+              <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+            </template>
+          </v-card-text>
           <v-data-table
             :headers="headers"
             :items="usersList"
@@ -37,7 +49,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import EditUserRole from '@/components/cards/editUserCard.vue'
-import { firestoreCollections, getFullname, getRoleSnippet } from '@/const'
+import { firestoreCollections, getFullname, getRoleSnippet, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -52,6 +64,8 @@ export default class extends Vue {
   search = ''
   userDialog = false
   focusUser : null | {uid: string, user: CombinedUser} = null
+
+  readonly isCordova = isCordova
 
   readonly headers = [
     { text: 'Name', value: 'user.fullName', groupable: false },

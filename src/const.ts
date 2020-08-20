@@ -89,7 +89,7 @@ export const getRoleSnippet = (userRole?: UserRole) => {
   const club = getClubByValue(userRole.club)
 
   if (userRole.director) {
-    return (club === '' ? 'General' : club) + ' Director'
+    return (club === '' ? 'Commander' : club + ' Director')
   }
 
   if (userRole.leader) {
