@@ -94,7 +94,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item :to="{ name: 'SuperAllClubbers' }">
+          <v-list-item :to="{ name: 'SuperClubbersList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$clubbers</v-icon>
             </v-list-item-icon>

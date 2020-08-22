@@ -64,6 +64,30 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-divider></v-divider>
+          <v-subheader>Children</v-subheader>
+          <v-container class="pt-0">
+            <v-row>
+              <v-col cols="12" sm="6" v-for="(childRecord, index) in childrenRecords" :key="index">
+                <v-list-item>
+                  <v-list-item-avatar color="grey lighten-2">
+                    <v-icon>$child</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title v-text="getFullname(childRecord.clubber)"></v-list-item-title>
+                    <v-list-item-subtitle v-text="getClubByValue(childRecord.clubber.club)"></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12" v-if="childrenRecords.length === 0">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>No children associated wtih this user.</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card>
       </v-col>
     </v-row>
@@ -73,7 +97,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import { clubSelect, getFullname, getRoleSnippet } from '@/const'
+import { clubSelect, getClubByValue, getFullname, getRoleSnippet, oneHour } from '@/const'
 import { vxm } from '@/store'
 
 @Component
@@ -85,6 +109,14 @@ export default class extends Vue {
   role = { ...vxm.appUsers.roles[this.uid] }
 
   readonly clubSelect = [{ text: 'General', value: '' }, ...clubSelect]
+  readonly getFullname = getFullname
+  readonly getClubByValue = getClubByValue
+
+  get childrenRecords () {
+    return vxm.clubbers.clubbersList.filter(record => {
+      return record.clubber.parents?.includes(this.user.phoneNumber)
+    })
+  }
 
   get fullName () {
     return getFullname(this.user)
@@ -103,7 +135,14 @@ export default class extends Vue {
     await vxm.appUsers.getAppUser({ uid: this.uid })
     this.user = { ...vxm.appUsers.users[this.uid] }
     this.role = { ...vxm.appUsers.roles[this.uid] }
+    await vxm.clubbers.getClubberRecords()
     this.loading = false
+  }
+
+  async mounted () {
+    if (vxm.clubbers.sinceUpdate > oneHour) {
+      await vxm.clubbers.getClubberRecords()
+    }
   }
 
   call () {
