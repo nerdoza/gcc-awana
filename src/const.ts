@@ -141,6 +141,8 @@ export const getGradeByValue = (value: Grade) => {
   return ''
 }
 
+export const clubs = ['p', 'c', 's', 'b', 'g']
+
 export const clubSelect = [
   { text: 'Puggles', value: 'p' },
   { text: 'Cubbies', value: 'c' },

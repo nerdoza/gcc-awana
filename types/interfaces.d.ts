@@ -12,8 +12,6 @@ interface ClubSpecificUpdate {
   video?: string
 }
 
-// declare type ClubsType = 'p' | 'c' | 's' | 'b' | 'g' | ''
-
 declare enum Club {
   Puggles = 'p',
   Cubbies = 'c',
@@ -70,8 +68,9 @@ interface Clubber {
   firstName: string
   lastName: string
   birthday: string
-  gender: Gender,
-  grade: Grade,
-  club: Club,
-  leader: string
+  gender: Gender
+  grade: Grade
+  club: Club
+  leader?: string
+  parents?: string[]
 }

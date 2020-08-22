@@ -98,7 +98,7 @@ export default class extends Vue {
   }
 
   getLeaderName (clubber: Clubber) {
-    return this.leaders[clubber.leader] ? this.leaders[clubber.leader].firstName + ' ' + this.leaders[clubber.leader].lastName : ''
+    return (typeof clubber.leader !== 'undefined' && this.leaders[clubber.leader]) ? this.leaders[clubber.leader].firstName + ' ' + this.leaders[clubber.leader].lastName : ''
   }
 
   async mounted () {

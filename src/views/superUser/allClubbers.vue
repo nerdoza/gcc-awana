@@ -57,6 +57,7 @@
       <edit-clubber
         v-if="clubberEditDialog"
         :clubber="focusClubber"
+        :leaders="leadersByClub"
         v-on:update="updateClubber"
         v-on:destroy="destroyClubber"
         v-on:close="clubberEditDialog = false"
@@ -78,7 +79,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import CreateClubber from '@/components/cards/createClubberCard.vue'
 import EditClubber from '@/components/cards/editClubberCard.vue'
 import ImportClubber from '@/components/cards/importClubbersCard.vue'
-import { firestoreCollections, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
+import { clubs, firestoreCollections, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
@@ -91,6 +92,8 @@ import firebaseProject from '@/plugins/firebase'
 })
 export default class extends Vue {
   clubbers: {[index: string]: Clubber} = {}
+  leadersByClub: {[key in Club]: {[index: string]: User}} = { p: {}, c: {}, s: {}, b: {}, g: {}, '': {} }
+
   loading = false
   search = ''
   clubberEditDialog = false
@@ -125,6 +128,22 @@ export default class extends Vue {
   async refreshData () {
     this.loading = true
     this.clubbers = await firebaseProject.getCollection(firestoreCollections.clubbers) as {[index: string]: Clubber}
+
+    const userRoles = await firebaseProject.getCollection(firestoreCollections.userRoles, {
+      where: [
+        { fieldPath: 'club', opStr: 'in', value: clubs }
+      ]
+    }) as {[index: string]: UserRole}
+
+    const allUsers = await firebaseProject.getCollection(firestoreCollections.users) as {[index: string]: User}
+
+    const leaders: {[key in Club]: {[index: string]: User}} = { p: {}, c: {}, s: {}, b: {}, g: {}, '': {} }
+
+    Object.keys(userRoles).forEach(key => {
+      leaders[userRoles[key].club][key] = allUsers[key]
+    })
+
+    this.leadersByClub = leaders
 
     this.loading = false
   }

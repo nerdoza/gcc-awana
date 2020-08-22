@@ -25,7 +25,7 @@
                 rules="required"
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-text-field-with-validation
                 label="Birthday"
                 hint="MM/DD/YYYY"
@@ -35,7 +35,7 @@
                 :rules="{ required: true, regex: dateOfBirthRegex }"
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-select-with-validation
                 v-model="rawClubber.gender"
                 rules="required"
@@ -43,7 +43,7 @@
                 label="Gender"
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-select-with-validation
                 v-model="rawClubber.grade"
                 rules="required"
@@ -58,6 +58,9 @@
                 :items="clubSelect"
                 label="Club"
               />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-select label="Leader" v-model="rawClubber.leader" :items="leaderSelect"></v-select>
             </v-col>
           </v-row>
         </v-container>
@@ -112,6 +115,7 @@ import firebaseProject from '@/plugins/firebase'
 export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
   @Prop() readonly clubber!: {uid: string, clubber: Clubber}
+  @Prop() readonly leaders!: {[key in Club]: {[index: string]: User}}
 
   readonly clubSelect = clubSelect
   readonly genderSelect = genderSelect
@@ -128,15 +132,27 @@ export default class extends Vue {
     birthday: this.clubber.clubber.birthday,
     gender: this.clubber.clubber.gender,
     grade: this.clubber.clubber.grade,
-    club: this.clubber.clubber.club
+    club: this.clubber.clubber.club,
+    leader: this.clubber.clubber.leader,
+    parents: [...(this.clubber.clubber.parents ?? [])]
   }
 
   readonly debouncedUpdate = debounce(({ uid, clubber }: {uid: string, clubber: Clubber}) => {
-    void firebaseProject.setDocument(uid, firestoreCollections.clubbers, clubber)
+    void firebaseProject.updateDocument(uid, firestoreCollections.clubbers, clubber)
   }, 500)
 
   async validate () {
     return await this.form.validate()
+  }
+
+  get leaderSelect () {
+    if (this.rawClubber.club !== '') {
+      return Object.keys(this.leaders[this.rawClubber.club]).map(key => ({
+        value: key,
+        text: this.leaders[this.rawClubber.club][key].firstName + ' ' + this.leaders[this.rawClubber.club][key].lastName
+      }))
+    }
+    return []
   }
 
   @Watch('clubber', { deep: true, immediate: true })
@@ -148,11 +164,15 @@ export default class extends Vue {
     this.rawClubber.gender = clubber.gender
     this.rawClubber.grade = clubber.grade
     this.rawClubber.club = clubber.club
+    this.rawClubber.leader = clubber.leader
   }
 
   @Watch('rawClubber', { deep: true })
   async onRawClubberChanged (clubber: Clubber) {
     if (await this.validate()) {
+      if (clubber.club !== this.clubber.clubber.club) {
+        clubber.leader = ''
+      }
       this.update({ uid: this.rawUid, clubber: { ...clubber } })
       this.debouncedUpdate({ uid: this.rawUid, clubber: { ...clubber } })
     }
