@@ -19,6 +19,28 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-divider></v-divider>
+    <v-subheader>Parents</v-subheader>
+    <v-list-item
+      v-for="parent in parents"
+      :key="parent.phoneNumber"
+      @mouseover="parentHover = parent.phoneNumber"
+      @mouseleave="parentHover = ''"
+    >
+      <v-list-item-avatar
+        :rounded="false"
+        @click="callParent(parent.phoneNumber)"
+        :color="parentHover !== parent.phoneNumber ? 'grey lighten-2' : ''"
+      >
+        <v-icon v-if="parentHover !== parent.phoneNumber">$user</v-icon>
+        <v-icon dense color="primary" class="call" v-else>$call</v-icon>
+      </v-list-item-avatar>
+
+      <v-list-item-content>
+        <v-list-item-title v-text="parent.firstName + ' ' + parent.lastName"></v-list-item-title>
+        <v-list-item-subtitle v-text="parent.phoneNumber"></v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
   </v-card>
 </template>
 
@@ -32,6 +54,8 @@ import firebaseProject from '@/plugins/firebase'
 export default class extends Vue {
   @Prop() readonly clubber!: {uid: string, clubber: Clubber}
   @Prop() readonly leaders!: {[index: string]: User}
+  parents: User[] = []
+  parentHover = ''
 
   get leaderSelect () {
     return Object.keys(this.leaders).map(key => ({
@@ -46,6 +70,34 @@ export default class extends Vue {
 
   get grade () {
     return getGradeByValue(this.clubber.clubber.grade)
+  }
+
+  callParent (number: string) {
+    window.location.href = 'tel:' + number
+  }
+
+  async setParents (parentPhoneNumbers: string[]) {
+    if (parentPhoneNumbers.length > 0) {
+      const parents = await firebaseProject.getCollection(firestoreCollections.users, {
+        where: [
+          { fieldPath: 'phoneNumber', opStr: 'in', value: parentPhoneNumbers }
+        ]
+      }) as {[index: string]: User}
+      this.parents = Object.keys(parents).map(key => parents[key])
+      parentPhoneNumbers.forEach(phoneNumber => {
+        if (!this.parents.find(user => user.phoneNumber === phoneNumber)) {
+          this.parents.push({ firstName: '', lastName: '', phoneNumber } as User)
+        }
+      })
+    } else {
+      this.parents = []
+    }
+  }
+
+  async mounted () {
+    if (typeof this.clubber.clubber.parents !== 'undefined') {
+      await this.setParents(this.clubber.clubber.parents)
+    }
   }
 
   @Watch('clubber', { deep: true })

@@ -66,10 +66,87 @@
         </v-container>
       </v-form>
     </validation-observer>
+    <v-divider></v-divider>
+    <v-subheader>Parents</v-subheader>
+    <v-list-item
+      v-for="parent in parents"
+      :key="parent.phoneNumber"
+      @mouseover="parentHover = parent.phoneNumber"
+      @mouseleave="parentHover = ''"
+    >
+      <v-list-item-avatar
+        :rounded="false"
+        @click="callParent(parent.phoneNumber)"
+        :color="parentHover !== parent.phoneNumber ? 'grey lighten-2' : ''"
+      >
+        <v-icon v-if="parentHover !== parent.phoneNumber">$user</v-icon>
+        <v-icon dense color="primary" class="call" v-else>$call</v-icon>
+      </v-list-item-avatar>
+
+      <v-list-item-content>
+        <v-list-item-title v-text="parent.firstName + ' ' + parent.lastName"></v-list-item-title>
+        <v-list-item-subtitle v-text="parent.phoneNumber"></v-list-item-subtitle>
+      </v-list-item-content>
+
+      <v-list-item-action>
+        <v-dialog v-model="removeParentDialog" persistent max-width="290">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>$removeUser</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="headline">Remove Parent</v-card-title>
+            <v-card-text>
+              This will remove this user's access to this clubber's information.
+              <br />
+              <br />Are you sure you want to do this?
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="removeParentDialog = false">Cancel</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="removeParent(parent.phoneNumber)">Remove</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-list-item-action>
+    </v-list-item>
+    <v-dialog v-model="addParentDialog" persistent max-width="290">
+      <template v-slot:activator="{ on, attrs }">
+        <v-list-item v-bind="attrs" v-on="on">
+          <v-list-item-avatar color="grey lighten-2">
+            <v-icon dense>$plus</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>Add Parent</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+      <v-card>
+        <v-card-title class="headline">Add Parent</v-card-title>
+        <v-card-text>
+          <v-text-field
+            label="Phone Number"
+            name="phone"
+            prepend-icon="$phone"
+            type="tel"
+            v-facade="phoneNumberMask"
+            v-model.trim="addParentPhoneNumber"
+            autofocus
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="dismissAddParentDialog">Cancel</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="addParent" :disabled="!addParentPhoneNumberValid">Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-divider class="mb-2"></v-divider>
     <v-card-actions>
       <v-dialog v-model="removeClubberDialog" persistent max-width="290">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="secondary" v-bind="attrs" v-on="on">
+          <v-btn class="ma-2 secondary" v-bind="attrs" v-on="on">
             <v-icon class="mr-2">$trash</v-icon>Delete
           </v-btn>
         </template>
@@ -99,7 +176,7 @@ import { Component, Emit, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
-import { clubSelect, dateOfBirthMask, dateOfBirthRegex, firestoreCollections, genderSelect, gradeSelect } from '@/const'
+import { clubSelect, dateOfBirthMask, dateOfBirthRegex, firestoreCollections, genderSelect, gradeSelect, phoneNumberMask, phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 
 @Component({
@@ -122,6 +199,7 @@ export default class extends Vue {
   readonly gradeSelect = gradeSelect
   readonly dateOfBirthMask = dateOfBirthMask
   readonly dateOfBirthRegex = dateOfBirthRegex
+  readonly phoneNumberMask = phoneNumberMask
 
   rawUid = this.clubber.uid
   removeClubberDialog = false
@@ -133,17 +211,19 @@ export default class extends Vue {
     gender: this.clubber.clubber.gender,
     grade: this.clubber.clubber.grade,
     club: this.clubber.clubber.club,
-    leader: this.clubber.clubber.leader,
+    leader: this.clubber.clubber.leader ?? '',
     parents: [...(this.clubber.clubber.parents ?? [])]
   }
+
+  parents: User[] = []
+  parentHover = ''
+  addParentDialog = false
+  removeParentDialog = false
+  addParentPhoneNumber = ''
 
   readonly debouncedUpdate = debounce(({ uid, clubber }: {uid: string, clubber: Clubber}) => {
     void firebaseProject.updateDocument(uid, firestoreCollections.clubbers, clubber)
   }, 500)
-
-  async validate () {
-    return await this.form.validate()
-  }
 
   get leaderSelect () {
     if (this.rawClubber.club !== '') {
@@ -155,6 +235,51 @@ export default class extends Vue {
     return []
   }
 
+  async validate () {
+    return await this.form.validate()
+  }
+
+  callParent (number: string) {
+    window.location.href = 'tel:' + number
+  }
+
+  addParent () {
+    this.rawClubber.parents.push(this.addParentPhoneNumber)
+    this.dismissAddParentDialog()
+  }
+
+  dismissAddParentDialog () {
+    this.addParentDialog = false
+    this.addParentPhoneNumber = ''
+  }
+
+  get addParentPhoneNumberValid () {
+    return phoneNumberRegex.test(this.addParentPhoneNumber)
+  }
+
+  async removeParent (number: string) {
+    this.removeParentDialog = false
+    this.$delete(this.rawClubber.parents, this.rawClubber.parents.indexOf(number))
+  }
+
+  async setParents (parentPhoneNumbers: string[]) {
+    if (parentPhoneNumbers.length > 0) {
+      const parents = await firebaseProject.getCollection(firestoreCollections.users, {
+        where: [
+          { fieldPath: 'phoneNumber', opStr: 'in', value: parentPhoneNumbers }
+        ]
+      }) as {[index: string]: User}
+      this.parents = Object.keys(parents).map(key => parents[key])
+      parentPhoneNumbers.forEach(phoneNumber => {
+        if (!this.parents.find(user => user.phoneNumber === phoneNumber)) {
+          this.parents.push({ firstName: '', lastName: '', phoneNumber } as User)
+        }
+      })
+    } else {
+      this.parents = []
+    }
+  }
+
   @Watch('clubber', { deep: true, immediate: true })
   async onClubberChanged ({ uid, clubber }: {uid: string, clubber: Clubber}) {
     this.rawUid = uid
@@ -164,7 +289,8 @@ export default class extends Vue {
     this.rawClubber.gender = clubber.gender
     this.rawClubber.grade = clubber.grade
     this.rawClubber.club = clubber.club
-    this.rawClubber.leader = clubber.leader
+    this.rawClubber.leader = clubber.leader ?? ''
+    this.rawClubber.parents = [...(this.clubber.clubber.parents ?? [])]
   }
 
   @Watch('rawClubber', { deep: true })
@@ -176,6 +302,11 @@ export default class extends Vue {
       this.update({ uid: this.rawUid, clubber: { ...clubber } })
       this.debouncedUpdate({ uid: this.rawUid, clubber: { ...clubber } })
     }
+  }
+
+  @Watch('rawClubber.parents', { immediate: true })
+  async onRawClubberParentsChanged (parents: string[]) {
+    await this.setParents(parents)
   }
 
   @Emit()
@@ -200,3 +331,15 @@ export default class extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.edit-clubber-card {
+  .call {
+    cursor: pointer;
+
+    &.v-icon.v-icon {
+      border-radius: 0;
+    }
+  }
+}
+</style>

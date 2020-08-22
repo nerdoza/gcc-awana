@@ -41,26 +41,21 @@
 </template>
 
 <script lang="ts">
+import { format } from 'date-fns'
 import { Component, Emit, Vue } from 'vue-property-decorator'
 
 import { firestoreCollections } from '@/const'
 import { parseCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 
-const isNotValidClubber = (data: Clubber | {[index: string]: string}) => {
+const isNotValidClubber = (data: FlatClubber) => {
   return typeof data !== 'object' ||
   typeof data.firstName !== 'string' ||
   data.firstName === '' ||
   typeof data.lastName !== 'string' ||
   data.lastName === '' ||
   typeof data.birthday !== 'string' ||
-  data.birthday === '' ||
-  typeof data.gender !== 'string' ||
-  data.gender === '' ||
-  typeof data.grade !== 'string' ||
-  data.grade === '' ||
-  typeof data.club !== 'string' ||
-  data.club === ''
+  data.birthday === ''
 }
 
 @Component
@@ -92,7 +87,7 @@ export default class extends Vue {
   async importFile () {
     if (this.file !== null) {
       this.state = 'loading'
-      const importData = await parseCSV(this.file) as Clubber[]
+      const importData = await parseCSV(this.file) as FlatClubber[]
       this.totalToImport = importData.length
       for (let i = 0; i < importData.length; i++) {
         const data = importData[i]
@@ -110,13 +105,27 @@ export default class extends Vue {
         if (Object.keys(existing).length > 0) {
           this.skipped++
         } else {
+          const parents: string[] = []
+          if (typeof data.parentPhone1 !== 'undefined' && data.parentPhone1 !== '' && data.parentPhone1 !== null) {
+            parents.push(data.parentPhone1)
+          }
+          if (typeof data.parentPhone2 !== 'undefined' && data.parentPhone2 !== '' && data.parentPhone2 !== null) {
+            parents.push(data.parentPhone2)
+          }
+          if (typeof data.parentPhone3 !== 'undefined' && data.parentPhone3 !== '' && data.parentPhone3 !== null) {
+            parents.push(data.parentPhone3)
+          }
+          if (typeof data.parentPhone4 !== 'undefined' && data.parentPhone4 !== '' && data.parentPhone4 !== null) {
+            parents.push(data.parentPhone4)
+          }
           await firebaseProject.addDocument(firestoreCollections.clubbers, {
             firstName: data.firstName,
             lastName: data.lastName,
-            birthday: data.birthday,
-            gender: data.gender,
-            club: data.club,
-            grade: data.grade.toString()
+            birthday: format(new Date(data.birthday), 'MM/dd/yyyy'),
+            gender: data.gender ?? '',
+            club: data.club ?? '',
+            grade: data.grade?.toString() ?? '',
+            parents
           })
           this.imported++
         }

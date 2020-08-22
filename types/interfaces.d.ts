@@ -74,3 +74,16 @@ interface Clubber {
   leader?: string
   parents?: string[]
 }
+
+interface FlatClubber {
+  firstName: string
+  lastName: string
+  birthday: string
+  gender?: Gender | null
+  grade?: Grade | null
+  club?: Club | null
+  parentPhone1?: string | null
+  parentPhone2?: string | null
+  parentPhone3?: string | null
+  parentPhone4?: string | null
+}

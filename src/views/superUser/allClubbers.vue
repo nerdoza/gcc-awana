@@ -182,7 +182,11 @@ export default class extends Vue {
       Club: this.clubbers[uid].club,
       Birthday: this.clubbers[uid].birthday,
       Gender: this.clubbers[uid].gender,
-      Grade: this.clubbers[uid].grade
+      Grade: this.clubbers[uid].grade,
+      'Parent Phone 1': (this.clubbers[uid].parents ?? [])[0] ?? '',
+      'Parent Phone 2': (this.clubbers[uid].parents ?? [])[1] ?? '',
+      'Parent Phone 3': (this.clubbers[uid].parents ?? [])[2] ?? '',
+      'Parent Phone 4': (this.clubbers[uid].parents ?? [])[3] ?? ''
     }))
 
     createCSV(data, 'clubbers.csv')
