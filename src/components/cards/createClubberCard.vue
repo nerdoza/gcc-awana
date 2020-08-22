@@ -60,6 +60,15 @@
                 label="Club"
               />
             </v-col>
+            <v-col cols="12" sm="6" v-for="(parent, index) in parents" :key="index">
+              <v-text-field-with-validation
+                label="Parent Phone"
+                type="tele"
+                v-model="parent.number"
+                v-facade="phoneNumberMask"
+                :rules="{ required: index === 0, skipIfEmpty: false, regex: phoneNumberRegex }"
+              />
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -85,7 +94,7 @@ import { Component, Emit, Ref, Vue, Watch } from 'vue-property-decorator'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
-import { clubSelect, dateOfBirthMask, dateOfBirthRegex, firestoreCollections, genderSelect, getAgeAsOfSchoolStart, getClubByGrade, getGradeByAge, gradeSelect } from '@/const'
+import { clubSelect, dateOfBirthMask, dateOfBirthRegex, firestoreCollections, genderSelect, getAgeAsOfSchoolStart, getClubByGrade, getGradeByAge, gradeSelect, phoneNumberMask, phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 
 @Component({
@@ -113,11 +122,15 @@ export default class extends Vue {
     club: ''
   }
 
+  parents = [{ number: '' }, { number: '' }]
+
   readonly clubSelect = clubSelect
   readonly genderSelect = genderSelect
   readonly gradeSelect = gradeSelect
   readonly dateOfBirthMask = dateOfBirthMask
   readonly dateOfBirthRegex = dateOfBirthRegex
+  readonly phoneNumberMask = phoneNumberMask
+  readonly phoneNumberRegex = phoneNumberRegex
 
   @Watch('clubber.birthday')
   onBirthdayChange (newValue: string) {
@@ -146,7 +159,8 @@ export default class extends Vue {
       this.clubber.birthday !== '' &&
       this.clubber.gender !== '' &&
       this.clubber.grade !== '' &&
-      this.clubber.club !== ''
+      this.clubber.club !== '' &&
+      phoneNumberRegex.test(this.parents[0]?.number)
   }
 
   async validate () {
@@ -157,8 +171,9 @@ export default class extends Vue {
   async tryCreate () {
     this.creating = true
     if (await this.validate()) {
-      const newClubberId = await firebaseProject.addDocument(firestoreCollections.clubbers, this.clubber) as string
-      this.create({ uid: newClubberId, clubber: this.clubber as Clubber })
+      const clubber = { ...this.clubber, parents: this.parents.map(parent => parent.number) } as Clubber
+      const newClubberId = await firebaseProject.addDocument(firestoreCollections.clubbers, clubber) as string
+      this.create({ uid: newClubberId, clubber })
     }
     this.creating = false
   }
