@@ -1,6 +1,6 @@
 {
   "name": "com.zachcardoza.gcc.awana",
-  "displayName": "GCC AWANA",
+  "displayName": "GCC Awana",
   "version": "0.0.0",
   "dependencies": {
     "cordova-android": "~8.1.0",

@@ -1,4 +1,4 @@
-# GCC AWANA App
+# GCC Awana App
 
 App designed to track clubber's attendance and book progress each week.
 

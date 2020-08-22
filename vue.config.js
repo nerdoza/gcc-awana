@@ -23,7 +23,7 @@ module.exports = {
         /\.json$/
       ]
     },
-    name: 'GCC AWANA',
+    name: 'GCC Awana',
     themeColor: '#00bfa5',
     msTileColor: '#00bfa5',
     iconPaths: {

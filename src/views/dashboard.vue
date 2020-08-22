@@ -129,7 +129,7 @@
         <v-card>
           <v-card-title class="headline">Help</v-card-title>
           <v-card-text class="pb-0">
-            <p>This app is created and supported by the AWANA Directors at Grace Community Church. We will do our best to help you with any questions or issues you have.</p>
+            <p>This app is created and supported by the Awana Directors at Grace Community Church. We will do our best to help you with any questions or issues you have.</p>
             <p>
               <strong>Grace Community Church</strong>
               <br />

@@ -6,7 +6,7 @@
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title>Parent</v-toolbar-title>
           </v-toolbar>
-          <v-card-text>Check back here later for tools to help with your at home AWANA Clubs.</v-card-text>
+          <v-card-text>Check back here later for tools to help with your at home Awana Clubs.</v-card-text>
         </v-card>
       </v-col>
     </v-row>

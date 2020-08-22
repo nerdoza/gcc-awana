@@ -26,10 +26,10 @@ export default class extends Vue {
       general: {
         text: `
         The world looks a little different this year, but God's calling hasn't changed.
-        This is going to be a great year of discipleship through the AWANA Club program.
+        This is going to be a great year of discipleship through the Awana Club program.
         Sometimes we will meet in person, sometimes we will meet digitally, but always we will be serving the Lord by equiping children with the Gospel.
         <br/><br/>
-        The first AWANA Club night is September 9th.
+        The first Awana Club night is September 9th.
         You will receive your materials at the North Campus on that night. 
         Keep this app loaded on your phone and we'll send you updates with all the information you need.
         <br/><br/>

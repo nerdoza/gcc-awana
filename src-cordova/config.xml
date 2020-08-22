@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.zachcardoza.gcc.awana" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-  <name>GCC AWANA</name>
-  <description>Grace Community Church AWANA Club</description>
+  <name>GCC Awana</name>
+  <description>Grace Community Church Awana Club</description>
   <hook src="../node_modules/vue-cli-plugin-cordova/serve-config-hook.js" type="after_prepare"/>
   <content src="index.html"/>
   <access origin="*"/>
