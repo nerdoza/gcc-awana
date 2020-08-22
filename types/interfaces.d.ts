@@ -72,5 +72,6 @@ interface Clubber {
   birthday: string
   gender: Gender,
   grade: Grade,
-  club: Club
+  club: Club,
+  leader: string
 }

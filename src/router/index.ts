@@ -7,11 +7,11 @@ import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Dashboard from '@/views/dashboard.vue'
 import Admin from '@/views/dashboard/admin.vue'
-import Director from '@/views/dashboard/director.vue'
 import Leader from '@/views/dashboard/leader.vue'
 import Parent from '@/views/dashboard/parent.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
+import DirectorClubbers from '@/views/director/directorClubbers.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
@@ -90,9 +90,9 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'director',
-        name: 'DirectorTools',
-        component: Director,
+        path: 'director/clubbers',
+        name: 'DirectorClubbers',
+        component: DirectorClubbers,
         meta: {
           title: 'Director Tools'
         }
@@ -110,7 +110,7 @@ const routes: RouteConfig[] = [
         name: 'SuperAllUsers',
         component: SuperAllUsers,
         meta: {
-          title: 'App User Management'
+          title: 'Super User Tools'
         }
       },
       {
@@ -118,7 +118,7 @@ const routes: RouteConfig[] = [
         name: 'SuperAllClubbers',
         component: SuperAllClubbers,
         meta: {
-          title: 'Clubber Management'
+          title: 'Super User Tools'
         }
       }
     ]

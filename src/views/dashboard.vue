@@ -51,15 +51,27 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'DirectorTools' }" v-if="user.director">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$director</v-icon>
-          </v-list-item-icon>
+        <v-list-group v-if="user.director" :value="isDirOpen('Director')">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$director</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>Director Tools</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Director Tools</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'DirectorClubbers' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$clubbers</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Managment</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
 
         <v-list-group v-if="user.super" :value="isDirOpen('Super')">
           <template v-slot:activator>
