@@ -10,25 +10,46 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    function isLeader() {
+      return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.leader == true;
+    }
+
+    function isClubberLeader(clubberId) {
+      return isLeader() && get(/databases/$(database)/documents/clubbers/$(clubberId)).leader == request.auth.uid;
+    }
+
+    function isClubberParent(clubberId) {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).phoneNumber in get(/databases/$(database)/documents/clubbers/$(clubberId)).parents;
+    }
+
+    function isDirector() {
+      return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.director == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.admin == true;
+    }
+
     function isSuper() {
       return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.super == true;
     }
 
     match /users/{userId} {
       allow create: if isOwner(userId);
-      allow get, update: if isOwner(userId) || isSuper();
+      allow update: if isOwner(userId) || isSuper();
       allow list: if isSuper();
+      allow get: if isSignedIn();
     }
 
     match /userRoles/{userId} {
-      allow get: if isOwner(userId) || isSuper();
-      allow create, list, update, delete: if isSuper();
+      allow create, update, delete: if isSuper();
+      allow list: if isAdmin() || isDirector() || isSuper();
+      allow get: if isSignedIn();
     }
 
-    match /clubbers/{userId} {
-      allow create, update: if isSuper();
-      allow get: if isSignedIn();
-      allow list: if isSignedIn();
+    match /clubbers/{clubberId} {
+      allow create, update, delete: if isSuper();
+      allow get, list: if isClubberLeader(clubberId) || isClubberParent(clubberId) || isAdmin() || isDirector() || isSuper();
     }
   }
 }
