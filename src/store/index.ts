@@ -5,6 +5,7 @@ import VuexPersistence from 'vuex-persist'
 
 import { isDevelopment } from '@/const'
 
+import AppUsersStore from './appUsers'
 import NotificationStore from './notification'
 import UserStore from './user'
 
@@ -14,12 +15,13 @@ const vuexPersist = new VuexPersistence({
   strictMode: isDevelopment,
   key: isDevelopment ? 'vuex-v1-dev' : 'vuex-v1-prod',
   storage: window.localStorage,
-  reducer: (state: any) => ({ user: state.user })
+  reducer: (state: any) => ({ user: state.user, appUsers: state.appUsers })
 })
 
 const store = new Store({
   modules: {
     ...extractVuexModule(UserStore),
+    ...extractVuexModule(AppUsersStore),
     ...extractVuexModule(NotificationStore)
   },
   actions: {
@@ -38,5 +40,6 @@ export default store
 
 export const vxm = {
   user: createProxy(store, UserStore),
+  appUsers: createProxy(store, AppUsersStore),
   notification: createProxy(store, NotificationStore)
 }

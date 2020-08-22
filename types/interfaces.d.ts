@@ -64,6 +64,12 @@ interface CombinedUser extends User {
   role: UserRole
 }
 
+interface AppUser {
+  uid: string
+  user: User
+  role: UserRole
+}
+
 interface Clubber {
   firstName: string
   lastName: string

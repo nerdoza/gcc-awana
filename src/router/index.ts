@@ -16,7 +16,8 @@ import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
 import SuperAllClubbers from '@/views/superUser/allClubbers.vue'
-import SuperAllUsers from '@/views/superUser/allUsers.vue'
+import AppUserEdit from '@/views/superUser/appUserEdit.vue'
+import AppUsersList from '@/views/superUser/appUsersList.vue'
 import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
@@ -106,9 +107,18 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'super/users',
-        name: 'SuperAllUsers',
-        component: SuperAllUsers,
+        path: 'super/app-users',
+        name: 'AppUsersList',
+        component: AppUsersList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/app-users/:uid',
+        name: 'AppUserEdit',
+        component: AppUserEdit,
+        props: true,
         meta: {
           title: 'Super User Tools'
         }
