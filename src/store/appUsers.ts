@@ -16,7 +16,7 @@ const debouncedSaveRole = ({ uid, role }: {uid: string, role: UserRole}) => {
 }
 
 export default class extends createModule({ namespaced: 'appUsers', strict: false }) {
-  updatedAt: number = Date.now()
+  updatedAt: number = 0
   users: {[index: string]: User} = {}
   roles: {[index: string]: UserRole} = {}
 

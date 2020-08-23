@@ -16,7 +16,7 @@ const debouncedSaveClubber = ({ cid, clubber }: {cid: string, clubber: Clubber})
 }
 
 export default class extends createModule({ namespaced: 'clubbers', strict: false }) {
-  updatedAt: number = Date.now()
+  updatedAt: number = 0
   clubbers: {[index: string]: Clubber} = {}
 
   get clubbersList (): ClubberRecord[] {

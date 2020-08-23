@@ -62,7 +62,6 @@ import { Component, Vue } from 'vue-property-decorator'
 import ImportClubber from '@/components/cards/importClubbersCard.vue'
 import { fiveMinutes, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
-import firebaseProject from '@/plugins/firebase'
 import { vxm } from '@/store'
 
 @Component({
