@@ -47,11 +47,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="clubberImportDialog" max-width="400px" transition="dialog-bottom-transition">
-      <import-clubber
-        v-if="clubberImportDialog"
-        v-on:import="refreshData"
-        v-on:close="clubberImportDialog = false"
-      ></import-clubber>
+      <import-clubber v-if="clubberImportDialog" v-on:close="clubberImportDialog = false"></import-clubber>
     </v-dialog>
   </v-container>
 </template>

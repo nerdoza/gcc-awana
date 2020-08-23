@@ -153,13 +153,13 @@ export default class extends Vue {
     window.location.href = 'mailto:' + this.user.email
   }
 
+  close () {
+    this.$router.go(-1)
+  }
+
   @Watch('role', { deep: true })
   async onRoleChanged (role: UserRole) {
     await vxm.appUsers.updateRole({ uid: this.uid, role: { ...role } })
-  }
-
-  close () {
-    this.$router.go(-1)
   }
 }
 </script>

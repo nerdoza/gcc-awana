@@ -17,6 +17,7 @@ import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
 import AppUserEdit from '@/views/superUser/appUserEdit.vue'
 import AppUsersList from '@/views/superUser/appUsersList.vue'
+import SuperClubberEdit from '@/views/superUser/clubberEdit.vue'
 import SuperClubbersList from '@/views/superUser/clubbersList.vue'
 import Terms from '@/views/terms.vue'
 
@@ -127,6 +128,15 @@ const routes: RouteConfig[] = [
         path: 'super/clubbers',
         name: 'SuperClubbersList',
         component: SuperClubbersList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/clubbers/:cid',
+        name: 'SuperClubberEdit',
+        component: SuperClubberEdit,
+        props: true,
         meta: {
           title: 'Super User Tools'
         }
