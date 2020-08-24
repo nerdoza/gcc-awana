@@ -1,4 +1,4 @@
-# GCC Awana App
+# GCC Visalia Awana Club App
 
 App designed to track clubber's attendance and book progress each week.
 

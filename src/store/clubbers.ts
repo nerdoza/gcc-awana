@@ -56,8 +56,8 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
 
   @action
   async deleteClubberRecord ({ cid }: {cid: string}) {
-    this._deleteClubberRecord({ cid })
     await firebaseProject.deleteDocument(cid, firestoreCollections.clubbers)
+    this._deleteClubberRecord({ cid })
   }
 
   @mutation

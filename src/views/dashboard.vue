@@ -84,6 +84,16 @@
             </v-list-item-content>
           </template>
 
+          <v-list-item :to="{ name: 'NotificationsList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$notification</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Notifications</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item :to="{ name: 'AppUsersList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$users</v-icon>

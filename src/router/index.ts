@@ -20,6 +20,9 @@ import AppUserEdit from '@/views/superUser/appUserEdit.vue'
 import AppUsersList from '@/views/superUser/appUsersList.vue'
 import SuperClubberEdit from '@/views/superUser/clubberEdit.vue'
 import SuperClubbersList from '@/views/superUser/clubbersList.vue'
+import NotificationCreate from '@/views/superUser/notificationCreate.vue'
+import NotificationEdit from '@/views/superUser/notificationEdit.vue'
+import NotificationsList from '@/views/superUser/notificationsList.vue'
 import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
@@ -115,6 +118,31 @@ const routes: RouteConfig[] = [
         props: true,
         meta: {
           title: 'Director Tools'
+        }
+      },
+      {
+        path: 'super/notifications',
+        name: 'NotificationsList',
+        component: NotificationsList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/notifications/create',
+        name: 'NotificationCreate',
+        component: NotificationCreate,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/notifications/:nid',
+        name: 'NotificationEdit',
+        component: NotificationEdit,
+        props: true,
+        meta: {
+          title: 'Super User Tools'
         }
       },
       {

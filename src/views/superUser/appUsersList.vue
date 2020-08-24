@@ -8,6 +8,10 @@
             <v-btn icon class="ml-2" @click="refreshData">
               <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
             </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn icon dark @click="close">
+              <v-icon>$left</v-icon>
+            </v-btn>
           </v-toolbar>
           <v-card-text class="pb-0">
             <template v-if="!isCordova">

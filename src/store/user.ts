@@ -141,8 +141,7 @@ export default class extends createModule({ namespaced: 'user', strict: false })
       phoneNumber: this.phoneNumber,
       firstName: this.firstName,
       lastName: this.lastName,
-      email: this.email,
-      updatedAt: (new Date()).toISOString()
+      email: this.email
     })
   }
 
