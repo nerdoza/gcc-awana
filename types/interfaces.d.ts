@@ -49,7 +49,6 @@ interface User {
   lastName: string
   email: string
   phoneNumber: string
-  updatedAt: string
 }
 
 interface UserRole {
@@ -93,4 +92,16 @@ interface FlatClubber {
   parentPhone2?: string | null
   parentPhone3?: string | null
   parentPhone4?: string | null
+}
+
+interface AppNotification {
+  title: string
+  text: string
+  createdAt: number
+  sentAt?: number
+}
+
+interface AppNotificationRecord {
+  nid: string,
+  notification: AppNotification
 }

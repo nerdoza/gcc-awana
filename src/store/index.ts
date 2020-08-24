@@ -7,7 +7,8 @@ import { isDevelopment } from '@/const'
 
 import AppUsersStore from './appUsers'
 import ClubberStore from './clubbers'
-import NotificationStore from './notification'
+import NotificationsStore from './notifications'
+import SystemStore from './system'
 import UserStore from './user'
 
 Vue.use(Vuex)
@@ -16,7 +17,12 @@ const vuexPersist = new VuexPersistence({
   strictMode: isDevelopment,
   key: isDevelopment ? 'vuex-v1-dev' : 'vuex-v1-prod',
   storage: window.localStorage,
-  reducer: (state: any) => ({ user: state.user, appUsers: state.appUsers, clubbers: state.clubbers })
+  reducer: (state: any) => ({
+    user: state.user,
+    appUsers: state.appUsers,
+    clubbers: state.clubbers,
+    notifications: state.notifications
+  })
 })
 
 const store = new Store({
@@ -24,7 +30,8 @@ const store = new Store({
     ...extractVuexModule(UserStore),
     ...extractVuexModule(AppUsersStore),
     ...extractVuexModule(ClubberStore),
-    ...extractVuexModule(NotificationStore)
+    ...extractVuexModule(SystemStore),
+    ...extractVuexModule(NotificationsStore)
   },
   actions: {
     clear: async (context: any) => {
@@ -44,5 +51,6 @@ export const vxm = {
   user: createProxy(store, UserStore),
   appUsers: createProxy(store, AppUsersStore),
   clubbers: createProxy(store, ClubberStore),
-  notification: createProxy(store, NotificationStore)
+  system: createProxy(store, SystemStore),
+  notifications: createProxy(store, NotificationsStore)
 }

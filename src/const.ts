@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
 export const isAndroid = process.env.CORDOVA_PLATFORM === 'android'
 export const isIOS = process.env.CORDOVA_PLATFORM === 'ios'
@@ -40,6 +42,10 @@ export const getAgeAsOf = (birthday: string, date: Date) => {
 
 export const getAgeAsOfSchoolStart = (birthday: string) => {
   return getAgeAsOf(birthday, getSchoolStartDate())
+}
+
+export const getTimeString = (time: number) => {
+  return format(time, 'M/dd/yy \'at\' h:mm aaaa')
 }
 
 export const getGradeByAge = (age: number) => {
@@ -176,5 +182,7 @@ export const gradeSelect = [
 export const firestoreCollections = {
   users: 'users',
   userRoles: 'userRoles',
-  clubbers: 'clubbers'
+  clubbers: 'clubbers',
+  notifications: 'notifications',
+  configs: 'configs'
 }
