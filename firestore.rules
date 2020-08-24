@@ -19,7 +19,7 @@ service cloud.firestore {
     }
 
     function isClubberParent(clubberId) {
-      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).phoneNumber in get(/databases/$(database)/documents/clubbers/$(clubberId)).parents;
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.phoneNumber in get(/databases/$(database)/documents/clubbers/$(clubberId)).data.parents;
     }
 
     function isDirector() {
