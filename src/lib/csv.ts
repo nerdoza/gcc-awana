@@ -29,3 +29,20 @@ export const parseCSV = async (csvData: string | File) => {
     })
   })
 }
+
+export const exportClubberCSV = (records: ClubberRecord[], fileName: string) => {
+  const data = records.map(record => ({
+    'First Name': record.clubber.firstName,
+    'Last Name': record.clubber.lastName,
+    Club: record.clubber.club,
+    Birthday: record.clubber.birthday,
+    Gender: record.clubber.gender,
+    Grade: record.clubber.grade,
+    'Parent Phone 1': (record.clubber.parents ?? [])[0] ?? '',
+    'Parent Phone 2': (record.clubber.parents ?? [])[1] ?? '',
+    'Parent Phone 3': (record.clubber.parents ?? [])[2] ?? '',
+    'Parent Phone 4': (record.clubber.parents ?? [])[3] ?? ''
+  }))
+
+  createCSV(data, fileName)
+}

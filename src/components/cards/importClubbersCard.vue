@@ -28,7 +28,7 @@
         @click="importFile"
         class="primary mr-2 mb-2"
         v-if="state !== 'finished'"
-        :disabled="state !== 'none' && file !== null"
+        :disabled="state !== 'none' || file === null"
       >
         <v-icon class="mr-2 fa-spin" v-if="state !== 'none'">$spinner</v-icon>
         <v-icon class="mr-2" v-if="state === 'none'">$import</v-icon>Import
@@ -47,6 +47,7 @@ import { Component, Emit, Vue } from 'vue-property-decorator'
 import { firestoreCollections } from '@/const'
 import { parseCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
+import { vxm } from '@/store'
 
 const isNotValidClubber = (data: FlatClubber) => {
   return typeof data !== 'object' ||
@@ -79,16 +80,12 @@ export default class extends Vue {
     return undefined
   }
 
-  @Emit()
-  import () {
-    return undefined
-  }
-
   async importFile () {
     if (this.file !== null) {
       this.state = 'loading'
       const importData = await parseCSV(this.file) as FlatClubber[]
       this.totalToImport = importData.length
+
       for (let i = 0; i < importData.length; i++) {
         const data = importData[i]
         if (isNotValidClubber(data)) {
@@ -118,20 +115,24 @@ export default class extends Vue {
           if (typeof data.parentPhone4 !== 'undefined' && data.parentPhone4 !== '' && data.parentPhone4 !== null) {
             parents.push(data.parentPhone4)
           }
-          await firebaseProject.addDocument(firestoreCollections.clubbers, {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            birthday: format(new Date(data.birthday), 'MM/dd/yyyy'),
-            gender: data.gender ?? '',
-            club: data.club ?? '',
-            grade: data.grade?.toString() ?? '',
-            parents
+
+          await vxm.clubbers.createClubberRecord({
+            clubber: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              birthday: format(new Date(data.birthday), 'MM/dd/yyyy'),
+              gender: (data.gender ?? '') as Gender,
+              club: (data.club ?? '') as Club,
+              grade: (data.grade?.toString() ?? '') as Grade,
+              parents
+            }
           })
+
           this.imported++
         }
       }
+
       this.state = 'finished'
-      this.import()
     }
   }
 }

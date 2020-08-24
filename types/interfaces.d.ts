@@ -60,7 +60,9 @@ interface UserRole {
   super: boolean
 }
 
-interface CombinedUser extends User {
+interface AppUser {
+  uid: string
+  user: User
   role: UserRole
 }
 
@@ -73,6 +75,11 @@ interface Clubber {
   club: Club
   leader?: string
   parents?: string[]
+}
+
+interface ClubberRecord {
+  cid: string
+  clubber: Clubber
 }
 
 interface FlatClubber {

@@ -11,12 +11,15 @@ import Leader from '@/views/dashboard/leader.vue'
 import Parent from '@/views/dashboard/parent.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
-import DirectorClubbers from '@/views/director/directorClubbers.vue'
+import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
+import DirectorClubbersList from '@/views/director/clubbersList.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
-import SuperAllClubbers from '@/views/superUser/allClubbers.vue'
-import SuperAllUsers from '@/views/superUser/allUsers.vue'
+import AppUserEdit from '@/views/superUser/appUserEdit.vue'
+import AppUsersList from '@/views/superUser/appUsersList.vue'
+import SuperClubberEdit from '@/views/superUser/clubberEdit.vue'
+import SuperClubbersList from '@/views/superUser/clubbersList.vue'
 import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
@@ -90,14 +93,6 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'director/clubbers',
-        name: 'DirectorClubbers',
-        component: DirectorClubbers,
-        meta: {
-          title: 'Director Tools'
-        }
-      },
-      {
         path: 'admin',
         name: 'AdminTools',
         component: Admin,
@@ -106,17 +101,52 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'super/users',
-        name: 'SuperAllUsers',
-        component: SuperAllUsers,
+        path: 'director/clubbers',
+        name: 'DirectorClubbersList',
+        component: DirectorClubbersList,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/clubbers/:cid',
+        name: 'DirectorClubberEdit',
+        component: DirectorClubberEdit,
+        props: true,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'super/app-users',
+        name: 'AppUsersList',
+        component: AppUsersList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/app-users/:uid',
+        name: 'AppUserEdit',
+        component: AppUserEdit,
+        props: true,
         meta: {
           title: 'Super User Tools'
         }
       },
       {
         path: 'super/clubbers',
-        name: 'SuperAllClubbers',
-        component: SuperAllClubbers,
+        name: 'SuperClubbersList',
+        component: SuperClubbersList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/clubbers/:cid',
+        name: 'SuperClubberEdit',
+        component: SuperClubberEdit,
+        props: true,
         meta: {
           title: 'Super User Tools'
         }

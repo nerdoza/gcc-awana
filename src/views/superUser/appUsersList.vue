@@ -39,88 +39,59 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="userDialog" max-width="700px" transition="dialog-bottom-transition">
-      <edit-user-role v-if="userDialog" :user="focusUser" v-on:close="userDialog = false"></edit-user-role>
-    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import EditUserRole from '@/components/cards/editUserCard.vue'
-import { firestoreCollections, getFullname, getRoleSnippet, isCordova } from '@/const'
+import { fiveMinutes, getFullname, getRoleSnippet, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
-import firebaseProject from '@/plugins/firebase'
+import { vxm } from '@/store'
 
-@Component({
-  components: {
-    EditUserRole
-  }
-})
+@Component
 export default class extends Vue {
-  users: {[index: string]: CombinedUser} = {}
   loading = false
   search = ''
-  userDialog = false
-  focusUser : null | {uid: string, user: CombinedUser} = null
 
   readonly isCordova = isCordova
 
   readonly headers = [
     { text: 'Name', value: 'user.fullName', groupable: false },
-    { text: 'Role', value: 'user.roleSnippet', groupable: true }
+    { text: 'Role', value: 'role.roleSnippet', groupable: true }
   ]
 
   get usersList () {
-    return Object.keys(this.users).map(uid => ({
-      uid,
-      user: {
-        ...this.users[uid],
-        fullName: getFullname(this.users[uid]),
-        roleSnippet: getRoleSnippet(this.users[uid].role)
-      }
+    return vxm.appUsers.usersList.map(appUser => ({
+      uid: appUser.uid,
+      user: { ...appUser.user, fullName: getFullname(appUser.user) },
+      role: { ...appUser.role, roleSnippet: getRoleSnippet(appUser.role) }
     }))
   }
 
   async mounted () {
-    await this.refreshData()
+    if (vxm.appUsers.sinceUpdate > fiveMinutes) {
+      await this.refreshData()
+    }
   }
 
   async refreshData () {
     this.loading = true
-    const combinedUser: {[index: string]: CombinedUser} = {}
-    const users = await firebaseProject.getCollection(firestoreCollections.users) as {[index: string]: User}
-    const userRoles = await firebaseProject.getCollection(firestoreCollections.userRoles) as {[index: string]: UserRole}
-    Object.keys(users).forEach(uid => {
-      combinedUser[uid] = {
-        ...users[uid],
-        role: userRoles[uid] ?? {
-          leader: false,
-          club: '',
-          admin: false,
-          director: false,
-          super: false
-        }
-      }
-    })
-
-    this.users = combinedUser
+    await vxm.appUsers.getAppUsers()
     this.loading = false
   }
 
-  editUser (user: {uid: string, user: CombinedUser}) {
-    this.focusUser = user
-    this.userDialog = true
+  editUser (appUser: AppUser) {
+    this.$router.push({ name: 'AppUserEdit', params: { uid: appUser.uid } })
   }
 
   download () {
-    const data = Object.keys(this.users).map(uid => ({
-      'First Name': this.users[uid].firstName,
-      'Last Name': this.users[uid].lastName,
-      Phone: this.users[uid].phoneNumber,
-      Email: this.users[uid].email,
-      Role: getRoleSnippet(this.users[uid].role)
+    const data = this.usersList.map(appUser => ({
+      'First Name': appUser.user.firstName,
+      'Last Name': appUser.user.lastName,
+      Phone: appUser.user.phoneNumber,
+      Email: appUser.user.email,
+      Role: appUser.role.roleSnippet
     }))
 
     createCSV(data, 'app_users.csv')

@@ -16,6 +16,12 @@ export const verificationCodeMask = '######'
 export const dateOfBirthRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
 export const dateOfBirthMask = '##/##/####'
 
+export const oneMinute = 60000
+export const fiveMinutes = 300000
+export const oneHour = 3600000
+
+export const debounceSaveTimeout = 2000
+
 export const getCurrentSchoolYear = () => {
   const currentYear = (new Date()).getFullYear()
   const currentMonth = (new Date()).getMonth()
