@@ -46,6 +46,7 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
   async createClubberRecord ({ clubber }: {clubber: Clubber}) {
     const cid = await firebaseProject.addDocument(firestoreCollections.clubbers, clubber) as string
     this._upsertClubberRecord({ cid, clubber })
+    return cid
   }
 
   @action

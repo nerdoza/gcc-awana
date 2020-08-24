@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card tile id="super-clubber-edit-view">
           <v-toolbar flat dark color="primary">
-            <v-toolbar-title>Clubber</v-toolbar-title>
+            <v-toolbar-title>Edit Clubber</v-toolbar-title>
             <v-btn icon class="ml-2" @click="refreshData">
               <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
             </v-btn>

@@ -130,39 +130,13 @@
 
       <v-spacer></v-spacer>
 
-      <v-dialog max-width="420">
+      <v-dialog max-width="420" v-model="help">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>$info</v-icon>
           </v-btn>
         </template>
-        <v-card>
-          <v-card-title class="headline">Help</v-card-title>
-          <v-card-text class="pb-0">
-            <p>This app is created and supported by the Awana Directors at Grace Community Church. We will do our best to help you with any questions or issues you have.</p>
-            <p>
-              <strong>Grace Community Church</strong>
-              <br />
-              <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
-            </p>
-            <p>
-              <router-link :to="{ name: 'Terms' }">Terms &amp; Conditions</router-link>
-              <br />
-              <router-link :to="{ name: 'Privacy' }">Privacy Policy</router-link>
-            </p>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <div class="pl-4 text-caption" @click="aboutTapped">App Version: {{appVersion}}</div>
-          </v-card-actions>
-          <v-img
-            v-if="aboutTap >= 10"
-            src="~@/assets/images/easterEggs/asa.jpg"
-            contain
-            aspect-ratio="0.75"
-            class="px-4"
-          ></v-img>
-        </v-card>
+        <help-card v-on:close="help = false" />
       </v-dialog>
     </v-app-bar>
 
@@ -178,27 +152,24 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import HelpCard from '@/components/cards/helpCard.vue'
 import Notification from '@/components/notification.vue'
 import { vxm } from '@/store'
 
 @Component({
   components: {
-    Notification
+    Notification,
+    HelpCard
   }
 })
 export default class extends Vue {
-  appVersion = process.env.VUE_APP_VERSION ?? ''
   drawer = false
-  aboutTap = 0
+  help = false
 
   user = vxm.user
 
   get title () {
     return this.$store.state.route.meta.title
-  }
-
-  aboutTapped () {
-    this.aboutTap++
   }
 
   isDirOpen (dirName: string) {

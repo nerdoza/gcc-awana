@@ -18,6 +18,7 @@ import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
 import AppUserEdit from '@/views/superUser/appUserEdit.vue'
 import AppUsersList from '@/views/superUser/appUsersList.vue'
+import SuperClubberCreate from '@/views/superUser/clubberCreate.vue'
 import SuperClubberEdit from '@/views/superUser/clubberEdit.vue'
 import SuperClubbersList from '@/views/superUser/clubbersList.vue'
 import NotificationCreate from '@/views/superUser/notificationCreate.vue'
@@ -166,6 +167,14 @@ const routes: RouteConfig[] = [
         path: 'super/clubbers',
         name: 'SuperClubbersList',
         component: SuperClubbersList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/clubbers/create',
+        name: 'SuperClubberCreate',
+        component: SuperClubberCreate,
         meta: {
           title: 'Super User Tools'
         }

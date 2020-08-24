@@ -29,7 +29,7 @@
             <v-btn
               color="primary"
               class="mr-2 mb-2"
-              :disabled="!isValid || creating"
+              :disabled="creating"
               :loading="creating"
               @click="createNotification"
             >
@@ -64,16 +64,12 @@ export default class extends Vue {
   title =''
   text = ''
 
-  get isValid () {
-    return this.title !== '' && this.text !== ''
-  }
-
   async validate () {
-    return await this.form.validate() && this.isValid
+    return await this.form.validate()
   }
 
   async createNotification () {
-    if (this.isValid && this.validate()) {
+    if (await this.validate()) {
       this.creating = true
       const nid = await vxm.notifications.createNotification({ title: this.title, text: this.text })
       this.$router.replace({ name: 'NotificationEdit', params: { nid } })
