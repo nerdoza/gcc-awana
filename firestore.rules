@@ -15,7 +15,7 @@ service cloud.firestore {
     }
 
     function isClubberLeader(clubberId) {
-      return isLeader() && get(/databases/$(database)/documents/clubbers/$(clubberId)).leader == request.auth.uid;
+      return isLeader() && get(/databases/$(database)/documents/clubbers/$(clubberId)).data.leader == request.auth.uid;
     }
 
     function isClubberParent(clubberId) {
@@ -50,6 +50,16 @@ service cloud.firestore {
     match /clubbers/{clubberId} {
       allow create, update, delete: if isSuper();
       allow get, list: if isClubberLeader(clubberId) || isClubberParent(clubberId) || isAdmin() || isDirector() || isSuper();
+    }
+
+    match /notifications/{notificationId} {
+      allow create: if isSuper();
+      allow get, list: if isSignedIn();
+      allow update, delete: if isSuper() && !("sentAt" in get(/databases/$(database)/documents/notifications/$(notificationId)).data);
+    }
+
+    match /configs/notification {
+      allow get: if isSuper();
     }
   }
 }

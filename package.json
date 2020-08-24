@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "firebase emulators:start --export-on-exit=exports --import=exports",
-    "export-users": "firebase auth:export exports/accounts.json --format=json"
+    "export-users": "firebase auth:export exports/accounts.json --format=json",
+    "deploy": "firebase deploy"
   },
   "dependencies": {},
   "devDependencies": {}
