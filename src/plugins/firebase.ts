@@ -134,6 +134,8 @@ class FirebaseX {
     if (isCordova) {
       this.firebaseCordova.grantPermission(() => {})
 
+      this.firebaseCordova.subscribe('all', () => {}, () => {})
+
       this.firebaseCordova.onMessageReceived((message: {title: string, body: string}) => {
         vxm.notification.push({ title: message.title, message: message.body })
       })
