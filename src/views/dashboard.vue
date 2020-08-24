@@ -62,7 +62,7 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'DirectorClubbers' }">
+          <v-list-item :to="{ name: 'DirectorClubbersList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$clubbers</v-icon>
             </v-list-item-icon>

@@ -11,7 +11,8 @@ import Leader from '@/views/dashboard/leader.vue'
 import Parent from '@/views/dashboard/parent.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
-import DirectorClubbers from '@/views/director/directorClubbers.vue'
+import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
+import DirectorClubbersList from '@/views/director/clubbersList.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
@@ -92,19 +93,28 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'director/clubbers',
-        name: 'DirectorClubbers',
-        component: DirectorClubbers,
-        meta: {
-          title: 'Director Tools'
-        }
-      },
-      {
         path: 'admin',
         name: 'AdminTools',
         component: Admin,
         meta: {
           title: 'Admin Tools'
+        }
+      },
+      {
+        path: 'director/clubbers',
+        name: 'DirectorClubbersList',
+        component: DirectorClubbersList,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/clubbers/:cid',
+        name: 'DirectorClubberEdit',
+        component: DirectorClubberEdit,
+        props: true,
+        meta: {
+          title: 'Director Tools'
         }
       },
       {

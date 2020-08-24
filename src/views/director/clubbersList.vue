@@ -4,13 +4,9 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Clubbers</v-toolbar-title>
+            <v-toolbar-title>{{ clubName }} Clubbers</v-toolbar-title>
             <v-btn icon class="ml-2" @click="refreshData">
               <v-icon v-bind:class="{ 'fa-spin': loading }">$sync</v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn icon @click="createClubber">
-              <v-icon>$addUser</v-icon>
             </v-btn>
           </v-toolbar>
           <v-card-text class="pb-0">
@@ -19,9 +15,6 @@
                 <v-col cols="12" sm="6" class="pa-0">
                   <v-btn dark class="secondary mx-2" @click="download">
                     <v-icon>$download</v-icon>
-                  </v-btn>
-                  <v-btn dark class="secondary mr-2" @click="openImporter">
-                    <v-icon>$import</v-icon>
                   </v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" class="pa-0">
@@ -46,25 +39,18 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="clubberImportDialog" max-width="400px" transition="dialog-bottom-transition">
-      <import-clubber v-if="clubberImportDialog" v-on:close="clubberImportDialog = false"></import-clubber>
-    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
+import camelcase from 'camelcase'
 import { Component, Vue } from 'vue-property-decorator'
 
-import ImportClubber from '@/components/cards/importClubbersCard.vue'
 import { fiveMinutes, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
 import { exportClubberCSV } from '@/lib/csv'
 import { vxm } from '@/store'
 
-@Component({
-  components: {
-    ImportClubber
-  }
-})
+@Component
 export default class extends Vue {
   loading = false
   search = ''
@@ -74,21 +60,29 @@ export default class extends Vue {
   readonly headers = [
     { text: 'Name', value: 'clubber.fullName' },
     { text: 'Grade', value: 'clubber.gradeName', groupable: true },
-    { text: 'Club', value: 'clubber.clubName', groupable: true }
+    { text: 'Leader', value: 'clubber.leaderName', groupable: true }
   ]
 
-  clubberImportDialog = false
+  get clubName () {
+    return getClubByValue(vxm.user.club)
+  }
 
   get clubbersList () {
-    return vxm.clubbers.clubbersList.map(record => ({
-      cid: record.cid,
-      clubber: {
-        ...record.clubber,
-        fullName: getFullname(record.clubber),
-        gradeName: getGradeByValue(record.clubber.grade),
-        clubName: getClubByValue(record.clubber.club)
-      }
-    }))
+    return vxm.clubbers.clubbersList
+      .filter(record => record.clubber.club === vxm.user.club)
+      .map(record => ({
+        cid: record.cid,
+        clubber: {
+          ...record.clubber,
+          fullName: getFullname(record.clubber),
+          gradeName: getGradeByValue(record.clubber.grade),
+          leaderName: this.getLeaderName(record.clubber.leader)
+        }
+      }))
+  }
+
+  getLeaderName (leader?: string) {
+    return (typeof leader !== 'undefined' && vxm.appUsers.users[leader]) ? getFullname(vxm.appUsers.users[leader]) : ''
   }
 
   async mounted () {
@@ -100,23 +94,17 @@ export default class extends Vue {
   async refreshData () {
     this.loading = true
     await vxm.clubbers.getClubberRecords()
+    await vxm.appUsers.getAppUsers()
     this.loading = false
   }
 
   editClubber (clubberRecord: ClubberRecord) {
-    this.$router.push({ name: 'SuperClubberEdit', params: { cid: clubberRecord.cid } })
-  }
-
-  openImporter () {
-    this.clubberImportDialog = true
-  }
-
-  createClubber () {
-    this.$router.push({ name: 'SuperClubberCreate' })
+    this.$router.push({ name: 'DirectorClubberEdit', params: { cid: clubberRecord.cid } })
   }
 
   download () {
-    exportClubberCSV(this.clubbersList, 'AllClubbers.csv')
+    const club = camelcase(this.clubName.replace('\'', '').replace('&', ' and '), { pascalCase: true })
+    exportClubberCSV(this.clubbersList, club + 'Clubbers.csv')
   }
 }
 </script>
