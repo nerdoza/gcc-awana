@@ -184,5 +184,6 @@ export const firestoreCollections = {
   userRoles: 'userRoles',
   clubbers: 'clubbers',
   notifications: 'notifications',
-  configs: 'configs'
+  configs: 'configs',
+  updates: 'updates'
 }

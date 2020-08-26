@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="fill-height">
-    <v-row align="center" justify="center" v-for="(update, index) in updates" :key="index">
+    <v-row align="center" justify="center" v-for="(record, index) in updates" :key="index">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-        <update-card :update="update"></update-card>
+        <update-card :update="record.update"></update-card>
       </v-col>
     </v-row>
   </v-container>
@@ -12,6 +12,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import UpdateCard from '@/components/cards/updateCard.vue'
+import { oneHour } from '@/const'
+import { vxm } from '@/store'
 
 @Component({
   components: {
@@ -19,24 +21,23 @@ import UpdateCard from '@/components/cards/updateCard.vue'
   }
 })
 export default class extends Vue {
-  updates: Array<ClubUpdates> = [
-    {
-      type: 'general',
-      targetDate: new Date('08/14/2020'),
-      general: {
-        text: `
-        The world looks a little different this year, but God's calling hasn't changed.
-        This is going to be a great year of discipleship through the Awana Club program.
-        Sometimes we will meet in person, sometimes we will meet digitally, but always we will be serving the Lord by equiping children with the Gospel.
-        <br/><br/>
-        The first Awana Club night is September 9th.
-        You will receive your materials at the North Campus on that night. 
-        Keep this app loaded on your phone and we'll send you updates with all the information you need.
-        <br/><br/>
-        This is going to be a great year, thanks for being part of it!
-        `
+    loading = false
+
+    get updates () {
+      const now = Date.now()
+      return vxm.updates.updatesList.filter(records => records.update.postAt < now)
+    }
+
+    async mounted () {
+      if (vxm.updates.sinceUpdate > oneHour) {
+        await this.refreshData()
       }
     }
-  ]
+
+    async refreshData () {
+      this.loading = true
+      await vxm.updates.getUpdates()
+      this.loading = false
+    }
 }
 </script>

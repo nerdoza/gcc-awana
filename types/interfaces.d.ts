@@ -1,17 +1,3 @@
-interface ClubUpdates {
-  targetDate: Date
-  type?: 'club' | 'general'
-  general?: ClubSpecificUpdate
-  cubbies?: ClubSpecificUpdate
-  sparks?: ClubSpecificUpdate
-  tnt?: ClubSpecificUpdate
-}
-
-interface ClubSpecificUpdate {
-  text: string
-  video?: string
-}
-
 declare enum Club {
   Puggles = 'p',
   Cubbies = 'c',
@@ -104,4 +90,23 @@ interface AppNotification {
 interface AppNotificationRecord {
   nid: string,
   notification: AppNotification
+}
+
+interface ClubUpdate {
+  postAt: number
+  title: string
+  general?: ClubSpecificUpdate
+  cubbies?: ClubSpecificUpdate
+  sparks?: ClubSpecificUpdate
+  tnt?: ClubSpecificUpdate
+}
+
+interface ClubSpecificUpdate {
+  text: string
+  video?: string
+}
+
+interface ClubUpdateRecord {
+  uid: string,
+  update: ClubUpdate
 }
