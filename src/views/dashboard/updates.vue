@@ -25,7 +25,9 @@ export default class extends Vue {
 
     get updates () {
       const now = Date.now()
-      return vxm.updates.updatesList.filter(records => records.update.postAt < now && records.update.postAt > now - (oneMonth * 3))
+      return vxm.updates.updatesList
+        .filter(records => records.update.postAt < now && records.update.postAt > now - (oneMonth * 3))
+        .sort((a, b) => a.update.postAt > b.update.postAt ? -1 : 1)
     }
 
     async mounted () {

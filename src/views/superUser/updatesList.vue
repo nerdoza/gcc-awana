@@ -16,7 +16,7 @@
           <v-container class="pt-0">
             <v-row>
               <v-col cols="12" v-for="(record, index) in updatesList" :key="index">
-                <template v-if="index === activeIndex">
+                <template v-if="index === activeIndex && activeIndex > 0">
                   <v-divider></v-divider>
                   <div class="headline mx-4 my-2">Active</div>
                 </template>
@@ -76,7 +76,7 @@ export default class extends Vue {
   loading = false
 
   get updatesList () {
-    return vxm.updates.updatesList
+    return vxm.updates.updatesList.sort((a, b) => a.update.postAt > b.update.postAt ? -1 : 1)
   }
 
   get activeIndex () {

@@ -3,7 +3,6 @@
     <v-toolbar color="primary" flat dark>
       <v-toolbar-title v-text="update.title" @click="refresh"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-subheader>Posted {{posted}}</v-subheader>
     </v-toolbar>
     <template v-for="(club, index) in clubs">
       <v-divider :key="'divider-' + index" class="mx-2 my-2" v-if="index > 0"></v-divider>
@@ -32,7 +31,6 @@
 </template>
 
 <script lang="ts">
-import { formatDistanceToNow } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import cubbiesImg from '@/assets/images/cubbies.png'
@@ -44,10 +42,6 @@ import { vxm } from '@/store'
 @Component
 export default class extends Vue {
   @Prop([Object]) readonly update!: ClubUpdate
-
-  get posted () {
-    return formatDistanceToNow(this.update.postAt, { addSuffix: true })
-  }
 
   refresh () {
     vxm.updates.getUpdates()

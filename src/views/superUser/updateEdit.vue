@@ -16,6 +16,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
+                <div
+                  class="headline mb-4"
+                >{{ (update.postAt > now ? 'Will post on' : 'Posted on') }} {{postAtString}}</div>
                 <v-text-field label="Title" v-model="update.title" />
               </v-col>
               <v-col cols="12">
@@ -89,25 +92,22 @@
 </template>
 
 <script lang="ts">
-import { ValidationObserver } from 'vee-validate'
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
 import cubbiesImg from '@/assets/images/cubbies.png'
 import gccImg from '@/assets/images/gcc_arms.png'
 import sparksImg from '@/assets/images/sparks.png'
 import tntImg from '@/assets/images/tnt.png'
 import DeleteUpdateCard from '@/components/cards/deleteUpdateCard.vue'
-import { fiveMinutes } from '@/const'
+import { fiveMinutes, getTimeString } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
   components: {
-    ValidationObserver,
     DeleteUpdateCard
   }
 })
 export default class extends Vue {
-  @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
   @Prop() readonly uid!: string
 
   readonly gccImg = gccImg
@@ -124,6 +124,10 @@ export default class extends Vue {
     cubbies: { ...vxm.updates.updates[this.uid]?.cubbies || { text: '', video: '' } },
     sparks: { ...vxm.updates.updates[this.uid]?.sparks || { text: '', video: '' } },
     tnt: { ...vxm.updates.updates[this.uid]?.tnt || { text: '', video: '' } }
+  }
+
+  get postAtString () {
+    return getTimeString(this.update.postAt)
   }
 
   async mounted () {
@@ -143,6 +147,10 @@ export default class extends Vue {
       tnt: { ...vxm.updates.updates[this.uid]?.tnt || { text: '', video: '' } }
     }
     this.loading = false
+  }
+
+  get now () {
+    return Date.now()
   }
 
   close () {

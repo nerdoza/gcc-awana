@@ -25,6 +25,8 @@ export const oneMonth = 2592000000
 
 export const debounceSaveTimeout = 2000
 
+export const lastDay = new Date('06/30/2021')
+
 export const getCurrentSchoolYear = () => {
   const currentYear = (new Date()).getFullYear()
   const currentMonth = (new Date()).getMonth()

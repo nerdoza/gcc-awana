@@ -4,36 +4,35 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Create Notification</v-toolbar-title>
+            <v-toolbar-title>Create Update</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
               <v-icon>$close</v-icon>
             </v-btn>
           </v-toolbar>
-          <validation-observer ref="form">
-            <v-form @submit.prevent="trySave">
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field-with-validation label="Title" v-model="title" rules="required" />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea-with-validation label="Message" v-model="text" rules="required" />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-form>
-          </validation-observer>
+          <v-card-text>
+            <v-row justify="center">
+              <v-date-picker
+                v-model="date"
+                :allowed-dates="allowedDates"
+                class="mt-4"
+                :min="minDate"
+                :max="maxDate"
+                event-color="primary"
+                dark
+              ></v-date-picker>
+            </v-row>
+          </v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn
               color="primary"
               class="mr-2 mb-2"
-              :disabled="creating"
+              :disabled="!isValid || creating"
               :loading="creating"
-              @click="createNotification"
+              @click="createUpdate"
             >
-              <v-icon class="mr-2">$addNotification</v-icon>Create
+              <v-icon class="mr-2">$calendarAdd</v-icon>Create
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -43,36 +42,59 @@
 </template>
 
 <script lang="ts">
-import { ValidationObserver } from 'vee-validate'
-import { Component, Ref, Vue } from 'vue-property-decorator'
+import { add, endOfYesterday, format, isSameMonth, isWednesday, parse } from 'date-fns'
+import { Component, Vue } from 'vue-property-decorator'
 
-import VTextareaWithValidation from '@/components/inputs/vTextareaWithValidation.vue'
-import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
+import { lastDay } from '@/const'
 import { vxm } from '@/store'
 
-@Component({
-  components: {
-    ValidationObserver,
-    VTextFieldWithValidation,
-    VTextareaWithValidation
-  }
-})
+@Component
 export default class extends Vue {
-  @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
   creating = false
 
-  title =''
-  text = ''
+  date = ''
 
-  async validate () {
-    return await this.form.validate()
+  get isValid () {
+    return this.date !== ''
   }
 
-  async createNotification () {
-    if (await this.validate()) {
+  get title () {
+    return format(this.postAtDate, 'MMM do') + ' - ' + format(this.postAtDatePeriod, isSameMonth(this.postAtDate, this.postAtDatePeriod) ? 'do' : 'MMM do')
+  }
+
+  get postAtDate () {
+    return parse(this.date + ' 22:00', 'yyyy-MM-dd kk:mm', new Date())
+  }
+
+  get postAtDatePeriod () {
+    return add(this.postAtDate, { weeks: 1 })
+  }
+
+  get postAt () {
+    return this.postAtDate.valueOf()
+  }
+
+  get minDate () {
+    return endOfYesterday().toISOString()
+  }
+
+  get maxDate () {
+    return lastDay.toISOString()
+  }
+
+  get unavailableDates () {
+    return vxm.updates.updatesList.map(record => format(new Date(record.update.postAt), 'yyyy-MM-dd'))
+  }
+
+  allowedDates (date: string) {
+    return !this.unavailableDates.includes(date) && isWednesday(parse(date, 'yyyy-MM-dd', new Date()))
+  }
+
+  async createUpdate () {
+    if (this.isValid) {
       this.creating = true
-      const nid = await vxm.notifications.createNotification({ title: this.title, text: this.text })
-      this.$router.replace({ name: 'NotificationEdit', params: { nid } })
+      const uid = await vxm.updates.createUpdate({ title: this.title, postAt: this.postAt })
+      this.$router.replace({ name: 'SuperUpdateEdit', params: { uid } })
     }
   }
 
