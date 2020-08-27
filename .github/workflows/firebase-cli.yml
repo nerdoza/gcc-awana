@@ -1,0 +1,22 @@
+on: 
+  push:
+    branches:
+      - firebase-cli
+
+name: Firebase CLI
+
+jobs:
+
+  deploy:
+    name: Deploy Firebase
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@v1.5.0
+        with:
+          args: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
