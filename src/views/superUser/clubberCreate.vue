@@ -35,8 +35,8 @@
                       hint="MM/DD/YYYY"
                       type="tele"
                       v-model="clubber.birthday"
-                      v-facade="dateOfBirthMask"
-                      :rules="{ required: true, regex: dateOfBirthRegex }"
+                      v-facade="birthdayMask"
+                      :rules="{ required: true, regex: birthdayRegex }"
                     />
                   </v-col>
                   <v-col cols="6">
@@ -100,7 +100,7 @@ import { Component, Ref, Vue, Watch } from 'vue-property-decorator'
 
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
-import { clubSelect, dateOfBirthMask, dateOfBirthRegex, genderSelect, getAgeAsOfSchoolStart, getClubByGrade, getGradeByAge, gradeSelect, phoneNumberMask, phoneNumberRegex } from '@/const'
+import { birthdayMask, birthdayRegex, clubSelect, genderSelect, getAgeAsOfSchoolStart, getClubByGrade, getGradeByAge, gradeSelect, phoneNumberMask, phoneNumberRegex } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -133,14 +133,14 @@ export default class extends Vue {
   readonly clubSelect = clubSelect
   readonly genderSelect = genderSelect
   readonly gradeSelect = gradeSelect
-  readonly dateOfBirthMask = dateOfBirthMask
-  readonly dateOfBirthRegex = dateOfBirthRegex
+  readonly birthdayMask = birthdayMask
+  readonly birthdayRegex = birthdayRegex
   readonly phoneNumberMask = phoneNumberMask
   readonly phoneNumberRegex = phoneNumberRegex
 
   @Watch('clubber.birthday')
   onBirthdayChange (newValue: string) {
-    if (dateOfBirthRegex.test(newValue)) {
+    if (birthdayRegex.test(newValue)) {
       this.age = getAgeAsOfSchoolStart(newValue)
       if (this.clubber.grade === '') {
         this.clubber.grade = getGradeByAge(this.age)
