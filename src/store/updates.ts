@@ -2,7 +2,7 @@ import { debounce } from 'ts-debounce'
 import Vue from 'vue'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { debounceSaveTimeout, firestoreCollections } from '@/const'
+import { debounceSaveTimeout, firestoreCollections, oneMonth } from '@/const'
 import firebaseProject, { CollectionFilter } from '@/plugins/firebase'
 import { vxm } from '@/store'
 
@@ -37,7 +37,10 @@ export default class extends createModule({ namespaced: 'updates', strict: false
       orderBy: [{ fieldPath: 'postAt', directionStr: 'desc' }]
     }
     if (!vxm.user.director && !vxm.user.super) {
-      filter.where = [{ fieldPath: 'postAt', opStr: '<=', value: Date.now() }]
+      filter.where = [
+        { fieldPath: 'postAt', opStr: '<=', value: Date.now() },
+        { fieldPath: 'postAt', opStr: '>', value: Date.now() - (oneMonth * 3) }
+      ]
     }
     const updates = await firebaseProject.getCollection(firestoreCollections.updates, filter) as {[index: string]: ClubUpdate}
     this._replaceData({ updates })
@@ -57,7 +60,14 @@ export default class extends createModule({ namespaced: 'updates', strict: false
   }
 
   @action
-  async updateUpdate ({ uid, update }: {uid: string, update: { general?: ClubSpecificUpdate, cubbies?: ClubSpecificUpdate, sparks?: ClubSpecificUpdate, tnt?: ClubSpecificUpdate}}) {
+  async updateUpdateContent ({ uid, update }: {uid: string, update: { title?: string, general?: ClubSpecificUpdate, cubbies?: ClubSpecificUpdate, sparks?: ClubSpecificUpdate, tnt?: ClubSpecificUpdate }}) {
+    const updateDelta = { ...this.updates[uid], ...update }
+    await debouncedUpdateUpdate({ uid, update })
+    this._upsertUpdate({ uid, update: updateDelta })
+  }
+
+  @action
+  async updateUpdateMeta ({ uid, update }: {uid: string, update: { postAt: number }}) {
     const updateDelta = { ...this.updates[uid], ...update }
     await debouncedUpdateUpdate({ uid, update })
     this._upsertUpdate({ uid, update: updateDelta })

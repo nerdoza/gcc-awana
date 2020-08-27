@@ -15,7 +15,12 @@
           <v-list-item-title class="headline">{{ club.name }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-card-text v-html="club.update.text" :key="index" class="pt-0 py-0"></v-card-text>
+      <v-card-text
+        v-text="club.update.text"
+        style="white-space: pre-line;"
+        :key="index"
+        class="pt-0 py-0"
+      ></v-card-text>
       <v-card-actions v-if="club.update.video" :key="'action-' + index" class="py-2">
         <v-spacer></v-spacer>
         <v-btn color="primary" :href="club.update.video" target="_blank">
@@ -53,7 +58,7 @@ export default class extends Vue {
     if (this.update.general) {
       clubs.push({
         name: 'All Clubs',
-        color: 'grey darken-2',
+        color: 'green darken-3',
         img: gccImg,
         update: this.update.general
       })
@@ -80,7 +85,7 @@ export default class extends Vue {
     if (this.update.tnt) {
       clubs.push({
         name: 'T&T',
-        color: 'grey lighten-2',
+        color: 'blue lighten-3',
         img: tntImg,
         update: this.update.tnt
       })

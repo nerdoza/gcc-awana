@@ -4,7 +4,7 @@ import { action, createModule, mutation } from 'vuex-class-component'
 
 import { debounceSaveTimeout, firestoreCollections } from '@/const'
 import { sendNotification } from '@/lib/notification'
-import firebaseProject from '@/plugins/firebase'
+import firebaseProject, { CollectionFilter } from '@/plugins/firebase'
 
 const debounceInstances: {[index: string]: ({ nid, notification }: AppNotificationRecord) => void } = {}
 const debouncedUpdateNotification = ({ nid, notification }: AppNotificationRecord) => {
@@ -33,7 +33,10 @@ export default class extends createModule({ namespaced: 'notifications', strict:
 
   @action
   async getNotifications () {
-    const notifications = await firebaseProject.getCollection(firestoreCollections.notifications) as {[index: string]: AppNotification}
+    const filter: CollectionFilter = {
+      orderBy: [{ fieldPath: 'sentAt', directionStr: 'desc' }]
+    }
+    const notifications = await firebaseProject.getCollection(firestoreCollections.notifications, filter) as {[index: string]: AppNotification}
     this._replaceData({ notifications })
   }
 

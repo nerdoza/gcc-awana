@@ -12,7 +12,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import UpdateCard from '@/components/cards/updateCard.vue'
-import { oneHour } from '@/const'
+import { oneHour, oneMonth } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -25,7 +25,7 @@ export default class extends Vue {
 
     get updates () {
       const now = Date.now()
-      return vxm.updates.updatesList.filter(records => records.update.postAt < now)
+      return vxm.updates.updatesList.filter(records => records.update.postAt < now && records.update.postAt > now - (oneMonth * 3))
     }
 
     async mounted () {

@@ -94,6 +94,16 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item :to="{ name: 'SuperUpdatesList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$calendar</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Weekly Updates</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item :to="{ name: 'AppUsersList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$users</v-icon>
