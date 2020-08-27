@@ -32,7 +32,7 @@
               :loading="creating"
               @click="createUpdate"
             >
-              <v-icon class="mr-2">$calendarAdd</v-icon>Create
+              <v-icon class="mr-2">$addWeeklyUpdate</v-icon>Create
             </v-btn>
           </v-card-actions>
         </v-card>
