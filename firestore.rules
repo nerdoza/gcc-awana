@@ -61,5 +61,10 @@ service cloud.firestore {
     match /configs/notification {
       allow get: if isSuper();
     }
+
+    match /updates/{updateId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isDirector() || isSuper();
+    }
   }
 }
