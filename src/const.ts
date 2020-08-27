@@ -1,5 +1,10 @@
 import { format } from 'date-fns'
 
+import cubbiesImg from '@/assets/images/cubbies.png'
+import gccImg from '@/assets/images/gcc_arms.png'
+import sparksImg from '@/assets/images/sparks.png'
+import tntImg from '@/assets/images/tnt.png'
+
 export const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
 export const isAndroid = process.env.CORDOVA_PLATFORM === 'android'
 export const isIOS = process.env.CORDOVA_PLATFORM === 'ios'
@@ -49,6 +54,32 @@ export const getAgeAsOfSchoolStart = (birthday: string) => {
 
 export const getTimeString = (time: number) => {
   return format(time, 'M/dd/yy \'at\' h:mm aaaa')
+}
+
+export const getClubColor = (club: Club) => {
+  switch (club) {
+    case 'c':
+      return 'light-green lighten-3'
+    case 's':
+      return 'amber lighten-3'
+    case 'b':
+    case 'g':
+      return 'blue lighten-3'
+  }
+  return 'green darken-3'
+}
+
+export const getClubImg = (club: Club) => {
+  switch (club) {
+    case 'c':
+      return cubbiesImg
+    case 's':
+      return sparksImg
+    case 'b':
+    case 'g':
+      return tntImg
+  }
+  return gccImg
 }
 
 export const getGradeByAge = (age: number) => {

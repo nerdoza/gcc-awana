@@ -24,8 +24,8 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title class="headline">
-                    <v-avatar color="green darken-3" class="mr-2">
-                      <img :src="gccImg" />
+                    <v-avatar :color="getClubColor('')" class="mr-2">
+                      <img :src="getClubImg('')" />
                     </v-avatar>All Clubs
                   </v-card-title>
                   <v-card-text>
@@ -37,8 +37,8 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title class="headline">
-                    <v-avatar color="light-green lighten-3" class="mr-2">
-                      <img :src="cubbiesImg" />
+                    <v-avatar :color="getClubColor('c')" class="mr-2">
+                      <img :src="getClubImg('c')" />
                     </v-avatar>Cubbies
                   </v-card-title>
                   <v-card-text>
@@ -50,8 +50,8 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title class="headline">
-                    <v-avatar color="amber lighten-3" class="mr-2">
-                      <img :src="sparksImg" />
+                    <v-avatar :color="getClubColor('s')" class="mr-2">
+                      <img :src="getClubImg('s')" />
                     </v-avatar>Sparks
                   </v-card-title>
                   <v-card-text>
@@ -63,8 +63,8 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title class="headline">
-                    <v-avatar color="blue lighten-3" class="mr-2">
-                      <img :src="tntImg" />
+                    <v-avatar :color="getClubColor('b')" class="mr-2">
+                      <img :src="getClubImg('b')" />
                     </v-avatar>T&amp;T
                   </v-card-title>
                   <v-card-text>
@@ -94,12 +94,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import cubbiesImg from '@/assets/images/cubbies.png'
-import gccImg from '@/assets/images/gcc_arms.png'
-import sparksImg from '@/assets/images/sparks.png'
-import tntImg from '@/assets/images/tnt.png'
 import DeleteUpdateCard from '@/components/cards/deleteUpdateCard.vue'
-import { fiveMinutes, getTimeString } from '@/const'
+import { fiveMinutes, getClubColor, getClubImg, getTimeString } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -110,10 +106,8 @@ import { vxm } from '@/store'
 export default class extends Vue {
   @Prop() readonly uid!: string
 
-  readonly gccImg = gccImg
-  readonly cubbiesImg = cubbiesImg
-  readonly sparksImg = sparksImg
-  readonly tntImg = tntImg
+  readonly getClubImg = getClubImg
+  readonly getClubColor = getClubColor
 
   loading = false
   deleteDialog = false
@@ -138,7 +132,7 @@ export default class extends Vue {
 
   async refreshData () {
     this.loading = true
-    await vxm.updates.getUpdates()
+    await vxm.updates.getUpdate({ uid: this.uid })
     this.update = {
       ...vxm.updates.updates[this.uid],
       general: { ...vxm.updates.updates[this.uid]?.general || { text: '', video: '' } },

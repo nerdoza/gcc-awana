@@ -33,10 +33,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import cubbiesImg from '@/assets/images/cubbies.png'
-import gccImg from '@/assets/images/gcc_arms.png'
-import sparksImg from '@/assets/images/sparks.png'
-import tntImg from '@/assets/images/tnt.png'
+import { getClubColor, getClubImg } from '@/const'
 import { vxm } from '@/store'
 
 @Component
@@ -52,8 +49,8 @@ export default class extends Vue {
     if (this.update.general) {
       clubs.push({
         name: 'All Clubs',
-        color: 'green darken-3',
-        img: gccImg,
+        color: getClubColor('' as Club),
+        img: getClubImg('' as Club),
         update: this.update.general
       })
     }
@@ -61,8 +58,8 @@ export default class extends Vue {
     if (this.update.cubbies) {
       clubs.push({
         name: 'Cubbies',
-        color: 'light-green lighten-3',
-        img: cubbiesImg,
+        color: getClubColor('c' as Club),
+        img: getClubImg('c' as Club),
         update: this.update.cubbies
       })
     }
@@ -70,8 +67,8 @@ export default class extends Vue {
     if (this.update.sparks) {
       clubs.push({
         name: 'Sparks',
-        color: 'amber lighten-3',
-        img: sparksImg,
+        color: getClubColor('s' as Club),
+        img: getClubImg('s' as Club),
         update: this.update.sparks
       })
     }
@@ -79,8 +76,8 @@ export default class extends Vue {
     if (this.update.tnt) {
       clubs.push({
         name: 'T&T',
-        color: 'blue lighten-3',
-        img: tntImg,
+        color: getClubColor('t' as Club),
+        img: getClubImg('t' as Club),
         update: this.update.tnt
       })
     }

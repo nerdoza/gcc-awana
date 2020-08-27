@@ -138,11 +138,11 @@ export default class extends Vue {
   }
 
   async createUpdate () {
-    this.$router.push({ name: 'SuperUpdateCreate' })
+    this.$router.push({ name: 'DirectorUpdateCreate' })
   }
 
   edit (uid: string) {
-    this.$router.push({ name: 'SuperUpdateEdit', params: { uid } })
+    this.$router.push({ name: 'DirectorUpdateEdit', params: { uid } })
   }
 }
 </script>

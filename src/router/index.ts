@@ -13,6 +13,9 @@ import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
 import DirectorClubbersList from '@/views/director/clubbersList.vue'
+import DirectorUpdateCreate from '@/views/director/updateCreate.vue'
+import DirectorUpdateEdit from '@/views/director/updateEdit.vue'
+import DirectorUpdatesList from '@/views/director/updatesList.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
@@ -105,6 +108,31 @@ const routes: RouteConfig[] = [
         component: Admin,
         meta: {
           title: 'Admin Tools'
+        }
+      },
+      {
+        path: 'director/updates',
+        name: 'DirectorUpdatesList',
+        component: DirectorUpdatesList,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/updates/create',
+        name: 'DirectorUpdateCreate',
+        component: DirectorUpdateCreate,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/updates/:uid',
+        name: 'DirectorUpdateEdit',
+        component: DirectorUpdateEdit,
+        props: true,
+        meta: {
+          title: 'Director Tools'
         }
       },
       {
