@@ -13,6 +13,9 @@ import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
 import DirectorClubbersList from '@/views/director/clubbersList.vue'
+import DirectorUpdateCreate from '@/views/director/updateCreate.vue'
+import DirectorUpdateEdit from '@/views/director/updateEdit.vue'
+import DirectorUpdatesList from '@/views/director/updatesList.vue'
 import Landing from '@/views/landing.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
@@ -24,6 +27,9 @@ import SuperClubbersList from '@/views/superUser/clubbersList.vue'
 import NotificationCreate from '@/views/superUser/notificationCreate.vue'
 import NotificationEdit from '@/views/superUser/notificationEdit.vue'
 import NotificationsList from '@/views/superUser/notificationsList.vue'
+import SuperUpdateCreate from '@/views/superUser/updateCreate.vue'
+import SuperUpdateEdit from '@/views/superUser/updateEdit.vue'
+import SuperUpdatesList from '@/views/superUser/updatesList.vue'
 import Terms from '@/views/terms.vue'
 
 Vue.use(VueRouter)
@@ -105,6 +111,31 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        path: 'director/updates',
+        name: 'DirectorUpdatesList',
+        component: DirectorUpdatesList,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/updates/create',
+        name: 'DirectorUpdateCreate',
+        component: DirectorUpdateCreate,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/updates/:uid',
+        name: 'DirectorUpdateEdit',
+        component: DirectorUpdateEdit,
+        props: true,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
         path: 'director/clubbers',
         name: 'DirectorClubbersList',
         component: DirectorClubbersList,
@@ -141,6 +172,31 @@ const routes: RouteConfig[] = [
         path: 'super/notifications/:nid',
         name: 'NotificationEdit',
         component: NotificationEdit,
+        props: true,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/updates',
+        name: 'SuperUpdatesList',
+        component: SuperUpdatesList,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/updates/create',
+        name: 'SuperUpdateCreate',
+        component: SuperUpdateCreate,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/updates/:uid',
+        name: 'SuperUpdateEdit',
+        component: SuperUpdateEdit,
         props: true,
         meta: {
           title: 'Super User Tools'

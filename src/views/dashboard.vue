@@ -62,6 +62,16 @@
             </v-list-item-content>
           </template>
 
+          <v-list-item :to="{ name: 'DirectorUpdatesList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$calendar</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Weekly Updates</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item :to="{ name: 'DirectorClubbersList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$clubbers</v-icon>
@@ -91,6 +101,16 @@
 
             <v-list-item-content>
               <v-list-item-title>Notifications</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'SuperUpdatesList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$calendar</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Weekly Updates</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 

@@ -37,8 +37,8 @@
                       hint="MM/DD/YYYY"
                       type="tele"
                       v-model="clubber.birthday"
-                      v-facade="dateOfBirthMask"
-                      :rules="{ required: true, regex: dateOfBirthRegex }"
+                      v-facade="birthdayMask"
+                      :rules="{ required: true, regex: birthdayRegex }"
                     />
                   </v-col>
                   <v-col cols="12" sm="4">
@@ -162,7 +162,7 @@ import RemoveClubberCard from '@/components/cards/removeClubberCard.vue'
 import RemoveParentCard from '@/components/cards/removeParentCard.vue'
 import VSelectWithValidation from '@/components/inputs/vSelectWithValidation.vue'
 import VTextFieldWithValidation from '@/components/inputs/vTextFieldWithValidation.vue'
-import { clubSelect, dateOfBirthMask, dateOfBirthRegex, genderSelect, getFullname, gradeSelect, oneHour } from '@/const'
+import { birthdayMask, birthdayRegex, clubSelect, genderSelect, getFullname, gradeSelect, oneHour } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -185,8 +185,8 @@ export default class extends Vue {
   readonly clubSelect = clubSelect
   readonly genderSelect = genderSelect
   readonly gradeSelect = gradeSelect
-  readonly dateOfBirthMask = dateOfBirthMask
-  readonly dateOfBirthRegex = dateOfBirthRegex
+  readonly birthdayMask = birthdayMask
+  readonly birthdayRegex = birthdayRegex
 
   loading = false
   addParentDialog = false

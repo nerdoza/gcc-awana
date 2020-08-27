@@ -1,4 +1,9 @@
-import { format } from 'date-fns'
+import { differenceInYears, format, parse } from 'date-fns'
+
+import cubbiesImg from '@/assets/images/cubbies.png'
+import gccImg from '@/assets/images/gcc_arms.png'
+import sparksImg from '@/assets/images/sparks.png'
+import tntImg from '@/assets/images/tnt.png'
 
 export const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
 export const isAndroid = process.env.CORDOVA_PLATFORM === 'android'
@@ -15,14 +20,17 @@ export const phoneNumberMask = '+1 (###) ###-####'
 export const verificationCodeRegex = new RegExp(/^\d{6}$/)
 export const verificationCodeMask = '######'
 
-export const dateOfBirthRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
-export const dateOfBirthMask = '##/##/####'
+export const birthdayRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
+export const birthdayMask = '##/##/####'
 
 export const oneMinute = 60000
 export const fiveMinutes = 300000
 export const oneHour = 3600000
+export const oneMonth = 2592000000
 
 export const debounceSaveTimeout = 2000
+
+export const lastDay = parse('06/30/2021', 'MM/dd/yyyy', new Date())
 
 export const getCurrentSchoolYear = () => {
   const currentYear = (new Date()).getFullYear()
@@ -31,13 +39,11 @@ export const getCurrentSchoolYear = () => {
 }
 
 export const getSchoolStartDate = () => {
-  return new Date(getCurrentSchoolYear().toString() + '-09-01')
+  return parse((getCurrentSchoolYear().toString() + '-09-01'), 'yyyy-MM-dd', new Date())
 }
 
-export const getAgeAsOf = (birthday: string, date: Date) => {
-  const msDiff = date.getTime() - (new Date(birthday)).getTime()
-  const dateDiff = new Date(msDiff)
-  return Math.abs(dateDiff.getUTCFullYear() - 1970)
+export const getAgeAsOf = (birthday: string, asOfDate: Date) => {
+  return differenceInYears(asOfDate, parse(birthday, 'MM/dd/yyyy', new Date()))
 }
 
 export const getAgeAsOfSchoolStart = (birthday: string) => {
@@ -46,6 +52,32 @@ export const getAgeAsOfSchoolStart = (birthday: string) => {
 
 export const getTimeString = (time: number) => {
   return format(time, 'M/dd/yy \'at\' h:mm aaaa')
+}
+
+export const getClubColor = (club: Club) => {
+  switch (club) {
+    case 'c':
+      return 'light-green lighten-3'
+    case 's':
+      return 'amber lighten-3'
+    case 'b':
+    case 'g':
+      return 'blue lighten-3'
+  }
+  return 'green darken-3'
+}
+
+export const getClubImg = (club: Club) => {
+  switch (club) {
+    case 'c':
+      return cubbiesImg
+    case 's':
+      return sparksImg
+    case 'b':
+    case 'g':
+      return tntImg
+  }
+  return gccImg
 }
 
 export const getGradeByAge = (age: number) => {
@@ -184,5 +216,6 @@ export const firestoreCollections = {
   userRoles: 'userRoles',
   clubbers: 'clubbers',
   notifications: 'notifications',
-  configs: 'configs'
+  configs: 'configs',
+  updates: 'updates'
 }
