@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-12 pb-2">
     <v-toolbar color="primary" flat dark>
-      <v-toolbar-title v-text="update.title" @click="refresh"></v-toolbar-title>
+      <v-toolbar-title v-text="update.title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <template v-for="(club, index) in clubs">
@@ -34,15 +34,10 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import { getClubColor, getClubImg } from '@/const'
-import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
   @Prop([Object]) readonly update!: ClubUpdate
-
-  refresh () {
-    vxm.updates.getUpdates()
-  }
 
   get clubs () {
     const clubs = []
