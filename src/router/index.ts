@@ -7,6 +7,7 @@ import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Dashboard from '@/views/dashboard.vue'
 import Admin from '@/views/dashboard/admin.vue'
+import Calendar from '@/views/dashboard/calendar.vue'
 import Leader from '@/views/dashboard/leader.vue'
 import Parent from '@/views/dashboard/parent.vue'
 import Updates from '@/views/dashboard/updates.vue'
@@ -84,6 +85,14 @@ const routes: RouteConfig[] = [
         component: Updates,
         meta: {
           title: 'Weekly Updates'
+        }
+      },
+      {
+        path: 'calendar',
+        name: 'Calendar',
+        component: Calendar,
+        meta: {
+          title: 'Club Calendar'
         }
       },
       {

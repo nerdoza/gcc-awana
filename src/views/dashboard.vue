@@ -21,6 +21,16 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item :to="{ name: 'Calendar' }">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$calendar</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Club Calendar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item :to="{ name: 'ParentTools' }">
           <v-list-item-icon>
             <v-icon class="fa-fw">$homeHeart</v-icon>
