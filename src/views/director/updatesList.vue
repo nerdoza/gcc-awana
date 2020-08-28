@@ -10,7 +10,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn icon @click="createUpdate">
-              <v-icon>$calendarAdd</v-icon>
+              <v-icon>$addWeeklyUpdate</v-icon>
             </v-btn>
           </v-toolbar>
           <v-container class="pt-0">
