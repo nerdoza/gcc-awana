@@ -5,7 +5,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="10" md="8" lg="6" xl="4">
             <v-card class="elevation-12">
-              <v-card-text>
+              <v-card-text class="pb-0">
                 <v-row align="center" justify="center">
                   <v-col cols="5">
                     <v-img src="~@/assets/images/gcc.png"></v-img>
@@ -18,18 +18,21 @@
                 <p>This app is meant for parents and leaders of Grace Community Church Awana program. Track book progress, calculate clubber's points, and receive important instructions from the Awana directors all in one place.</p>
                 <p>If you have any questions, please contact the Church offices and ask for Brittany Kalmink.</p>
               </v-card-text>
-              <v-card-actions>
-                <v-list-item class="grow">
-                  <v-list-item-content>
+              <v-container class="pt-0">
+                <v-row>
+                  <v-col cols="auto">
                     <v-list-item-title class="text--gray">
                       Grace Community Church
                       <br />
                       <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
                     </v-list-item-title>
-                  </v-list-item-content>
-                  <v-btn color="primary" @click="getStarted()">Get Started</v-btn>
-                </v-list-item>
-              </v-card-actions>
+                  </v-col>
+                  <v-spacer />
+                  <v-col cols="auto" align="right">
+                    <v-btn color="primary" @click="getStarted()">Get Started</v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-card>
           </v-col>
         </v-row>

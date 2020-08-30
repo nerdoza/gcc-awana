@@ -31,6 +31,10 @@ export default class extends createModule({ namespaced: 'updates', strict: false
     return Date.now() - this.updatedAt
   }
 
+  get isEmpty () {
+    return Object.keys(this.updates).length === 0
+  }
+
   @action
   async getUpdates () {
     const filter: CollectionFilter = {

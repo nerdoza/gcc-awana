@@ -34,7 +34,7 @@ export default class extends Vue {
     }
 
     async mounted () {
-      if (vxm.updates.sinceUpdate > oneHour) {
+      if (vxm.updates.sinceUpdate > oneHour || vxm.updates.isEmpty) {
         await this.refreshData()
       }
       const today = new Date()
