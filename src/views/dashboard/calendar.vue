@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="fill-height">
     <v-row align="center" justify="center">
-      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title>Fall 2020 - At Home</v-toolbar-title>
@@ -35,7 +35,7 @@
           </v-container>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title>Spring 2021 - In Person</v-toolbar-title>

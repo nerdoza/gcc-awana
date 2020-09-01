@@ -8,9 +8,9 @@
       </v-btn>
     </v-toolbar>
     <v-card-text class="pb-0 pt-4">
-      <p>This app is created and supported by the Awana Directors at Grace Community Church. We will do our best to help you with any questions or issues you have.</p>
+      <p>This app is created and supported by the Awana Directors at Grace Community Church Vislia. We will do our best to help you with any questions or issues you have.</p>
       <p>
-        <strong>Grace Community Church</strong>
+        <strong>Grace Community Church Visalia</strong>
         <br />
         <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
       </p>
