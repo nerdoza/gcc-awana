@@ -130,16 +130,12 @@ export default class extends createModule({ namespaced: 'user', strict: false })
 
   @action
   async setProfile () {
-    const updateUserPromise = firebaseProject.updateUserName(this.firstName + ' ' + this.lastName)
-    const updateEmailPromise = firebaseProject.updateUserEmail(this.email)
-    const updateDBPromise = this.updateDBProfile()
+    await this.updateDBProfile()
+
     try {
-      await updateUserPromise
-      await updateEmailPromise
-    } catch (error) {
-      console.error(error)
-    }
-    await updateDBPromise
+      await firebaseProject.updateUserEmail(this.email)
+      await firebaseProject.updateUserName(this.firstName + ' ' + this.lastName)
+    } catch (error) { }
   }
 
   @action

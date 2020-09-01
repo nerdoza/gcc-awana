@@ -42,23 +42,25 @@ export default class extends createModule({ namespaced: 'updates', strict: false
     }
     if (!vxm.user.director && !vxm.user.super) {
       filter.where = [
-        { fieldPath: 'postAt', opStr: '<=', value: Date.now() },
-        { fieldPath: 'postAt', opStr: '>', value: Date.now() - (oneMonth * 3) }
+        { fieldPath: 'postAt', opStr: '<=', value: Date.now().toString() },
+        { fieldPath: 'postAt', opStr: '>', value: (Date.now() - (oneMonth * 3)).toString() }
       ]
     }
-    const updates = await firebaseProject.getCollection(firestoreCollections.updates, filter) as {[index: string]: ClubUpdate}
-    this._replaceData({ updates })
+    const updates = await firebaseProject.getCollection(firestoreCollections.updates, filter) as {[index: string]: RawClubUpdate}
+    const parsedUpdates: {[index: string]: ClubUpdate} = {}
+    Object.keys(updates).forEach(key => { parsedUpdates[key] = { ...updates[key], postAt: parseInt(updates[key].postAt, 10) } })
+    this._replaceData({ updates: parsedUpdates })
   }
 
   @action
   async getUpdate ({ uid }: {uid: string}) {
-    const update = await firebaseProject.getDocument(uid, firestoreCollections.updates) as ClubUpdate
-    this._upsertUpdate({ uid, update })
+    const update = await firebaseProject.getDocument(uid, firestoreCollections.updates) as RawClubUpdate
+    this._upsertUpdate({ uid, update: { ...update, postAt: parseInt(update.postAt, 10) } })
   }
 
   @action
   async createUpdate (update: ClubUpdate) {
-    const uid = await firebaseProject.addDocument(firestoreCollections.updates, update) as string
+    const uid = await firebaseProject.addDocument(firestoreCollections.updates, { ...update, postAt: update.postAt.toString() }) as string
     this._upsertUpdate({ uid, update })
     return uid
   }
@@ -73,7 +75,7 @@ export default class extends createModule({ namespaced: 'updates', strict: false
   @action
   async updateUpdateMeta ({ uid, update }: {uid: string, update: { postAt: number }}) {
     const updateDelta = { ...this.updates[uid], ...update }
-    await debouncedUpdateUpdate({ uid, update })
+    await debouncedUpdateUpdate({ uid, update: { ...update, postAt: update.postAt.toString() } })
     this._upsertUpdate({ uid, update: updateDelta })
   }
 

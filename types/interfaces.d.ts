@@ -101,6 +101,15 @@ interface ClubUpdate {
   tnt?: ClubSpecificUpdate
 }
 
+interface RawClubUpdate {
+  postAt: string
+  title: string
+  general?: ClubSpecificUpdate
+  cubbies?: ClubSpecificUpdate
+  sparks?: ClubSpecificUpdate
+  tnt?: ClubSpecificUpdate
+}
+
 interface ClubSpecificUpdate {
   text: string
   video?: string
