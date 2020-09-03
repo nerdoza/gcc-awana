@@ -15,7 +15,7 @@ export const parseCSV = async (csvData: string | File) => {
       dynamicTyping: true,
       skipEmptyLines: true,
       transformHeader: header => {
-        return camelcase(header)
+        return camelcase(header.replace(/[^a-zA-Z\d\s:]/, ''))
       },
       complete: (result) => {
         if (result.errors.length > 0) {

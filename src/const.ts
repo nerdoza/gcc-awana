@@ -32,6 +32,14 @@ export const debounceSaveTimeout = 2000
 
 export const lastDay = parse('06/30/2021', 'MM/dd/yyyy', new Date())
 
+export const formatPhoneNumber = (phoneNumber: string) => {
+  const cleaned = phoneNumber.replace(/\D/g, '')
+  const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
+  if (match !== null) {
+    return ['+1 ', '(', match[2], ') ', match[3], '-', match[4]].join('')
+  }
+}
+
 export const getCurrentSchoolYear = () => {
   const currentYear = (new Date()).getFullYear()
   const currentMonth = (new Date()).getMonth()
