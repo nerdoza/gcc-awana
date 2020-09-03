@@ -171,6 +171,13 @@ export const getClubByValue = (value: Club) => {
   return ''
 }
 
+export const getBookTypeByValue = (value: Club) => {
+  if (value === 'g' || value === 'b') {
+    return 't'
+  }
+  return value as 't' | 'p' | 'c' | 's'
+}
+
 export const getGradeByValue = (value: Grade) => {
   switch (value) {
     case 'p':
@@ -223,6 +230,7 @@ export const firestoreCollections = {
   users: 'users',
   userRoles: 'userRoles',
   clubbers: 'clubbers',
+  clubberBooks: 'clubberBooks',
   notifications: 'notifications',
   configs: 'configs',
   updates: 'updates'

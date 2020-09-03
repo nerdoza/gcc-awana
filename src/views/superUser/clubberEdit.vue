@@ -262,7 +262,7 @@ export default class extends Vue {
   @Watch('clubber', { deep: true })
   async onClubberChanged (clubber: Clubber) {
     if (await this.validate()) {
-      await vxm.clubbers.updateClubberRecord({ cid: this.cid, clubber: { ...clubber, parents: [...clubber.parents ?? []] } })
+      await vxm.clubbers.updateClubber({ cid: this.cid, clubber: { ...clubber, parents: [...clubber.parents ?? []] } })
     }
   }
 }

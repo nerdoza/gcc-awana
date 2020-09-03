@@ -2,7 +2,7 @@ import { debounce } from 'ts-debounce'
 import Vue from 'vue'
 import { action, createModule, mutation } from 'vuex-class-component'
 
-import { debounceSaveTimeout, firestoreCollections } from '@/const'
+import { debounceSaveTimeout, firestoreCollections, getBookTypeByValue } from '@/const'
 import firebaseProject, { CollectionFilter } from '@/plugins/firebase'
 
 import { vxm } from '.'
@@ -27,11 +27,13 @@ const clubberFiltration: () => CollectionFilter = () => {
 export default class extends createModule({ namespaced: 'clubbers', strict: false }) {
   updatedAt: number = 0
   clubbers: {[index: string]: Clubber} = {}
+  books: {[index: string]: ClubberBook} = {}
 
   get clubbersList (): ClubberRecord[] {
     return Object.keys(this.clubbers).map(cid => ({
       cid,
-      clubber: this.clubbers[cid]
+      clubber: this.clubbers[cid],
+      book: this.books[cid]
     }))
   }
 
@@ -42,57 +44,84 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
   @action
   async getClubberRecords () {
     let clubbers = await firebaseProject.getCollection(firestoreCollections.clubbers, clubberFiltration()) as {[index: string]: Clubber}
+    let books = await firebaseProject.getCollection(firestoreCollections.clubberBooks) as {[index: string]: ClubberBook}
     if (!vxm.user.needsAllClubbers && vxm.user.leader && vxm.user.club !== '') {
       const filteredClubbers: {[index: string]: Clubber} = {}
+      const filteredBooks: {[index: string]: ClubberBook} = {}
       for (const cid in clubbers) {
         const clubber = clubbers[cid]
         if (clubber.club === vxm.user.club || (typeof clubber.parents !== 'undefined' && clubber.parents.includes(vxm.user.phoneNumber))) {
           filteredClubbers[cid] = clubber
+          filteredBooks[cid] = books[cid]
         }
       }
       clubbers = filteredClubbers
+      books = filteredBooks
     }
-    this._replaceData({ clubbers })
+    this._replaceData({ clubbers, books })
   }
 
   @action
   async getClubberRecord ({ cid }: {cid: string}) {
     const clubber = await firebaseProject.getDocument(cid, firestoreCollections.clubbers) as Clubber
-    this._upsertClubberRecord({ cid, clubber })
+    const book = await firebaseProject.getDocument(cid, firestoreCollections.clubberBooks) as ClubberBook
+    this._upsertClubberRecord({ cid, clubber, book })
   }
 
   @action
   async createClubberRecord ({ clubber }: {clubber: Clubber}) {
     const cid = await firebaseProject.addDocument(firestoreCollections.clubbers, clubber) as string
-    this._upsertClubberRecord({ cid, clubber })
+    const book: ClubberBook = { type: getBookTypeByValue(clubber.club) }
+    await firebaseProject.setDocument(cid, firestoreCollections.clubberBooks, book)
+    this._upsertClubberRecord({ cid, clubber, book })
     return cid
   }
 
   @action
-  async updateClubberRecord (payload: {cid: string, clubber: Clubber}) {
-    this._upsertClubberRecord(payload)
+  async updateClubber (payload: {cid: string, clubber: Clubber}) {
+    this._updateClubber(payload)
     debouncedSaveClubber(payload)
+  }
+
+  @action
+  async updateClubberBook ({ cid, book }: {cid: string, book: ClubberBook}) {
+    this._updateClubberBook({ cid, book })
+    await firebaseProject.setDocument(cid, firestoreCollections.clubberBooks, book)
   }
 
   @action
   async deleteClubberRecord ({ cid }: {cid: string}) {
     await firebaseProject.deleteDocument(cid, firestoreCollections.clubbers)
+    await firebaseProject.deleteDocument(cid, firestoreCollections.clubberBooks)
     this._deleteClubberRecord({ cid })
   }
 
   @mutation
-  private _replaceData ({ clubbers }: {clubbers: {[index: string]: Clubber}}) {
+  private _replaceData ({ clubbers, books }: {clubbers: {[index: string]: Clubber}, books: {[index: string]: ClubberBook}}) {
     this.clubbers = clubbers
+    this.books = books
     this.updatedAt = Date.now()
   }
 
   @mutation
-  private _upsertClubberRecord ({ cid, clubber }: ClubberRecord) {
+  private _upsertClubberRecord ({ cid, clubber, book }: ClubberRecord) {
     Vue.set(this.clubbers, cid, clubber)
+    Vue.set(this.books, cid, book)
+  }
+
+  @mutation
+  private _updateClubber ({ cid, clubber }: {cid: string, clubber: Clubber}) {
+    Vue.set(this.clubbers, cid, clubber)
+  }
+
+  @mutation
+  private _updateClubberBook ({ cid, book }: {cid: string, book: ClubberBook}) {
+    Vue.set(this.books, cid, book)
   }
 
   @mutation
   private _deleteClubberRecord ({ cid }: {cid: string}) {
     Vue.delete(this.clubbers, cid)
+    Vue.delete(this.books, cid)
   }
 }

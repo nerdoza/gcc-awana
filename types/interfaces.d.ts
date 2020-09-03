@@ -62,9 +62,70 @@ interface Clubber {
   parents?: string[]
 }
 
+interface ClubberBookBase {
+  type: 'c' | 's' | 't' | 'p'
+}
+
+interface SparksBook extends ClubberBookBase {
+  type: 'c'
+  skipFlight?: boolean
+  flight?: string[]
+  rankTest?: string[]
+  redJewel1?: string[]
+  greenJewel1?: string[]
+  redJewel2?: string[]
+  greenJewel2?: string[]
+  redJewel3?: string[]
+  greenJewel3?: string[]
+  redJewel4?: string[]
+  greenJewel4?: string[]
+  rankTestReview?: string[]
+  redJewel1Review?: string[]
+  greenJewel1Review?: string[]
+  redJewel2Review?: string[]
+  greenJewel2Review?: string[]
+  redJewel3Review?: string[]
+  greenJewel3Review?: string[]
+  redJewel4Review?: string[]
+  greenJewel4Review?: string[]
+}
+
+interface TnTBook extends ClubberBookBase {
+  type: 't'
+  chapter1section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter1section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter1section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter1section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter1section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter2section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter3section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter4section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+}
+
+type ClubberBook = SparksBook | TnTBook | ClubberBookBase
+
 interface ClubberRecord {
   cid: string
   clubber: Clubber
+  book: ClubberBook
 }
 
 interface ShelbyExportedFlatClubber {
