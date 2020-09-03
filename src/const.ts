@@ -33,6 +33,8 @@ export const debounceSaveTimeout = 2000
 
 export const lastDay = parse('06/30/2021', 'MM/dd/yyyy', new Date())
 
+export const now = () => format(new Date(), 'MM/dd/yyyy')
+
 export const formatPhoneNumber = (phoneNumber: string) => {
   const cleaned = phoneNumber.replace(/\D/g, '')
   const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
@@ -281,7 +283,7 @@ export const sparksBookSectionOrder: Array<keyof SparksBook> = [
 ]
 
 export const getSparksFocusSection: (book: SparksBook) => keyof SparksBook = (book: SparksBook) => {
-  if ((typeof book.skipFlight === 'undefined' || book.skipFlight === false) && book.flight?.length !== sparksBookRequirements.flight) {
+  if ((typeof book.skipFlight === 'undefined' || !book.skipFlight) && book.flight?.length !== sparksBookRequirements.flight) {
     return 'flight'
   }
 
@@ -301,5 +303,5 @@ export const getSparksFocusSection: (book: SparksBook) => keyof SparksBook = (bo
 }
 
 export const getSparksSectionLabel = (section: keyof SparksBook) => {
-  return decamelize(section, ' ').split(' ').map(seg => seg[0].toUpperCase() + seg.slice(1)).join(' ')
+  return decamelize(section, ' ').split(' ').map(seg => seg[0].toUpperCase() + seg.slice(1)).join(' ').replace(/[^0-9](?=[0-9])/g, '$& #')
 }
