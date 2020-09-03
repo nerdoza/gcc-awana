@@ -6,19 +6,19 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
+    function isOwner() {
+      return isSignedIn() && request.auth.uid == resource.id;
     }
 
     function isLeader() {
       return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.leader == true;
     }
 
-    function isClubberLeader(clubberId) {
-      return isLeader() && get(/databases/$(database)/documents/clubbers/$(clubberId)).data.leader == request.auth.uid;
+    function isClubberParent() {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.phoneNumber in resource.data.parents;
     }
 
-    function isClubberParent(clubberId) {
+    function isClubberParentRef(clubberId) {
       return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.phoneNumber in get(/databases/$(database)/documents/clubbers/$(clubberId)).data.parents;
     }
 
@@ -35,8 +35,8 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId) || isSuper();
+      allow create: if isOwner();
+      allow update: if isOwner() || isSuper();
       allow list: if isAdmin() || isDirector() || isSuper();
       allow get: if isSignedIn();
     }
@@ -49,7 +49,12 @@ service cloud.firestore {
 
     match /clubbers/{clubberId} {
       allow create, update, delete: if isSuper();
-      allow get, list: if isClubberLeader(clubberId) || isClubberParent(clubberId) || isAdmin() || isDirector() || isSuper();
+      allow get, list: if isClubberParent() || isLeader() || isAdmin() || isDirector() || isSuper();
+    }
+
+    match /clubberBooks/{clubberId} {
+      allow update, get, list: if isClubberParentRef(clubberId) || isLeader() || isAdmin() || isDirector() || isSuper();
+      allow create, delete: if isSuper();
     }
 
     match /notifications/{notificationId} {
