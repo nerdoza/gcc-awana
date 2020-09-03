@@ -67,7 +67,7 @@ interface ClubberBookBase {
 }
 
 interface SparksBook extends ClubberBookBase {
-  type: 'c'
+  type: 's'
   skipFlight?: boolean
   flight?: string[]
   rankTest?: string[]
@@ -88,6 +88,7 @@ interface SparksBook extends ClubberBookBase {
   greenJewel3Review?: string[]
   redJewel4Review?: string[]
   greenJewel4Review?: string[]
+  completed?: string
 }
 
 interface TnTBook extends ClubberBookBase {
@@ -118,6 +119,7 @@ interface TnTBook extends ClubberBookBase {
   chapter4section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
   chapter4section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
   chapter4section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  completed?: string
 }
 
 type ClubberBook = SparksBook | TnTBook | ClubberBookBase
