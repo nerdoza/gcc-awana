@@ -3,7 +3,9 @@ import Vue from 'vue'
 import { action, createModule, mutation } from 'vuex-class-component'
 
 import { debounceSaveTimeout, firestoreCollections } from '@/const'
-import firebaseProject from '@/plugins/firebase'
+import firebaseProject, { CollectionFilter } from '@/plugins/firebase'
+
+import { vxm } from '.'
 
 const debounceInstances: {[index: string]: ({ cid, clubber }: { cid: string, clubber: Clubber}) => void } = {}
 const debouncedSaveClubber = ({ cid, clubber }: {cid: string, clubber: Clubber}) => {
@@ -13,6 +15,13 @@ const debouncedSaveClubber = ({ cid, clubber }: {cid: string, clubber: Clubber})
     }, debounceSaveTimeout)
   }
   debounceInstances[cid]({ cid, clubber })
+}
+
+const clubberFiltration: () => CollectionFilter = () => {
+  if (!vxm.user.needsAllClubbers && !vxm.user.leader) {
+    return { where: [{ fieldPath: 'parents', opStr: 'array-contains', value: vxm.user.phoneNumber }] }
+  }
+  return {}
 }
 
 export default class extends createModule({ namespaced: 'clubbers', strict: false }) {
@@ -32,7 +41,17 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
 
   @action
   async getClubberRecords () {
-    const clubbers = await firebaseProject.getCollection(firestoreCollections.clubbers) as {[index: string]: Clubber}
+    let clubbers = await firebaseProject.getCollection(firestoreCollections.clubbers, clubberFiltration()) as {[index: string]: Clubber}
+    if (!vxm.user.needsAllClubbers && vxm.user.leader && vxm.user.club !== '') {
+      const filteredClubbers: {[index: string]: Clubber} = {}
+      for (const cid in clubbers) {
+        const clubber = clubbers[cid]
+        if (clubber.club === vxm.user.club || (typeof clubber.parents !== 'undefined' && clubber.parents.includes(vxm.user.phoneNumber))) {
+          filteredClubbers[cid] = clubber
+        }
+      }
+      clubbers = filteredClubbers
+    }
     this._replaceData({ clubbers })
   }
 
