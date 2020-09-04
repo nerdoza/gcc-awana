@@ -6,8 +6,8 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isOwner() {
-      return isSignedIn() && request.auth.uid == resource.id;
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
     }
 
     function isLeader() {
@@ -35,8 +35,8 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow create: if isOwner();
-      allow update: if isOwner() || isSuper();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isSuper();
       allow list: if isAdmin() || isDirector() || isSuper();
       allow get: if isSignedIn();
     }
