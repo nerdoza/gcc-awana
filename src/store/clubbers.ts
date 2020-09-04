@@ -7,14 +7,24 @@ import firebaseProject, { CollectionFilter } from '@/plugins/firebase'
 
 import { vxm } from '.'
 
-const debounceInstances: {[index: string]: ({ cid, clubber }: { cid: string, clubber: Clubber}) => void } = {}
+const debounceClubberInstances: {[index: string]: ({ cid, clubber }: { cid: string, clubber: Clubber}) => void } = {}
 const debouncedSaveClubber = ({ cid, clubber }: {cid: string, clubber: Clubber}) => {
-  if (typeof debounceInstances[cid] === 'undefined') {
-    debounceInstances[cid] = debounce(({ cid, clubber }: {cid: string, clubber: Clubber}) => {
+  if (typeof debounceClubberInstances[cid] === 'undefined') {
+    debounceClubberInstances[cid] = debounce(({ cid, clubber }: {cid: string, clubber: Clubber}) => {
       void firebaseProject.setDocument(cid, firestoreCollections.clubbers, clubber)
     }, debounceSaveTimeout)
   }
-  debounceInstances[cid]({ cid, clubber })
+  debounceClubberInstances[cid]({ cid, clubber })
+}
+
+const debounceBookInstances: {[index: string]: ({ cid, book }: { cid: string, book: ClubberBook}) => void } = {}
+const debouncedSaveBook = ({ cid, book }: {cid: string, book: ClubberBook}) => {
+  if (typeof debounceBookInstances[cid] === 'undefined') {
+    debounceBookInstances[cid] = debounce(({ cid, book }: {cid: string, book: ClubberBook}) => {
+      void firebaseProject.setDocument(cid, firestoreCollections.clubberBooks, book)
+    }, debounceSaveTimeout)
+  }
+  debounceBookInstances[cid]({ cid, book })
 }
 
 const clubberFiltration: () => CollectionFilter = () => {
@@ -84,9 +94,9 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
   }
 
   @action
-  async updateClubberBook ({ cid, book }: {cid: string, book: ClubberBook}) {
-    this._updateClubberBook({ cid, book })
-    await firebaseProject.setDocument(cid, firestoreCollections.clubberBooks, book)
+  async updateClubberBook (payload: {cid: string, book: ClubberBook}) {
+    this._updateClubberBook(payload)
+    debouncedSaveBook(payload)
   }
 
   @action

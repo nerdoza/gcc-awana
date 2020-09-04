@@ -261,6 +261,8 @@ export const sparksBookRequirements: {[index: string]: number} = {
   greenJewel4Review: 4
 }
 
+export const sparksTotalSegmentsRequirementsPerPass = 40
+
 export const sparksBookSectionOrder: Array<keyof SparksBook> = [
   'rankTest',
   'redJewel1',
@@ -302,6 +304,28 @@ export const getSparksFocusSection: (book: SparksBook) => keyof SparksBook = (bo
   return newSection
 }
 
+export const getSparksSegmentsRequired = (book: SparksBook) => {
+  return book.skipFlight !== true ? sparksTotalSegmentsRequirementsPerPass + 4 : sparksTotalSegmentsRequirementsPerPass
+}
+
+export const getSparksSegmentsCompleted = (book: SparksBook) => {
+  let totalCompleted = 0
+
+  Object.keys(book).forEach(key => {
+    const section = book[key as keyof SparksBook]
+    if (typeof section === 'object') {
+      totalCompleted += section.length
+    }
+  })
+
+  return totalCompleted
+}
+
 export const getSparksSectionLabel = (section: keyof SparksBook) => {
-  return decamelize(section, ' ').split(' ').map(seg => seg[0].toUpperCase() + seg.slice(1)).join(' ').replace(/[^0-9](?=[0-9])/g, '$& #')
+  if (section === 'flight') {
+    return 'Flight 3:16'
+  }
+  return decamelize(section, ' ').split(' ').map(seg => seg[0].toUpperCase() + seg.slice(1)).join(' ')
+    .replace(/[^0-9](?=[0-9])/g, '$& #')
+    .replace(' Review', '')
 }

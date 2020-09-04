@@ -34,6 +34,7 @@
     "core-js": "^3.6.5",
     "date-fns": "^2.15.0",
     "decamelize": "^4.0.0",
+    "dom-confetti": "^0.2.2",
     "file-saver": "^2.0.2",
     "firebase": "^7.19.0",
     "papaparse": "^5.2.0",

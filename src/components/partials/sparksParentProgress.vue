@@ -1,20 +1,56 @@
 <template>
   <v-container class="parent-clubber-list pa-0">
-    <v-row>
-      <v-col cols="12" class="display-1">
-        <span>{{ currentSectionLabel }}</span>
+    <v-row v-if="flightUndetermined">
+      <v-col cols="12">
+        <div class="text-h6">Was this child given a Flight 3:16 booklet to start with?</div>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn color="primary" @click="setSkipFlight(true)">No</v-btn>
+      </v-col>
+      <v-spacer />
+      <v-col cols="auto">
+        <v-btn color="primary" @click="setSkipFlight(false)">Yes</v-btn>
       </v-col>
     </v-row>
-    <v-item-group v-model="sectionSteps" multiple class="section-steps">
+    <v-row v-if="!flightUndetermined">
+      <v-col cols="auto">
+        <v-progress-circular
+          :rotate="-90"
+          :size="80"
+          :width="12"
+          :value="percentageCompleted"
+          :color="inReview? 'amber' : 'primary'"
+        >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
+      </v-col>
+      <v-col cols="auto">
+        <div>Current {{ readyForReview ? 'Review' : ''}} Section</div>
+        <div class="text-h5">
+          <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
+          {{ currentSectionLabel }}
+        </div>
+      </v-col>
+    </v-row>
+    <v-item-group
+      v-model="sectionSteps"
+      multiple
+      class="section-steps"
+      ref="section-steps"
+      v-if="!flightUndetermined"
+    >
       <v-container class="pa-0">
         <v-row>
-          <v-col v-for="(n, index) in currentSectionSize" :key="index" cols="auto">
+          <v-expand-transition>
+            <v-col cols="12" v-if="isFirstSection" align="center">
+              <v-chip color="primary" pill>Tap sections as they are completed</v-chip>
+            </v-col>
+          </v-expand-transition>
+          <v-col v-for="(n, index) in currentSectionSize" :key="index" cols="auto" class="pa-2">
             <v-item v-slot:default="{ active }">
               <v-card
                 class="text-center rounded-circle d-flex align-center justify-center"
-                :color="active ? 'primary' : ''"
-                height="64"
-                width="64"
+                :color="active ? (inReview ? 'amber' : 'primary') : ''"
+                height="60"
+                width="60"
                 @click="active ? deactivate() : activate()"
                 :disabled="index !== currentStepIndex && index !== currentStepIndex - 1"
               >
@@ -33,26 +69,30 @@
         </v-row>
       </v-container>
     </v-item-group>
-    <v-overlay :value="celebrate">
-      <v-btn icon @click="celebrate = false">
-        <v-icon>$check</v-icon>
-      </v-btn>
+    <v-overlay :value="confetti" ref="confetti-root">
+      <v-icon size="100" color="yellow">$stars</v-icon>
     </v-overlay>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { confetti } from 'dom-confetti'
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
-import { getSparksFocusSection, getSparksSectionLabel, now, sparksBookRequirements } from '@/const'
+import { getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, now, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/const'
 import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
+  @Ref('confetti-root') readonly confettiRootComponent!: Vue
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: SparksBook}
 
   sectionSteps: number[] = []
-  celebrate = false
+  confetti = false
+
+  get flightUndetermined () {
+    return typeof this.record.book.skipFlight === 'undefined'
+  }
 
   get currentSectionProp () {
     return getSparksFocusSection(this.record.book)
@@ -74,19 +114,67 @@ export default class extends Vue {
     return Array.isArray(this.currentSectionRecord) ? (this.currentSectionRecord as string[]).length : 0
   }
 
-  activate () {
+  get completed () {
+    return typeof this.record.book.completed === 'string'
+  }
+
+  get segmentsRequired () {
+    return getSparksSegmentsRequired(this.record.book)
+  }
+
+  get segmentsRequiredRelative () {
+    if (this.inReview) {
+      return sparksTotalSegmentsRequirementsPerPass
+    }
+    return getSparksSegmentsRequired(this.record.book)
+  }
+
+  get segmentsCompleted () {
+    return getSparksSegmentsCompleted(this.record.book)
+  }
+
+  get segmentsCompletedRelative () {
+    if (this.inReview) {
+      return this.segmentsCompleted - this.segmentsRequired
+    }
+    return this.segmentsCompleted
+  }
+
+  get readyForReview () {
+    return this.segmentsCompleted >= this.segmentsRequired
+  }
+
+  get inReview () {
+    return this.segmentsCompleted > this.segmentsRequired
+  }
+
+  get isFirstSection () {
+    return this.segmentsCompleted === 0
+  }
+
+  get percentageCompleted () {
+    return Math.round((this.segmentsCompletedRelative / this.segmentsRequiredRelative) * 100)
+  }
+
+  async setSkipFlight (skipFlight: boolean) {
+    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, skipFlight } })
+  }
+
+  async activate () {
     let sectionRecord = this.currentSectionRecord
     if (!Array.isArray(sectionRecord)) {
       sectionRecord = []
     }
 
     if (sectionRecord.length === this.currentSectionSize - 1) {
-      this.celebrate = true
-      setTimeout(() => Vue.set(this, 'celebrate', false), 6000)
+      this.celebrate()
     }
 
     const updatedBookRecord = { ...this.record.book, [this.currentSectionProp]: [...sectionRecord, now()] }
-    vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
+    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
+    if (this.currentSectionProp === 'completed') {
+      await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, completed: now() } })
+    }
   }
 
   deactivate () {
@@ -102,6 +190,17 @@ export default class extends Vue {
     vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
   }
 
+  celebrate () {
+    this.confetti = true
+    Vue.nextTick(() => {
+      confetti(this.confettiRootComponent.$el as HTMLElement, {
+        height: '20px',
+        width: '20px'
+      })
+    })
+    setTimeout(() => { this.confetti = false }, 3000)
+  }
+
   @Watch('record.book', { deep: true, immediate: true })
   onBookChange (book: SparksBook) {
     let newSectionSteps: number[] = []
@@ -110,11 +209,6 @@ export default class extends Vue {
       newSectionSteps = section.map((value, index) => index)
     }
     Vue.set(this, 'sectionSteps', newSectionSteps)
-  }
-
-  @Watch('celebrate')
-  onCelebrate (celebrate: boolean) {
-    console.log('CELEBRATE!')
   }
 }
 </script>
