@@ -6,8 +6,8 @@
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title v-text="getFullname(record.clubber)"></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon dark @click="openClubber(record.cid)">
-              <v-icon>$right</v-icon>
+            <v-btn icon @click="openClubber(record.cid)">
+              <v-icon>$plus</v-icon>
             </v-btn>
           </v-toolbar>
           <v-card-text>

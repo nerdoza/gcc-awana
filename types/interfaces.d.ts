@@ -68,6 +68,7 @@ interface ClubberBookBase {
 
 interface SparksBook extends ClubberBookBase {
   type: 's'
+  bookNum?: number
   skipFlight?: boolean
   flight?: string[]
   rankTest?: string[]

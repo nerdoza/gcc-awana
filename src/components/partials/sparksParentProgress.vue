@@ -1,6 +1,30 @@
 <template>
   <v-container class="parent-clubber-list pa-0">
-    <v-row v-if="flightUndetermined">
+    <v-row v-if="progressStage === 'book'">
+      <v-col cols="12">
+        <div class="text-h6">Which book is this child working on?</div>
+      </v-col>
+      <v-col cols="12">
+        <v-btn block large color="white" @click="setBookNum(1)">
+          <v-img :src="getSparksBookImg(1)" contain aspect-ratio="2.53" max-height="40"></v-img>
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <v-btn block large color="white" @click="setBookNum(2)">
+          <v-img :src="getSparksBookImg(2)" contain aspect-ratio="2.53" max-height="40"></v-img>
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <v-btn block large color="white" @click="setBookNum(3)">
+          <v-img :src="getSparksBookImg(3)" contain aspect-ratio="2.53" max-height="40"></v-img>
+        </v-btn>
+      </v-col>
+      <v-spacer />
+      <v-col cols="auto">
+        <v-btn color="primary" @click="setSkipFlight(false)">Yes</v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="progressStage === 'flight'">
       <v-col cols="12">
         <div class="text-h6">Was this child given a Flight 3:16 booklet to start with?</div>
       </v-col>
@@ -12,7 +36,7 @@
         <v-btn color="primary" @click="setSkipFlight(false)">Yes</v-btn>
       </v-col>
     </v-row>
-    <v-row v-if="!flightUndetermined">
+    <v-row v-if="progressStage === 'progress'">
       <v-col cols="auto">
         <v-progress-circular
           :rotate="-90"
@@ -35,7 +59,7 @@
       multiple
       class="section-steps"
       ref="section-steps"
-      v-if="!flightUndetermined"
+      v-if="progressStage === 'progress'"
     >
       <v-container class="pa-0">
         <v-row>
@@ -69,8 +93,10 @@
         </v-row>
       </v-container>
     </v-item-group>
-    <v-overlay :value="confetti" ref="confetti-root">
-      <v-icon size="100" color="yellow">$stars</v-icon>
+    <v-overlay :value="celebrate" ref="celebrate-root">
+      <v-card color="white" class="rounded-circle pa-6 align-center justify-center">
+        <v-icon size="90" class="fa-fw" :color="celebrateColor" v-text="celebrateIcon"></v-icon>
+      </v-card>
     </v-overlay>
   </v-container>
 </template>
@@ -79,16 +105,34 @@
 import { confetti } from 'dom-confetti'
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
-import { getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, now, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/const'
+import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, now, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/const'
 import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
-  @Ref('confetti-root') readonly confettiRootComponent!: Vue
+  @Ref('celebrate-root') readonly confettiRootComponent!: Vue
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: SparksBook}
 
+  readonly getSparksBookImg = getSparksBookImg
+
   sectionSteps: number[] = []
-  confetti = false
+  celebrate = false
+  celebrateIcon = ''
+  celebrateColor = ''
+
+  get progressStage () {
+    if (this.bookNumUndetermined) {
+      return 'book'
+    }
+    if (this.flightUndetermined) {
+      return 'flight'
+    }
+    return 'progress'
+  }
+
+  get bookNumUndetermined () {
+    return typeof this.record.book.bookNum === 'undefined'
+  }
 
   get flightUndetermined () {
     return typeof this.record.book.skipFlight === 'undefined'
@@ -156,8 +200,35 @@ export default class extends Vue {
     return Math.round((this.segmentsCompletedRelative / this.segmentsRequiredRelative) * 100)
   }
 
+  getIcon (section: keyof SparksBook) {
+    if (section.includes('Jewel')) {
+      return '$gem'
+    }
+    if (section === 'flight') {
+      return '$flight'
+    }
+    return '$bookmark'
+  }
+
+  getColor (section: keyof SparksBook) {
+    if (section.includes('Review')) {
+      return 'amber'
+    }
+    if (section.includes('red')) {
+      return 'red'
+    }
+    if (section.includes('green')) {
+      return 'green'
+    }
+    return 'primary'
+  }
+
   async setSkipFlight (skipFlight: boolean) {
     await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, skipFlight } })
+  }
+
+  async setBookNum (bookNum: number) {
+    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, bookNum } })
   }
 
   async activate () {
@@ -167,7 +238,7 @@ export default class extends Vue {
     }
 
     if (sectionRecord.length === this.currentSectionSize - 1) {
-      this.celebrate()
+      this.doCelebration(this.currentSectionProp)
     }
 
     const updatedBookRecord = { ...this.record.book, [this.currentSectionProp]: [...sectionRecord, now()] }
@@ -177,7 +248,7 @@ export default class extends Vue {
     }
   }
 
-  deactivate () {
+  async deactivate () {
     let sectionRecord = this.currentSectionRecord
     if (!Array.isArray(sectionRecord)) {
       sectionRecord = []
@@ -187,18 +258,20 @@ export default class extends Vue {
     }
 
     const updatedBookRecord = { ...this.record.book, [this.currentSectionProp]: [...sectionRecord] }
-    vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
+    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
   }
 
-  celebrate () {
-    this.confetti = true
+  doCelebration (sectionProp: keyof SparksBook) {
+    this.celebrateIcon = this.getIcon(sectionProp)
+    this.celebrateColor = this.getColor(sectionProp)
+    this.celebrate = true
     Vue.nextTick(() => {
       confetti(this.confettiRootComponent.$el as HTMLElement, {
         height: '20px',
         width: '20px'
       })
     })
-    setTimeout(() => { this.confetti = false }, 3000)
+    setTimeout(() => { this.celebrate = false }, 3000)
   }
 
   @Watch('record.book', { deep: true, immediate: true })

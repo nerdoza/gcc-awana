@@ -4,6 +4,9 @@ import decamelize from 'decamelize'
 import cubbiesImg from '@/assets/images/cubbies.png'
 import gccImg from '@/assets/images/gcc_arms.png'
 import sparksImg from '@/assets/images/sparks.png'
+import sparksHangGlider from '@/assets/images/sparksBooks/hang_glider.png'
+import sparksSkyStormer from '@/assets/images/sparksBooks/sky_stormer.png'
+import sparksWingRunner from '@/assets/images/sparksBooks/wing_runner.png'
 import tntImg from '@/assets/images/tnt.png'
 
 export const isCordova = typeof process.env.CORDOVA_PLATFORM !== 'undefined'
@@ -328,4 +331,14 @@ export const getSparksSectionLabel = (section: keyof SparksBook) => {
   return decamelize(section, ' ').split(' ').map(seg => seg[0].toUpperCase() + seg.slice(1)).join(' ')
     .replace(/[^0-9](?=[0-9])/g, '$& #')
     .replace(' Review', '')
+}
+
+export const getSparksBookImg = (bookNum: number) => {
+  if (bookNum === 3) {
+    return sparksSkyStormer
+  }
+  if (bookNum === 2) {
+    return sparksWingRunner
+  }
+  return sparksHangGlider
 }
