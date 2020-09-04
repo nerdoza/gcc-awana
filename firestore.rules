@@ -14,10 +14,6 @@ service cloud.firestore {
       return isSignedIn() && get(/databases/$(database)/documents/userRoles/$(request.auth.uid)).data.leader == true;
     }
 
-    function isClubberParent() {
-      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.phoneNumber in resource.data.parents;
-    }
-
     function isClubberParentRef(clubberId) {
       return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.phoneNumber in get(/databases/$(database)/documents/clubbers/$(clubberId)).data.parents;
     }
@@ -49,11 +45,13 @@ service cloud.firestore {
 
     match /clubbers/{clubberId} {
       allow create, update, delete: if isSuper();
-      allow get, list: if isClubberParent() || isLeader() || isAdmin() || isDirector() || isSuper();
+      // I don't like this, but can't solve without switching to UID
+      allow get, list: if isSignedIn();
     }
 
     match /clubberBooks/{clubberId} {
-      allow update, get, list: if isClubberParentRef(clubberId) || isLeader() || isAdmin() || isDirector() || isSuper();
+      allow list: if isSignedIn();
+      allow update, get: if isClubberParentRef(clubberId) || isLeader() || isAdmin() || isDirector() || isSuper();
       allow create, delete: if isSuper();
     }
 
