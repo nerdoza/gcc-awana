@@ -101,7 +101,7 @@ const routes: RouteConfig[] = [
         name: 'ParentClubbersList',
         component: ParentClubbersList,
         meta: {
-          title: 'Parent Tools'
+          title: 'My Clubbers'
         }
       },
       {
@@ -110,7 +110,7 @@ const routes: RouteConfig[] = [
         component: ParentClubberView,
         props: true,
         meta: {
-          title: 'Parent Tools'
+          title: 'My Clubbers'
         }
       },
       {

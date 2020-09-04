@@ -31,27 +31,15 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-group :value="isDirOpen('Parent')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$homeHeart</v-icon>
-            </v-list-item-icon>
+        <v-list-item :to="{ name: 'ParentClubbersList' }">
+          <v-list-item-icon>
+            <v-icon class="fa-fw">$child</v-icon>
+          </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title>Parent Tools</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'ParentClubbersList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$child</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>My Clubbers</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
+          <v-list-item-content>
+            <v-list-item-title>My Clubbers</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
         <v-list-item :to="{ name: 'LeaderTools' }" v-if="user.leader">
           <v-list-item-icon>
@@ -184,7 +172,9 @@
 
     <v-main>
       <v-container fluid>
-        <router-view ref="router"></router-view>
+        <v-slide-x-transition leave-absolute hide-on-leave>
+          <router-view ref="router"></router-view>
+        </v-slide-x-transition>
       </v-container>
     </v-main>
     <notification></notification>
