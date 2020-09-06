@@ -31,14 +31,19 @@ export const tntBookSchedule: {[index: string]: (keyof TnTBook)} = {
   '04/21/2021': 'chapter4section7'
 }
 
+export const tntBookDates = Object.keys(tntBookSchedule) as Array<keyof TnTBook>
+export const tntBookSections = tntBookDates.map(key => tntBookSchedule[key])
+
 export const tntSkipReview = [
   'chapter1section1'
 ]
 
+export const tntSectionProperties = ['start', 'explore', 'memorize', 'review', 'silver', 'gold']
+
 export const tntBookImg = agentOfGrace
 
 export const tntKeyForDate = (date: Date) => {
-  return Object.keys(tntBookSchedule).find(key => {
+  return tntBookDates.find(key => {
     const keyDate = parse(key, 'MM/dd/yyyy', new Date())
     return isSameDay(keyDate, date) || isBefore(date, keyDate)
   }) ?? '09/16/2020'
@@ -52,7 +57,7 @@ export const tntSectionLabel = (section: string) => {
   return ''
 }
 
-export const tntTotalSections = 26
+export const tntTotalSections = Object.keys(tntBookSchedule).length
 
 export const tntSectionSkipReview = (sectionName: keyof TnTBook) => {
   return tntSkipReview.includes(sectionName)
@@ -86,9 +91,23 @@ export const tntSilversCompleted = (book: TnTBook) => {
   return totalCompleted
 }
 
+export const tntGoldsCompleted = (book: TnTBook) => {
+  let totalCompleted = 0
+
+  Object.keys(book).forEach(key => {
+    const sectionName = key as keyof TnTBook
+    const section = book[sectionName]
+    if (typeof section === 'object' && typeof section.gold === 'string') {
+      totalCompleted++
+    }
+  })
+
+  return totalCompleted
+}
+
 export const tntSectionCompleted = (sectionName: keyof TnTBook, section: TnTBookSection) => {
   const skipReview = tntSectionSkipReview(sectionName)
-  return typeof section.explore === 'string' && typeof section.memorize === 'string' && (skipReview || typeof section.review === 'string')
+  return typeof section.start === 'string' && typeof section.explore === 'string' && typeof section.memorize === 'string' && (skipReview || typeof section.review === 'string')
 }
 
 export const tntPropertyIcon = (propertName: keyof TnTBookSection) => {
@@ -108,19 +127,35 @@ export const tntPropertyIcon = (propertName: keyof TnTBookSection) => {
   }
 }
 
-export const tntPropertyColor = (propertName: keyof TnTBookSection) => {
+export const tntPropertyColor = (propertName: keyof TnTBookSection, alt: boolean = false) => {
+  if (!alt) {
+    switch (propertName) {
+      case 'start':
+        return 'orange'
+      case 'explore':
+        return 'light-blue darken-2'
+      case 'memorize':
+        return 'pink darken-4'
+      case 'review':
+        return 'light-green darken-2'
+      case 'silver':
+        return 'grey lighten-1'
+      case 'gold':
+        return 'amber'
+    }
+  }
   switch (propertName) {
     case 'start':
-      return 'amber'
+      return 'orange lighten-3'
     case 'explore':
-      return 'light-blue darken-2'
+      return 'light-blue lighten-3'
     case 'memorize':
-      return 'pink darken-4'
+      return 'pink lighten-3'
     case 'review':
-      return 'light-green darken-2'
+      return 'light-green lighten-3'
     case 'silver':
-      return 'grey lighten-1'
+      return 'grey lighten-3'
     case 'gold':
-      return 'amber'
+      return 'amber lighten-3'
   }
 }

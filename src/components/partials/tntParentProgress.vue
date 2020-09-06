@@ -19,10 +19,7 @@
       </v-col>
       <v-col cols="auto">
         <div>Current Section</div>
-        <div class="text-h5">
-          <v-icon v-if="allCompleted" color="yellow darken-3" size="30">$award</v-icon>
-          <span v-html="currentSectionLabel"></span>
-        </div>
+        <div class="text-h5" v-html="currentSectionLabel"></div>
       </v-col>
     </v-row>
     <v-row>
@@ -32,22 +29,22 @@
         </v-col>
       </v-expand-transition>
       <v-col
-        v-for="(value, propertyName) in sectionState"
-        :key="propertyName"
+        v-for="(propertyName, index) of tntSectionProperties"
+        :key="index"
         cols="auto"
         class="pa-2"
       >
         <v-card
           class="section-props text-center rounded-circle d-flex align-center justify-center"
-          :color="!value ? 'white' : getPropColor(propertyName)"
+          :color="getValue(currentSection, propertyName) ? tntPropertyColor(propertyName): 'white'"
           height="60"
           width="60"
-          @click="setProp(propertyName, !value)"
-          :disabled="propertyName === 'review' && skipReview"
+          @click="setProp(propertyName)"
+          :disabled="propertyName === 'review' && tntSectionSkipReview(currentSection)"
         >
           <v-icon
-            :color="value ? 'white' : getPropColor(propertyName)"
-            v-text="getPropIcon(propertyName)"
+            :color="getValue(currentSection, propertyName) ? 'white' : tntPropertyColor(propertyName, true)"
+            v-text="tntPropertyIcon(propertyName)"
           ></v-icon>
         </v-card>
       </v-col>
@@ -62,10 +59,10 @@
 
 <script lang="ts">
 import { confetti } from 'dom-confetti'
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
 
 import { now } from '@/const'
-import { tntBookSchedule, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionLabel, tntSectionsCompleted, tntSectionSkipReview, tntSkipReview, tntTotalSections } from '@/lib/tnt'
+import { tntBookSchedule, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionCompleted, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
 @Component
@@ -74,17 +71,13 @@ export default class extends Vue {
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: TnTBook}
 
   readonly tntTotalSections = tntTotalSections
+  readonly tntSectionProperties = tntSectionProperties
+  readonly tntSectionSkipReview = tntSectionSkipReview
+  readonly tntPropertyIcon = tntPropertyIcon
+  readonly tntPropertyColor = tntPropertyColor
 
   celebrate = false
   showTip = this.currentSection === 'chapter1section1' && typeof this.record.book.chapter1section1?.start === 'undefined'
-  sectionState = {
-    start: false,
-    explore: false,
-    memorize: false,
-    review: false,
-    silver: false,
-    gold: false
-  }
 
   get currentKey () {
     return tntKeyForDate(new Date())
@@ -107,11 +100,11 @@ export default class extends Vue {
   }
 
   get sectionCompleted () {
-    return this.sectionState.start && this.sectionState.explore && this.sectionState.memorize && (this.skipReview || this.sectionState.review)
-  }
-
-  get allCompleted () {
-    return this.sectionsCompleted === tntTotalSections
+    const sectionRecord = this.record.book[this.currentSection]
+    if (typeof sectionRecord === 'object') {
+      return tntSectionCompleted(this.currentSection, sectionRecord)
+    }
+    return false
   }
 
   get skipReview () {
@@ -119,59 +112,50 @@ export default class extends Vue {
   }
 
   get checkColor () {
-    if (this.sectionState.gold) {
-      return 'amber'
+    if (this.getValue(this.currentSection, 'gold')) {
+      return this.tntPropertyColor('gold')
     }
-    if (this.sectionState.silver) {
-      return 'grey lighten-1'
+    if (this.getValue(this.currentSection, 'silver')) {
+      return this.tntPropertyColor('silver')
     }
     return 'primary'
   }
 
-  getPropIcon (propertyName: keyof TnTBookSection) {
-    return tntPropertyIcon(propertyName)
+  getValue (section: keyof TnTBook, propertyName: keyof TnTBookSection) {
+    const sectionRecord = this.record.book[section]
+    if (typeof sectionRecord === 'object') {
+      return typeof sectionRecord[propertyName] === 'string'
+    }
+    return false
   }
 
-  getPropColor (propertyName: keyof TnTBookSection) {
-    return tntPropertyColor(propertyName)
-  }
-
-  async setProp (propertyName: keyof TnTBookSection, value: boolean) {
+  async setProp (propertyName: keyof TnTBookSection) {
     if (this.showTip) {
       this.showTip = false
     }
 
-    const currentSection = this.currentSection
-    let currentSectionRecord = this.record.book[currentSection]
+    const section = this.currentSection
+    const toValue = !this.getValue(section, propertyName)
+    let currentSectionRecord = this.record.book[section]
 
     if (typeof currentSectionRecord === 'object') {
       currentSectionRecord = { ...currentSectionRecord }
-      if (value) {
+      if (toValue) {
         currentSectionRecord[propertyName] = now()
       } else {
         const { [propertyName]: _, ...currentSectionRecordMod } = currentSectionRecord
         currentSectionRecord = currentSectionRecordMod
       }
     } else {
-      if (value) {
+      if (toValue) {
         currentSectionRecord = { [propertyName]: now() }
       } else {
         currentSectionRecord = {}
       }
     }
 
-    const updatedBookRecord = { ...this.record.book, [currentSection]: currentSectionRecord }
+    const updatedBookRecord = { ...this.record.book, [section]: currentSectionRecord }
     await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
-  }
-
-  @Watch('record.book', { deep: true, immediate: true })
-  onBookChange (book: TnTBook) {
-    const sectionState = book[this.currentSection]
-    if (typeof sectionState === 'object') {
-      Object.keys(this.sectionState).forEach(key => {
-        Vue.set(this.sectionState, key, typeof sectionState[key as keyof TnTBookSection] === 'string')
-      })
-    }
   }
 }
 </script>
@@ -184,10 +168,10 @@ export default class extends Vue {
     }
 
     &.v-card--disabled {
-      background-color: #e0e0e0 !important;
+      background-color: #fafafa !important;
 
       .v-icon {
-        color: #424242 !important;
+        color: #e0e0e0 !important;
       }
     }
   }
