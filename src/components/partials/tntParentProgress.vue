@@ -51,7 +51,7 @@
     </v-row>
     <v-overlay :value="celebrate" ref="celebrate-root">
       <v-card color="white" class="rounded-circle pa-6 align-center justify-center">
-        <v-icon size="90" class="fa-fw" color="primary">$award</v-icon>
+        <v-icon size="90" class="fa-fw" :color="celebrateColor" v-text="celebrateIcon"></v-icon>
       </v-card>
     </v-overlay>
   </v-container>
@@ -59,10 +59,10 @@
 
 <script lang="ts">
 import { confetti } from 'dom-confetti'
-import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
 import { now } from '@/const'
-import { tntBookSchedule, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionCompleted, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntTotalSections } from '@/lib/tnt'
+import { tntBookSchedule, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionCompleted, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
 @Component
@@ -77,6 +77,8 @@ export default class extends Vue {
   readonly tntPropertyColor = tntPropertyColor
 
   celebrate = false
+  celebrateColor = ''
+  celebrateIcon = ''
   showTip = this.currentSection === 'chapter1section1' && typeof this.record.book.chapter1section1?.start === 'undefined'
 
   get currentKey () {
@@ -97,6 +99,14 @@ export default class extends Vue {
 
   get percentageCompleted () {
     return Math.round((this.sectionsCompleted / tntTotalSections) * 100)
+  }
+
+  get silverCompleted () {
+    return tntSilversCompleted(this.record.book)
+  }
+
+  get goldCompleted () {
+    return tntGoldsCompleted(this.record.book)
   }
 
   get sectionCompleted () {
@@ -156,6 +166,40 @@ export default class extends Vue {
 
     const updatedBookRecord = { ...this.record.book, [section]: currentSectionRecord }
     await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
+  }
+
+  doCelebration (type: 'normal' | 'gold' | 'silver') {
+    this.celebrateColor = type === 'normal' ? 'primary' : tntPropertyColor(type)
+    this.celebrateIcon = type === 'normal' ? '$award' : '$medal'
+    this.celebrate = true
+    Vue.nextTick(() => {
+      confetti(this.confettiRootComponent.$el as HTMLElement, {
+        height: '20px',
+        width: '20px'
+      })
+    })
+    setTimeout(() => { this.celebrate = false }, 3000)
+  }
+
+  @Watch('sectionsCompleted')
+  onSectionsCompletedChange (sectionsCompleted: number, oldSectionsCompleted: number) {
+    if (sectionsCompleted > oldSectionsCompleted && sectionsCompleted % 4 === 0) {
+      this.doCelebration('normal')
+    }
+  }
+
+  @Watch('silverCompleted')
+  onSilversCompletedChange (sectionsCompleted: number, oldSectionsCompleted: number) {
+    if (sectionsCompleted > oldSectionsCompleted && sectionsCompleted % 4 === 0) {
+      this.doCelebration('silver')
+    }
+  }
+
+  @Watch('goldCompleted')
+  onGoldsCompletedChange (sectionsCompleted: number, oldSectionsCompleted: number) {
+    if (sectionsCompleted > oldSectionsCompleted && sectionsCompleted % 4 === 0) {
+      this.doCelebration('gold')
+    }
   }
 }
 </script>

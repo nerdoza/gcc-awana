@@ -3,8 +3,9 @@
     <v-row no-gutters>
       <v-img :src="tntBookImg" contain aspect-ratio="3.06" max-height="100"></v-img>
     </v-row>
-    <v-row>
-      <v-col cols="auto" class="text-center">
+    <v-row class="px-2">
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
           :rotate="-90"
           :size="80"
@@ -13,7 +14,8 @@
           color="primary"
         >{{sectionsCompleted}}/{{tntTotalSections}}</v-progress-circular>
       </v-col>
-      <v-col cols="auto" class="text-center">
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
           :rotate="-90"
           :size="80"
@@ -22,7 +24,8 @@
           :color="tntPropertyColor('silver')"
         >{{silverCompleted}}/{{tntTotalSections}}</v-progress-circular>
       </v-col>
-      <v-col cols="auto" class="text-center">
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
           :rotate="-90"
           :size="80"
@@ -31,6 +34,7 @@
           :color="tntPropertyColor('gold')"
         >{{goldCompleted}}/{{tntTotalSections}}</v-progress-circular>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
     <v-row>
       <v-col cols="auto" class="pt-0">
@@ -52,7 +56,7 @@
         v-for="(propertyName, index) of tntSectionProperties"
         :key="index"
         cols="auto"
-        class="pa-2"
+        class="px-2 pt-0"
       >
         <v-card
           class="section-props text-center rounded-circle d-flex align-center justify-center"
