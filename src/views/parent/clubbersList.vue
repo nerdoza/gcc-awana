@@ -10,12 +10,15 @@
               <v-icon>$more</v-icon>
             </v-btn>
           </v-toolbar>
-          <v-card-text>
-            <template v-if="record.book.type === 't'">
-              <t-n-t-parent-progress :record="record"></t-n-t-parent-progress>
+          <v-card-text class="py-2 px-3">
+            <template v-if="record.book.type === 'c'">
+              <cubbies-parent-progress :record="record"></cubbies-parent-progress>
             </template>
             <template v-if="record.book.type === 's'">
               <sparks-parent-progress :record="record"></sparks-parent-progress>
+            </template>
+            <template v-if="record.book.type === 't'">
+              <t-n-t-parent-progress :record="record"></t-n-t-parent-progress>
             </template>
           </v-card-text>
         </v-card>
@@ -27,6 +30,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import CubbiesParentProgress from '@/components/partials/cubbiesParentProgress.vue'
 import SparksParentProgress from '@/components/partials/sparksParentProgress.vue'
 import TNTParentProgress from '@/components/partials/tntParentProgress.vue'
 import { fiveMinutes, getFullname } from '@/const'
@@ -35,7 +39,8 @@ import { vxm } from '@/store'
 @Component({
   components: {
     SparksParentProgress,
-    TNTParentProgress
+    TNTParentProgress,
+    CubbiesParentProgress
   }
 })
 export default class extends Vue {

@@ -7,9 +7,9 @@
       <v-spacer></v-spacer>
       <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
-          :rotate="-90"
-          :size="80"
-          :width="12"
+          rotate="-90"
+          :size="largeRadialSize"
+          width="12"
           :value="percentageCompleted"
           color="primary"
         >{{sectionsCompleted}}/{{tntTotalSections}}</v-progress-circular>
@@ -17,9 +17,9 @@
       <v-spacer></v-spacer>
       <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
-          :rotate="-90"
-          :size="80"
-          :width="12"
+          rotate="-90"
+          :size="largeRadialSize"
+          width="12"
           :value="silverPercentageCompleted"
           :color="tntPropertyColor('silver')"
         >{{silverCompleted}}/{{tntTotalSections}}</v-progress-circular>
@@ -27,9 +27,9 @@
       <v-spacer></v-spacer>
       <v-col cols="auto" class="text-center px-0">
         <v-progress-circular
-          :rotate="-90"
-          :size="80"
-          :width="12"
+          rotate="-90"
+          :size="largeRadialSize"
+          width="12"
           :value="goldPercentageCompleted"
           :color="tntPropertyColor('gold')"
         >{{goldCompleted}}/{{tntTotalSections}}</v-progress-circular>
@@ -61,8 +61,8 @@
         <v-card
           class="section-props text-center rounded-circle d-flex align-center justify-center"
           :color="getValue(tntBookSchedule[date], propertyName) ? tntPropertyColor(propertyName) : 'white'"
-          height="30"
-          width="30"
+          :height="smallRadialSize"
+          :width="smallRadialSize"
           @click="setProp(tntBookSchedule[date], propertyName)"
           :disabled="propertyName === 'review' && tntSectionSkipReview(tntBookSchedule[date])"
         >
@@ -81,7 +81,7 @@
 import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import { now } from '@/const'
+import { largeRadialSize, now, smallRadialSize } from '@/const'
 import { tntBookDates, tntBookImg, tntBookSchedule, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
@@ -98,6 +98,8 @@ export default class extends Vue {
   readonly tntSectionProperties = tntSectionProperties
   readonly tntPropertyIcon = tntPropertyIcon
   readonly tntPropertyColor = tntPropertyColor
+  readonly largeRadialSize = largeRadialSize
+  readonly smallRadialSize = smallRadialSize
 
   get currentKey () {
     return tntKeyForDate(new Date())
@@ -157,6 +159,7 @@ export default class extends Vue {
       if (toValue) {
         currentSectionRecord[propertyName] = now()
       } else {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const { [propertyName]: _, ...currentSectionRecordMod } = currentSectionRecord
         currentSectionRecord = currentSectionRecordMod
       }

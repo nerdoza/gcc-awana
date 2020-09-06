@@ -62,6 +62,7 @@
                       v-model="clubber.club"
                       rules="required"
                       :items="clubSelect"
+                      disabled
                       label="Club"
                     />
                   </v-col>

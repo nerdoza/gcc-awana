@@ -1,6 +1,7 @@
 import { isBefore, isSameDay, parse } from 'date-fns'
 
 import agentOfGrace from '@/assets/images/tntBooks/agents_of_grace.png'
+export const tntBookImg = agentOfGrace
 
 export const tntBookSchedule: {[index: string]: (keyof TnTBook)} = {
   '09/16/2020': 'chapter1section1',
@@ -39,8 +40,6 @@ export const tntSkipReview = [
 ]
 
 export const tntSectionProperties = ['start', 'explore', 'memorize', 'review', 'silver', 'gold']
-
-export const tntBookImg = agentOfGrace
 
 export const tntKeyForDate = (date: Date) => {
   return tntBookDates.find(key => {

@@ -30,6 +30,10 @@ export const oneMonth = 2592000000
 
 export const debounceSaveTimeout = 2000
 
+export const largeRadialSize = 80
+export const mediumRadialSize = 60
+export const smallRadialSize = 30
+
 export const lastDay = parse('06/30/2021', 'MM/dd/yyyy', new Date())
 
 export const now = () => format(new Date(), 'MM/dd/yyyy')

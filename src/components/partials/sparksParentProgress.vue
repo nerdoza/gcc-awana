@@ -33,16 +33,16 @@
       </v-col>
     </v-row>
     <v-row v-if="progressStage === 'progress'">
-      <v-col cols="auto" class="text-center">
+      <v-col cols="auto" class="pa-2">
         <v-progress-circular
-          :rotate="-90"
-          :size="60"
-          :width="8"
+          rotate="-90"
+          :size="mediumRadialSize"
+          width="8"
           :value="percentageCompleted"
           :color="inReview? 'amber' : 'primary'"
         >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
       </v-col>
-      <v-col cols="auto">
+      <v-col cols="auto" align-self="center" class="pa-2">
         <div>Current {{ readyForReview ? 'Review' : ''}} Section</div>
         <div class="text-h5">
           <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
@@ -60,7 +60,7 @@
       <v-container class="pa-0">
         <v-row>
           <v-expand-transition>
-            <v-col cols="12" v-if="isFirstSection" align="center" class="pt-0">
+            <v-col cols="12" v-if="showTip" align="center" class="pt-0">
               <v-chip color="primary" pill>Tap section numbers as they are completed</v-chip>
             </v-col>
           </v-expand-transition>
@@ -69,8 +69,8 @@
               <v-card
                 class="text-center rounded-circle d-flex align-center justify-center"
                 :color="active ? (inReview ? 'amber' : 'primary') : ''"
-                height="60"
-                width="60"
+                :height="mediumRadialSize"
+                :width="mediumRadialSize"
                 @click="active ? deactivate() : activate()"
                 :disabled="index !== currentStepIndex && index !== currentStepIndex - 1"
               >
@@ -101,7 +101,7 @@
 import { confetti } from 'dom-confetti'
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
-import { now } from '@/const'
+import { mediumRadialSize, now } from '@/const'
 import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
@@ -111,11 +111,13 @@ export default class extends Vue {
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: SparksBook}
 
   readonly getSparksBookImg = getSparksBookImg
+  readonly mediumRadialSize = mediumRadialSize
 
   sectionSteps: number[] = []
   celebrate = false
   celebrateIcon = ''
   celebrateColor = ''
+  showTip = this.segmentsCompleted === 0
 
   get progressStage () {
     if (this.bookNumUndetermined) {
@@ -187,10 +189,6 @@ export default class extends Vue {
 
   get inReview () {
     return this.segmentsCompleted > this.segmentsRequired
-  }
-
-  get isFirstSection () {
-    return this.segmentsCompleted === 0
   }
 
   get percentageCompleted () {

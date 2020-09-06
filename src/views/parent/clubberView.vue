@@ -14,11 +14,14 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <template v-if="book.type === 't'">
-              <t-n-t-parent-details :record="record"></t-n-t-parent-details>
+            <template v-if="book.type === 'c'">
+              <cubbies-parent-details :record="record"></cubbies-parent-details>
             </template>
             <template v-if="book.type === 's'">
               <sparks-parent-details :record="record"></sparks-parent-details>
+            </template>
+            <template v-if="book.type === 't'">
+              <t-n-t-parent-details :record="record"></t-n-t-parent-details>
             </template>
           </v-card-text>
         </v-card>
@@ -30,6 +33,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
+import CubbiesParentDetails from '@/components/partials/cubbiesParentDetails.vue'
 import SparksParentDetails from '@/components/partials/sparksParentDetails.vue'
 import TNTParentDetails from '@/components/partials/tntParentDetails.vue'
 import { getFullname } from '@/const'
@@ -38,7 +42,8 @@ import { vxm } from '@/store'
 @Component({
   components: {
     SparksParentDetails,
-    TNTParentDetails
+    TNTParentDetails,
+    CubbiesParentDetails
   }
 })
 export default class extends Vue {

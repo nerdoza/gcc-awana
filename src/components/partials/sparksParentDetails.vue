@@ -4,16 +4,16 @@
       <v-img :src="bookImg" contain aspect-ratio="2.53" max-height="100"></v-img>
     </v-row>
     <v-row>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0 text-center">
         <v-progress-circular
-          :rotate="-90"
-          :size="80"
-          :width="12"
+          rotate="-90"
+          :size="largeRadialSize"
+          width="12"
           :value="percentageCompleted"
           :color="inReview? 'amber' : 'primary'"
         >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
       </v-col>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
         <div>Current {{ readyForReview ? 'Review' : ''}} Section</div>
         <div class="text-h5">
           <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
@@ -36,9 +36,9 @@
               </v-col>
               <v-col cols="auto">
                 <v-progress-circular
-                  :rotate="-90"
-                  :size="30"
-                  :width="2"
+                  rotate="-90"
+                  :size="smallRadialSize"
+                  width="2"
                   :value="getSectionPercentage(section)"
                   :color="getColor(section)"
                   class="mr-2"
@@ -55,8 +55,8 @@
               :key="index"
               class="text-center rounded-circle d-inline-flex align-center justify-center ma-2"
               :color="getSectionSegmentStatus(section, index) ? 'primary' : ''"
-              height="40"
-              width="40"
+              :height="smallRadialSize"
+              :width="smallRadialSize"
             >
               <template v-if="lastActiveSection === section && isLastSegment(section, index)">
                 <div v-if="promptForRemove" @click="remove()">
@@ -88,12 +88,16 @@
 import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
+import { largeRadialSize, smallRadialSize } from '@/const'
 import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksBookSectionOrder, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: SparksBook}
+
+  readonly largeRadialSize = largeRadialSize
+  readonly smallRadialSize = smallRadialSize
 
   promptForRemove = false
   promptForRemoveTimeout: number | null = null

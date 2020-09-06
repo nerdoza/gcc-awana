@@ -191,3 +191,44 @@ interface ClubUpdateRecord {
   uid: string,
   update: ClubUpdate
 }
+
+interface CubbiesBook extends ClubberBookBase {
+  type: 'c'
+  redA?: CubbiesBookSection
+  redB?: CubbiesBookSection
+  red1?: CubbiesBookSection
+  red2?: CubbiesBookSection
+  green3?: CubbiesBookSection
+  green4?: CubbiesBookSection
+  green5?: CubbiesBookSection
+  green6?: CubbiesBookSection
+  red7?: CubbiesBookSection
+  red8?: CubbiesBookSection
+  red9?: CubbiesBookSection
+  red10?: CubbiesBookSection
+  green11?: CubbiesBookSection
+  green12?: CubbiesBookSection
+  green13?: CubbiesBookSection
+  green14?: CubbiesBookSection
+  red15?: CubbiesBookSection
+  red16?: CubbiesBookSection
+  red17?: CubbiesBookSection
+  red18?: CubbiesBookSection
+  green19?: CubbiesBookSection
+  green20?: CubbiesBookSection
+  green21?: CubbiesBookSection
+  green22?: CubbiesBookSection
+  red23?: CubbiesBookSection
+  red24?: CubbiesBookSection
+  red25?: CubbiesBookSection
+  red26?: CubbiesBookSection
+  sd1?: CubbiesBookSection
+  sd2?: CubbiesBookSection
+  sd3?: CubbiesBookSection
+  sd4?: CubbiesBookSection
+}
+
+interface CubbiesBookSection {
+  memorize?: string
+  review?: string
+}

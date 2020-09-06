@@ -1,11 +1,11 @@
 <template>
   <v-container class="tnt-parent-progress pa-0">
     <v-row>
-      <v-col cols="auto" class="text-center">
+      <v-col cols="auto" class="pa-2">
         <v-progress-circular
-          :rotate="-90"
-          :size="60"
-          :width="8"
+          rotate="-90"
+          :size="mediumRadialSize"
+          width="8"
           :value="percentageCompleted"
           color="primary"
         >
@@ -17,7 +17,7 @@
           </v-fab-transition>
         </v-progress-circular>
       </v-col>
-      <v-col cols="auto">
+      <v-col cols="auto" align-self="center" class="pa-2">
         <div>Current Section</div>
         <div class="text-h5" v-html="currentSectionLabel"></div>
       </v-col>
@@ -37,8 +37,8 @@
         <v-card
           class="section-props text-center rounded-circle d-flex align-center justify-center"
           :color="getValue(currentSection, propertyName) ? tntPropertyColor(propertyName): 'white'"
-          height="60"
-          width="60"
+          :height="mediumRadialSize"
+          :width="mediumRadialSize"
           @click="setProp(propertyName)"
           :disabled="propertyName === 'review' && tntSectionSkipReview(currentSection)"
         >
@@ -61,7 +61,7 @@
 import { confetti } from 'dom-confetti'
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
-import { now } from '@/const'
+import { mediumRadialSize, now } from '@/const'
 import { tntBookSchedule, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionCompleted, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
@@ -75,11 +75,12 @@ export default class extends Vue {
   readonly tntSectionSkipReview = tntSectionSkipReview
   readonly tntPropertyIcon = tntPropertyIcon
   readonly tntPropertyColor = tntPropertyColor
+  readonly mediumRadialSize = mediumRadialSize
 
   celebrate = false
   celebrateColor = ''
   celebrateIcon = ''
-  showTip = this.currentSection === 'chapter1section1' && typeof this.record.book.chapter1section1?.start === 'undefined'
+  showTip = this.sectionsCompleted === 0
 
   get currentKey () {
     return tntKeyForDate(new Date())
@@ -153,6 +154,7 @@ export default class extends Vue {
       if (toValue) {
         currentSectionRecord[propertyName] = now()
       } else {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         const { [propertyName]: _, ...currentSectionRecordMod } = currentSectionRecord
         currentSectionRecord = currentSectionRecordMod
       }
