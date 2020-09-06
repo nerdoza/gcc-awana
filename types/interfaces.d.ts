@@ -92,34 +92,43 @@ interface SparksBook extends ClubberBookBase {
   completed?: string
 }
 
+interface TnTBookSection {
+  start?: string
+  explore?: string
+  memorize?: string
+  review?: string
+  silver?: string 
+  gold?: string
+}
+
 interface TnTBook extends ClubberBookBase {
   type: 't'
-  chapter1section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter1section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter1section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter1section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter1section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter2section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter3section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section1?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section2?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section3?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section4?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section5?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section6?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
-  chapter4section7?: {explore?: string,  memorize?: string, review?: string, silver?: string, gold?: string}
+  chapter1section1?: TnTBookSection
+  chapter1section2?: TnTBookSection
+  chapter1section3?: TnTBookSection
+  chapter1section4?: TnTBookSection
+  chapter1section5?: TnTBookSection
+  chapter2section1?: TnTBookSection
+  chapter2section2?: TnTBookSection
+  chapter2section3?: TnTBookSection
+  chapter2section4?: TnTBookSection
+  chapter2section5?: TnTBookSection
+  chapter2section6?: TnTBookSection
+  chapter2section7?: TnTBookSection
+  chapter3section1?: TnTBookSection
+  chapter3section2?: TnTBookSection
+  chapter3section3?: TnTBookSection
+  chapter3section4?: TnTBookSection
+  chapter3section5?: TnTBookSection
+  chapter3section6?: TnTBookSection
+  chapter3section7?: TnTBookSection
+  chapter4section1?: TnTBookSection
+  chapter4section2?: TnTBookSection
+  chapter4section3?: TnTBookSection
+  chapter4section4?: TnTBookSection
+  chapter4section5?: TnTBookSection
+  chapter4section6?: TnTBookSection
+  chapter4section7?: TnTBookSection
   completed?: string
 }
 

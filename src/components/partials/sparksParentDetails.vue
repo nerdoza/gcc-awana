@@ -88,7 +88,7 @@
 import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksBookSectionOrder, sparksTotalSegmentsRequirementsPerPass } from '@/const'
+import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksBookSectionOrder, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component

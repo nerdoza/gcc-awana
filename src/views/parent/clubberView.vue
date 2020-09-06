@@ -15,7 +15,7 @@
           </v-toolbar>
           <v-card-text>
             <template v-if="book.type === 't'">
-              <p>T&amp;T</p>
+              <t-n-t-parent-details :record="record"></t-n-t-parent-details>
             </template>
             <template v-if="book.type === 's'">
               <sparks-parent-details :record="record"></sparks-parent-details>
@@ -31,12 +31,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import SparksParentDetails from '@/components/partials/sparksParentDetails.vue'
+import TNTParentDetails from '@/components/partials/tntParentDetails.vue'
 import { getFullname } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
   components: {
-    SparksParentDetails
+    SparksParentDetails,
+    TNTParentDetails
   }
 })
 export default class extends Vue {

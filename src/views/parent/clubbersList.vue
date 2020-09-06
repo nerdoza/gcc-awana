@@ -7,12 +7,12 @@
             <v-toolbar-title v-text="getFullname(record.clubber)"></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="openClubber(record.cid)">
-              <v-icon>$plus</v-icon>
+              <v-icon>$more</v-icon>
             </v-btn>
           </v-toolbar>
           <v-card-text>
             <template v-if="record.book.type === 't'">
-              <p>T&amp;T</p>
+              <t-n-t-parent-progress :record="record"></t-n-t-parent-progress>
             </template>
             <template v-if="record.book.type === 's'">
               <sparks-parent-progress :record="record"></sparks-parent-progress>
@@ -28,12 +28,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import SparksParentProgress from '@/components/partials/sparksParentProgress.vue'
+import TNTParentProgress from '@/components/partials/tntParentProgress.vue'
 import { fiveMinutes, getFullname } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
   components: {
-    SparksParentProgress
+    SparksParentProgress,
+    TNTParentProgress
   }
 })
 export default class extends Vue {

@@ -1,27 +1,23 @@
 <template>
-  <v-container class="parent-clubber-list pa-0">
+  <v-container class="sparks-parent-progress pa-0">
     <v-row v-if="progressStage === 'book'">
       <v-col cols="12">
         <div class="text-h6">Which book is this child working on?</div>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(1)">
           <v-img :src="getSparksBookImg(1)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(2)">
           <v-img :src="getSparksBookImg(2)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(3)">
           <v-img :src="getSparksBookImg(3)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
-      </v-col>
-      <v-spacer />
-      <v-col cols="auto">
-        <v-btn color="primary" @click="setSkipFlight(false)">Yes</v-btn>
       </v-col>
     </v-row>
     <v-row v-if="progressStage === 'flight'">
@@ -37,11 +33,11 @@
       </v-col>
     </v-row>
     <v-row v-if="progressStage === 'progress'">
-      <v-col cols="auto">
+      <v-col cols="auto" class="text-center">
         <v-progress-circular
           :rotate="-90"
-          :size="80"
-          :width="12"
+          :size="60"
+          :width="8"
           :value="percentageCompleted"
           :color="inReview? 'amber' : 'primary'"
         >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
@@ -64,8 +60,8 @@
       <v-container class="pa-0">
         <v-row>
           <v-expand-transition>
-            <v-col cols="12" v-if="isFirstSection" align="center">
-              <v-chip color="primary" pill>Tap sections as they are completed</v-chip>
+            <v-col cols="12" v-if="isFirstSection" align="center" class="pt-0">
+              <v-chip color="primary" pill>Tap section numbers as they are completed</v-chip>
             </v-col>
           </v-expand-transition>
           <v-col v-for="(n, index) in currentSectionSize" :key="index" cols="auto" class="pa-2">
@@ -105,7 +101,8 @@
 import { confetti } from 'dom-confetti'
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
-import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, now, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/const'
+import { now } from '@/const'
+import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component
@@ -287,7 +284,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.parent-clubber-list {
+.sparks-parent-progress {
   .section-steps {
     .v-card--link:focus:before {
       opacity: 0;
