@@ -6,17 +6,17 @@
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(1)">
-          <v-img :src="getSparksBookImg(1)" contain aspect-ratio="2.53" max-height="40"></v-img>
+          <v-img :src="sparksBookImg(1)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(2)">
-          <v-img :src="getSparksBookImg(2)" contain aspect-ratio="2.53" max-height="40"></v-img>
+          <v-img :src="sparksBookImg(2)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-btn block large color="white" @click="setBookNum(3)">
-          <v-img :src="getSparksBookImg(3)" contain aspect-ratio="2.53" max-height="40"></v-img>
+          <v-img :src="sparksBookImg(3)" contain aspect-ratio="2.53" max-height="40"></v-img>
         </v-btn>
       </v-col>
     </v-row>
@@ -43,7 +43,7 @@
         >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
       </v-col>
       <v-col cols="auto" align-self="center" class="pa-2">
-        <div>Current {{ readyForReview ? 'Review' : ''}} Section</div>
+        <div>Current {{ inReview ? 'Review' : ''}} Section</div>
         <div class="text-h5">
           <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
           {{ currentSectionLabel }}
@@ -64,27 +64,26 @@
               <v-chip color="primary" pill>Tap section numbers as they are completed</v-chip>
             </v-col>
           </v-expand-transition>
-          <v-col v-for="(n, index) in currentSectionSize" :key="index" cols="auto" class="pa-2">
-            <v-item v-slot:default="{ active }">
-              <v-card
-                class="text-center rounded-circle d-flex align-center justify-center"
-                :color="active ? (inReview ? 'amber' : 'primary') : ''"
-                :height="mediumRadialSize"
-                :width="mediumRadialSize"
-                @click="active ? deactivate() : activate()"
-                :disabled="index !== currentStepIndex && index !== currentStepIndex - 1"
-              >
-                <template v-if="active">
-                  <v-icon color="white">$check</v-icon>
-                </template>
-                <template v-else>
-                  <span
-                    :class="{'black--text': index === currentStepIndex, 'grey--text': index !== currentStepIndex}"
-                    class="display-1 font-weight-light"
-                  >{{ n }}</span>
-                </template>
-              </v-card>
-            </v-item>
+          <v-col
+            v-for="(sectionNumber, index) in currentSectionSize"
+            :key="index"
+            cols="auto"
+            class="pa-2"
+          >
+            <v-card
+              class="section-props text-center rounded-circle d-flex align-center justify-center"
+              :color="getValue(sectionNumber) ? 'primary': 'white'"
+              :height="mediumRadialSize"
+              :width="mediumRadialSize"
+              @click="setProp(sectionNumber)"
+            >
+              <template v-if="getValue(sectionNumber)">
+                <v-icon color="white">$check</v-icon>
+              </template>
+              <template v-else>
+                <span class="display-1 font-weight-light">{{ sectionNumber }}</span>
+              </template>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -102,7 +101,7 @@ import { confetti } from 'dom-confetti'
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 
 import { mediumRadialSize, now } from '@/const'
-import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
+import { sparksBookImg, sparksBookRequirements, sparksFocusSection, sparksReviewSegmentsCompleted, sparksSectionIsComplete, sparksSectionLabel, sparksSegmentsCompleted, sparksSegmentsRequired, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component
@@ -110,14 +109,14 @@ export default class extends Vue {
   @Ref('celebrate-root') readonly confettiRootComponent!: Vue
   @Prop() readonly record!: { cid: string, clubber: Clubber, book: SparksBook}
 
-  readonly getSparksBookImg = getSparksBookImg
+  readonly sparksBookImg = sparksBookImg
   readonly mediumRadialSize = mediumRadialSize
 
   sectionSteps: number[] = []
   celebrate = false
   celebrateIcon = ''
   celebrateColor = ''
-  showTip = this.segmentsCompleted === 0
+  showTip = sparksSegmentsCompleted(this.record.book) === 0
 
   get progressStage () {
     if (this.bookNumUndetermined) {
@@ -138,7 +137,7 @@ export default class extends Vue {
   }
 
   get currentSectionProp () {
-    return getSparksFocusSection(this.record.book)
+    return sparksFocusSection(this.record.book)
   }
 
   get currentSectionRecord () {
@@ -150,11 +149,7 @@ export default class extends Vue {
   }
 
   get currentSectionLabel () {
-    return getSparksSectionLabel(this.currentSectionProp)
-  }
-
-  get currentStepIndex () {
-    return Array.isArray(this.currentSectionRecord) ? (this.currentSectionRecord as string[]).length : 0
+    return sparksSectionLabel(this.currentSectionProp)
   }
 
   get completed () {
@@ -162,37 +157,35 @@ export default class extends Vue {
   }
 
   get segmentsRequired () {
-    return getSparksSegmentsRequired(this.record.book)
+    return sparksSegmentsRequired(this.record.book)
   }
 
   get segmentsRequiredRelative () {
     if (this.inReview) {
       return sparksTotalSegmentsRequirementsPerPass
     }
-    return getSparksSegmentsRequired(this.record.book)
-  }
-
-  get segmentsCompleted () {
-    return getSparksSegmentsCompleted(this.record.book)
+    return sparksSegmentsRequired(this.record.book)
   }
 
   get segmentsCompletedRelative () {
     if (this.inReview) {
-      return this.segmentsCompleted - this.segmentsRequired
+      return sparksReviewSegmentsCompleted(this.record.book)
     }
-    return this.segmentsCompleted
-  }
-
-  get readyForReview () {
-    return this.segmentsCompleted >= this.segmentsRequired
+    return sparksSegmentsCompleted(this.record.book)
   }
 
   get inReview () {
-    return this.segmentsCompleted > this.segmentsRequired
+    return this.currentSectionProp.includes('Review')
   }
 
   get percentageCompleted () {
     return Math.round((this.segmentsCompletedRelative / this.segmentsRequiredRelative) * 100)
+  }
+
+  getValue (sectionNum: number) {
+    const sectionRecord = this.currentSectionRecord
+    const sectionProp = ('s' + sectionNum) as keyof SparksSectionFour & keyof SparksSectionEight
+    return typeof sectionRecord === 'object' && typeof sectionRecord[sectionProp] === 'string'
   }
 
   getIcon (section: keyof SparksBook) {
@@ -226,34 +219,41 @@ export default class extends Vue {
     await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, bookNum } })
   }
 
-  async activate () {
-    let sectionRecord = this.currentSectionRecord
-    if (!Array.isArray(sectionRecord)) {
-      sectionRecord = []
+  async setProp (sectionNum: number) {
+    if (this.showTip) {
+      this.showTip = false
     }
+    let celebrate: undefined | keyof SparksBook
+    let currentSectionRecord = this.currentSectionRecord
+    const currentSectionProp = this.currentSectionProp
+    const propertyName = ('s' + sectionNum) as keyof SparksSectionFour & keyof SparksSectionEight
+    const toValue = !this.getValue(sectionNum)
 
-    if (sectionRecord.length === this.currentSectionSize - 1) {
-      this.doCelebration(this.currentSectionProp)
-    }
-
-    const updatedBookRecord = { ...this.record.book, [this.currentSectionProp]: [...sectionRecord, now()] }
-    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
-    if (this.currentSectionProp === 'completed') {
-      await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: { ...this.record.book, completed: now() } })
-    }
-  }
-
-  async deactivate () {
-    let sectionRecord = this.currentSectionRecord
-    if (!Array.isArray(sectionRecord)) {
-      sectionRecord = []
+    if (typeof currentSectionRecord === 'object') {
+      currentSectionRecord = { ...currentSectionRecord }
+      if (toValue) {
+        currentSectionRecord[propertyName] = now()
+        if (sparksSectionIsComplete(currentSectionRecord, currentSectionProp)) {
+          celebrate = currentSectionProp
+        }
+      } else {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+        const { [propertyName]: _, ...currentSectionRecordMod } = currentSectionRecord
+        currentSectionRecord = currentSectionRecordMod
+      }
     } else {
-      sectionRecord = [...sectionRecord]
-      sectionRecord.pop()
+      if (toValue) {
+        currentSectionRecord = { [propertyName]: now() }
+      } else {
+        currentSectionRecord = {}
+      }
     }
 
-    const updatedBookRecord = { ...this.record.book, [this.currentSectionProp]: [...sectionRecord] }
+    const updatedBookRecord = { ...this.record.book, [currentSectionProp]: currentSectionRecord }
     await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
+    if (typeof celebrate !== 'undefined') {
+      this.doCelebration(celebrate)
+    }
   }
 
   doCelebration (sectionProp: keyof SparksBook) {
@@ -267,16 +267,6 @@ export default class extends Vue {
       })
     })
     setTimeout(() => { this.celebrate = false }, 3000)
-  }
-
-  @Watch('record.book', { deep: true, immediate: true })
-  onBookChange (book: SparksBook) {
-    let newSectionSteps: number[] = []
-    const section = book[this.currentSectionProp]
-    if (Array.isArray(section)) {
-      newSectionSteps = section.map((value, index) => index)
-    }
-    Vue.set(this, 'sectionSteps', newSectionSteps)
   }
 }
 </script>

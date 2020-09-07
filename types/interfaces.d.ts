@@ -66,29 +66,43 @@ interface ClubberBookBase {
   type: 'c' | 's' | 't' | 'p'
 }
 
+interface SparksSectionFour {
+  s1?: string
+  s2?: string
+  s3?: string
+  s4?: string
+}
+
+interface SparksSectionEight extends SparksSectionFour {
+  s5?: string
+  s6?: string
+  s7?: string
+  s8?: string
+}
+
 interface SparksBook extends ClubberBookBase {
   type: 's'
   bookNum?: number
   skipFlight?: boolean
-  flight?: string[]
-  rankTest?: string[]
-  redJewel1?: string[]
-  greenJewel1?: string[]
-  redJewel2?: string[]
-  greenJewel2?: string[]
-  redJewel3?: string[]
-  greenJewel3?: string[]
-  redJewel4?: string[]
-  greenJewel4?: string[]
-  rankTestReview?: string[]
-  redJewel1Review?: string[]
-  greenJewel1Review?: string[]
-  redJewel2Review?: string[]
-  greenJewel2Review?: string[]
-  redJewel3Review?: string[]
-  greenJewel3Review?: string[]
-  redJewel4Review?: string[]
-  greenJewel4Review?: string[]
+  flight?: SparksSectionFour
+  rankTest?: SparksSectionEight
+  redJewel1?: SparksSectionFour
+  greenJewel1?: SparksSectionFour
+  redJewel2?: SparksSectionFour
+  greenJewel2?: SparksSectionFour
+  redJewel3?: SparksSectionFour
+  greenJewel3?: SparksSectionFour
+  redJewel4?: SparksSectionFour
+  greenJewel4?: SparksSectionFour
+  rankTestReview?: SparksSectionEight
+  redJewel1Review?: SparksSectionFour
+  greenJewel1Review?: SparksSectionFour
+  redJewel2Review?: SparksSectionFour
+  greenJewel2Review?: SparksSectionFour
+  redJewel3Review?: SparksSectionFour
+  greenJewel3Review?: SparksSectionFour
+  redJewel4Review?: SparksSectionFour
+  greenJewel4Review?: SparksSectionFour
   completed?: string
 }
 

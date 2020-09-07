@@ -28,6 +28,10 @@ export const sparksBookRequirements: {[index: string]: number} = {
 
 export const sparksTotalSegmentsRequirementsPerPass = 40
 
+export const sparksSegmentsRequired = (book: SparksBook) => {
+  return book.skipFlight !== true ? sparksTotalSegmentsRequirementsPerPass + 4 : sparksTotalSegmentsRequirementsPerPass
+}
+
 export const sparksBookSectionOrder: Array<keyof SparksBook> = [
   'rankTest',
   'redJewel1',
@@ -49,44 +53,75 @@ export const sparksBookSectionOrder: Array<keyof SparksBook> = [
   'greenJewel4Review'
 ]
 
-export const getSparksFocusSection: (book: SparksBook) => keyof SparksBook = (book: SparksBook) => {
-  if ((typeof book.skipFlight === 'undefined' || !book.skipFlight) && book.flight?.length !== sparksBookRequirements.flight) {
+export const sparksCompletedInSection = (section: SparksSectionFour | SparksSectionEight | undefined) => {
+  if (typeof section === 'undefined') {
+    return 0
+  }
+  return Object.keys(section).length
+}
+
+export const sparksFocusSection: (book: SparksBook) => keyof SparksBook = (book: SparksBook) => {
+  if ((typeof book.skipFlight === 'undefined' || !book.skipFlight) && sparksCompletedInSection(book.flight) !== sparksBookRequirements.flight) {
     return 'flight'
   }
 
-  let newSection: keyof SparksBook | undefined
-  sparksBookSectionOrder.forEach(section => {
+  let focusSection = sparksBookSectionOrder.find(section => {
     const bookSection = book[section]
-    if (typeof newSection === 'undefined' && (typeof bookSection === 'undefined' || (Array.isArray(bookSection) && bookSection.length !== sparksBookRequirements[section]))) {
-      newSection = section
+    if (typeof bookSection !== 'object') {
+      return true
+    }
+
+    const requiredLength = sparksBookRequirements[section]
+    if (requiredLength === 8) {
+      return !(Object.keys(bookSection).length === 8)
+    } else {
+      return !((Object.keys(bookSection).length >= (requiredLength - 1)) && typeof bookSection.s4 === 'string')
     }
   })
 
-  if (typeof newSection === 'undefined') {
-    newSection = 'completed'
+  if (typeof focusSection === 'undefined') {
+    focusSection = 'completed'
   }
 
-  return newSection
+  return focusSection
 }
 
-export const getSparksSegmentsRequired = (book: SparksBook) => {
-  return book.skipFlight !== true ? sparksTotalSegmentsRequirementsPerPass + 4 : sparksTotalSegmentsRequirementsPerPass
+export const sparksSectionIsComplete = (sectionRecord: SparksSectionFour | SparksSectionEight | undefined, section: keyof SparksBook) => {
+  if (typeof sectionRecord === 'object') {
+    return sparksCompletedInSection(sectionRecord) === sparksBookRequirements[section]
+  }
+  return false
 }
 
-export const getSparksSegmentsCompleted = (book: SparksBook) => {
+export const sparksSegmentsCompleted = (book: SparksBook) => {
   let totalCompleted = 0
 
   Object.keys(book).forEach(key => {
     const section = book[key as keyof SparksBook]
     if (typeof section === 'object') {
-      totalCompleted += section.length
+      totalCompleted += sparksCompletedInSection(section)
     }
   })
 
   return totalCompleted
 }
 
-export const getSparksSectionLabel = (section: keyof SparksBook) => {
+export const sparksReviewSegmentsCompleted = (book: SparksBook) => {
+  let totalCompleted = 0
+
+  Object.keys(book).forEach(key => {
+    if (key.includes('Review')) {
+      const section = book[key as keyof SparksBook]
+      if (typeof section === 'object') {
+        totalCompleted += sparksCompletedInSection(section)
+      }
+    }
+  })
+
+  return totalCompleted
+}
+
+export const sparksSectionLabel = (section: keyof SparksBook) => {
   if (section === 'flight') {
     return 'Flight 3:16'
   }
@@ -95,7 +130,7 @@ export const getSparksSectionLabel = (section: keyof SparksBook) => {
     .replace(' Review', '')
 }
 
-export const getSparksBookImg = (bookNum: number) => {
+export const sparksBookImg = (bookNum: number) => {
   if (bookNum === 3) {
     return sparksSkyStormer
   }

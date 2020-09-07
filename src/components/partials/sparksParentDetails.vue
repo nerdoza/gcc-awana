@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="sparks-parent-details pa-0">
     <v-row no-gutters>
       <v-img :src="bookImg" contain aspect-ratio="2.53" max-height="100"></v-img>
     </v-row>
@@ -14,7 +14,7 @@
         >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
       </v-col>
       <v-col cols="auto" class="pt-0" align-self="center">
-        <div>Current {{ readyForReview ? 'Review' : ''}} Section</div>
+        <div>Current {{ inReview ? 'Review' : ''}} Section</div>
         <div class="text-h5">
           <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
           {{ currentSectionLabel }}
@@ -29,7 +29,7 @@
               <v-icon class="mr-2" color="amber">$award</v-icon>Review
             </v-subheader>
           </template>
-          <v-expansion-panel-header :color="lastActiveSection === section ? 'grey lighten-4' : ''">
+          <v-expansion-panel-header>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-icon :color="getColor(section)" v-text="getIcon(section)" class="fa-fw mr-2"></v-icon>
@@ -51,30 +51,21 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-card
-              v-for="(n, index) in getSectionSize(section)"
+              v-for="(sectionNumber, index) in getSectionSize(section)"
               :key="index"
               class="text-center rounded-circle d-inline-flex align-center justify-center ma-2"
-              :color="getSectionSegmentStatus(section, index) ? 'primary' : ''"
+              :color="getSectionSegmentStatus(section, sectionNumber) ? 'primary' : ''"
               :height="smallRadialSize"
               :width="smallRadialSize"
+              @click="setProp(section, sectionNumber)"
             >
-              <template v-if="lastActiveSection === section && isLastSegment(section, index)">
-                <div v-if="promptForRemove" @click="remove()">
-                  <v-icon color="white">$close</v-icon>
-                </div>
-                <div
-                  v-else
-                  class="font-weight-heavy white--text"
-                  @click="prompt()"
-                >{{ getSectionSegmentStatusText(section, index) }}</div>
-              </template>
-              <template v-else-if="getSectionSegmentStatus(section, index)">
+              <template v-if="getSectionSegmentStatus(section, sectionNumber)">
                 <div
                   class="font-weight-heavy white--text"
-                >{{ getSectionSegmentStatusText(section, index) }}</div>
+                >{{ getSectionSegmentStatusText(section, sectionNumber) }}</div>
               </template>
               <template v-else>
-                <div class="font-weight-light">{{ n }}</div>
+                <div class="font-weight-light">{{ sectionNumber }}</div>
               </template>
             </v-card>
           </v-expansion-panel-content>
@@ -88,8 +79,8 @@
 import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import { largeRadialSize, smallRadialSize } from '@/const'
-import { getSparksBookImg, getSparksFocusSection, getSparksSectionLabel, getSparksSegmentsCompleted, getSparksSegmentsRequired, sparksBookRequirements, sparksBookSectionOrder, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
+import { largeRadialSize, now, smallRadialSize } from '@/const'
+import { sparksBookImg, sparksBookRequirements, sparksBookSectionOrder, sparksFocusSection, sparksReviewSegmentsCompleted, sparksSectionLabel, sparksSegmentsCompleted, sparksSegmentsRequired, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component
@@ -99,11 +90,8 @@ export default class extends Vue {
   readonly largeRadialSize = largeRadialSize
   readonly smallRadialSize = smallRadialSize
 
-  promptForRemove = false
-  promptForRemoveTimeout: number | null = null
-
   get bookImg () {
-    return getSparksBookImg(this.record.book.bookNum || 0)
+    return sparksBookImg(this.record.book.bookNum || 0)
   }
 
   get bookSections () {
@@ -114,61 +102,38 @@ export default class extends Vue {
     return sections
   }
 
-  get lastActiveSection () {
-    const bookSections = this.bookSections
-    let lastActive = bookSections[0]
-
-    this.bookSections.find(section => {
-      const sectionRecord = this.record.book[section]
-      if (typeof sectionRecord === 'object' && sectionRecord.length > 0) {
-        lastActive = section
-      } else {
-        return true
-      }
-    })
-    return lastActive
-  }
-
-  get inReview () {
-    return this.lastActiveSection.includes('Review')
-  }
-
-  get readyForReview () {
-    return this.segmentsCompleted >= this.segmentsRequired
-  }
-
   get completed () {
     return typeof this.record.book.completed === 'string'
   }
 
   get currentSectionProp () {
-    return getSparksFocusSection(this.record.book)
+    return sparksFocusSection(this.record.book)
   }
 
   get currentSectionLabel () {
-    return getSparksSectionLabel(this.currentSectionProp)
+    return sparksSectionLabel(this.currentSectionProp)
   }
 
   get segmentsRequired () {
-    return getSparksSegmentsRequired(this.record.book)
+    return sparksSegmentsRequired(this.record.book)
+  }
+
+  get inReview () {
+    return this.currentSectionProp.includes('Review')
   }
 
   get segmentsRequiredRelative () {
     if (this.inReview) {
       return sparksTotalSegmentsRequirementsPerPass
     }
-    return getSparksSegmentsRequired(this.record.book)
-  }
-
-  get segmentsCompleted () {
-    return getSparksSegmentsCompleted(this.record.book)
+    return sparksSegmentsRequired(this.record.book)
   }
 
   get segmentsCompletedRelative () {
     if (this.inReview) {
-      return this.segmentsCompleted - this.segmentsRequired
+      return sparksReviewSegmentsCompleted(this.record.book)
     }
-    return this.segmentsCompleted
+    return sparksSegmentsCompleted(this.record.book)
   }
 
   get percentageCompleted () {
@@ -181,38 +146,6 @@ export default class extends Vue {
     return sections.filter(section => {
       return (section.includes('Review') && inReview) || !section.includes('Review')
     })
-  }
-
-  isLastSegment (section: keyof SparksBook, segment: number) {
-    const lastSection = this.lastActiveSection
-    if (section === lastSection) {
-      const sectionRecord = this.record.book[section]
-      return typeof sectionRecord === 'object' && (sectionRecord.length - 1) === segment
-    }
-    return false
-  }
-
-  prompt () {
-    this.promptForRemove = true
-    this.promptForRemoveTimeout = window.setTimeout(() => { this.promptForRemove = false }, 3000)
-  }
-
-  async remove () {
-    const targetSection = this.lastActiveSection
-    let sectionRecord = this.record.book[targetSection]
-    if (!Array.isArray(sectionRecord)) {
-      sectionRecord = []
-    } else {
-      sectionRecord = [...sectionRecord]
-      sectionRecord.pop()
-    }
-
-    const updatedBookRecord = { ...this.record.book, [targetSection]: [...sectionRecord] }
-    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
-    if (this.promptForRemoveTimeout !== null) {
-      clearTimeout(this.promptForRemoveTimeout)
-    }
-    this.promptForRemove = false
   }
 
   getIcon (section: keyof SparksBook) {
@@ -239,7 +172,7 @@ export default class extends Vue {
   }
 
   getLabel (section: keyof SparksBook) {
-    return getSparksSectionLabel(section)
+    return sparksSectionLabel(section)
   }
 
   getSectionSize (section: keyof SparksBook) {
@@ -248,21 +181,66 @@ export default class extends Vue {
 
   getSectionCompletion (section: keyof SparksBook) {
     const sectionRecord = this.record.book[section]
-    return typeof sectionRecord === 'object' ? sectionRecord.length : 0
+    return typeof sectionRecord === 'object' ? Object.keys(sectionRecord).length : 0
   }
 
   getSectionPercentage (section: keyof SparksBook) {
     return Math.round(this.getSectionCompletion(section) / this.getSectionSize(section) * 100)
   }
 
-  getSectionSegmentStatus (section: keyof SparksBook, segment: number) {
+  getSectionSegmentStatus (section: keyof SparksBook, sectionNum: number) {
     const sectionRecord = this.record.book[section]
-    return typeof sectionRecord === 'object' && typeof sectionRecord[segment] === 'string'
+    const sectionProp = ('s' + sectionNum) as keyof SparksSectionFour & keyof SparksSectionEight
+    return typeof sectionRecord === 'object' && typeof sectionRecord[sectionProp] === 'string'
   }
 
-  getSectionSegmentStatusText (section: keyof SparksBook, segment: number) {
+  getSectionSegmentStatusText (section: keyof SparksBook, sectionNum: number) {
     const sectionRecord = this.record.book[section]
-    return typeof sectionRecord === 'object' && typeof sectionRecord[segment] === 'string' ? format(parse(sectionRecord[segment], 'MM/dd/yyyy', new Date()), 'M/d') : ''
+    const sectionProp = ('s' + sectionNum) as keyof SparksSectionFour & keyof SparksSectionEight
+    if (typeof sectionRecord === 'object') {
+      const propRecord = sectionRecord[sectionProp]
+      if (typeof propRecord === 'string') {
+        return format(parse(propRecord, 'MM/dd/yyyy', new Date()), 'M/d')
+      }
+    }
+    return ''
+  }
+
+  async setProp (section: keyof SparksBook, sectionNum: number) {
+    const toValue = !this.getSectionSegmentStatus(section, sectionNum)
+
+    let currentSectionRecord = this.record.book[section]
+    const propertyName = ('s' + sectionNum) as keyof SparksSectionFour & keyof SparksSectionEight
+
+    if (typeof currentSectionRecord === 'object') {
+      currentSectionRecord = { ...currentSectionRecord }
+      if (toValue) {
+        currentSectionRecord[propertyName] = now()
+      } else {
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+        const { [propertyName]: _, ...currentSectionRecordMod } = currentSectionRecord
+        currentSectionRecord = currentSectionRecordMod
+      }
+    } else {
+      if (toValue) {
+        currentSectionRecord = { [propertyName]: now() }
+      } else {
+        currentSectionRecord = {}
+      }
+    }
+
+    const updatedBookRecord = { ...this.record.book, [section]: currentSectionRecord }
+    await vxm.clubbers.updateClubberBook({ cid: this.record.cid, book: updatedBookRecord })
   }
 }
 </script>
+
+<style lang="scss">
+.sparks-parent-details {
+  .section-props {
+    &.v-card--link:focus:before {
+      opacity: 0;
+    }
+  }
+}
+</style>
