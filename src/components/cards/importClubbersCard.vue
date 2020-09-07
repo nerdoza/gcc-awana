@@ -44,19 +44,19 @@
 import { format } from 'date-fns'
 import { Component, Emit, Vue } from 'vue-property-decorator'
 
-import { firestoreCollections } from '@/const'
+import { firestoreCollections, formatPhoneNumber, getAgeAsOfSchoolStart, getGradeByAge } from '@/const'
 import { parseCSV } from '@/lib/csv'
 import firebaseProject from '@/plugins/firebase'
 import { vxm } from '@/store'
 
-const isNotValidClubber = (data: FlatClubber) => {
+const isNotValidClubber = (data: ShelbyExportedFlatClubber) => {
   return typeof data !== 'object' ||
-  typeof data.firstName !== 'string' ||
-  data.firstName === '' ||
-  typeof data.lastName !== 'string' ||
-  data.lastName === '' ||
-  typeof data.birthday !== 'string' ||
-  data.birthday === ''
+  typeof data.childFirstName !== 'string' ||
+  data.childFirstName === '' ||
+  typeof data.childLastName !== 'string' ||
+  data.childLastName === '' ||
+  typeof data.childBirthDate !== 'string' ||
+  data.childBirthDate === ''
 }
 
 @Component
@@ -83,7 +83,7 @@ export default class extends Vue {
   async importFile () {
     if (this.file !== null) {
       this.state = 'loading'
-      const importData = await parseCSV(this.file) as FlatClubber[]
+      const importData = await parseCSV(this.file) as ShelbyExportedFlatClubber[]
       this.totalToImport = importData.length
 
       for (let i = 0; i < importData.length; i++) {
@@ -94,36 +94,46 @@ export default class extends Vue {
         }
         const existing = await firebaseProject.getCollection(firestoreCollections.clubbers, {
           where: [
-            { fieldPath: 'firstName', opStr: '==', value: data.firstName },
-            { fieldPath: 'lastName', opStr: '==', value: data.lastName },
-            { fieldPath: 'birthday', opStr: '==', value: data.birthday }
+            { fieldPath: 'firstName', opStr: '==', value: data.childFirstName },
+            { fieldPath: 'lastName', opStr: '==', value: data.childLastName },
+            { fieldPath: 'birthday', opStr: '==', value: format(new Date(data.childBirthDate), 'MM/dd/yyyy') }
           ]
         }) as {[index: string]:Clubber}
         if (Object.keys(existing).length > 0) {
           this.skipped++
         } else {
           const parents: string[] = []
-          if (typeof data.parentPhone1 !== 'undefined' && data.parentPhone1 !== '' && data.parentPhone1 !== null) {
-            parents.push(data.parentPhone1)
+          if (typeof data.phoneNumber !== 'undefined' && data.phoneNumber !== '' && data.phoneNumber !== null) {
+            const formattedPhoneNumber = formatPhoneNumber(data.phoneNumber)
+            if (typeof formattedPhoneNumber !== 'undefined') {
+              parents.push(formattedPhoneNumber)
+            }
           }
-          if (typeof data.parentPhone2 !== 'undefined' && data.parentPhone2 !== '' && data.parentPhone2 !== null) {
-            parents.push(data.parentPhone2)
-          }
-          if (typeof data.parentPhone3 !== 'undefined' && data.parentPhone3 !== '' && data.parentPhone3 !== null) {
-            parents.push(data.parentPhone3)
-          }
-          if (typeof data.parentPhone4 !== 'undefined' && data.parentPhone4 !== '' && data.parentPhone4 !== null) {
-            parents.push(data.parentPhone4)
+
+          let club: Club = 's' as Club.Sparks
+          switch (data.childClub) {
+            case 'AK20CU-Cubbie':
+              club = 'c' as Club.Cubbies
+              break
+            case 'AK20SP-SPARKS':
+              club = 's' as Club.Sparks
+              break
+            case 'AK20GL-T&T GIRLS':
+              club = 'g' as Club.GirlsTNT
+              break
+            case 'AK20BY-T&T BOYS':
+              club = 'b' as Club.BoysTNT
+              break
           }
 
           await vxm.clubbers.createClubberRecord({
             clubber: {
-              firstName: data.firstName,
-              lastName: data.lastName,
-              birthday: format(new Date(data.birthday), 'MM/dd/yyyy'),
-              gender: (data.gender ?? '') as Gender,
-              club: (data.club ?? '') as Club,
-              grade: (data.grade?.toString() ?? '') as Grade,
+              firstName: data.childFirstName,
+              lastName: data.childLastName,
+              birthday: format(new Date(data.childBirthDate), 'MM/dd/yyyy'),
+              gender: (data.childGender === 'Male' ? 'm' : 'f') as Gender,
+              club: club as Club,
+              grade: getGradeByAge(getAgeAsOfSchoolStart(data.childBirthDate)) as Grade,
               parents
             }
           })

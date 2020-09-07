@@ -104,7 +104,8 @@ export default class extends Vue {
 
   download () {
     const club = camelcase(this.clubName.replace('\'', '').replace('&', ' and '), { pascalCase: true })
-    exportClubberCSV(this.clubbersList, club + 'Clubbers.csv')
+    const clubbers = vxm.clubbers.clubbersList.filter(record => record.clubber.club === vxm.user.club)
+    exportClubberCSV(clubbers, club + 'Clubbers.csv')
   }
 }
 </script>

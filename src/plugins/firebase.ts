@@ -213,7 +213,7 @@ class FirebaseX {
       return (await this.jsDB.collection(collection).add(document))?.id
     } else {
       return await new Promise((resolve, reject) => {
-        this.firebaseCordova.addDocumentInFirestoreCollection(document, collection, (id: string) => resolve(id), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.addDocumentToFirestoreCollection(document, collection, (id: string) => resolve(id), (error: string) => reject(new Error(error)))
       })
     }
   }

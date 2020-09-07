@@ -70,6 +70,10 @@ export default class extends createModule({ namespaced: 'user', strict: false })
     return route
   }
 
+  get needsAllClubbers () {
+    return this.admin || this.director || this.super
+  }
+
   @action
   async clearVerifier (elementId: string) {
     firebaseProject.clearVerifier(elementId)

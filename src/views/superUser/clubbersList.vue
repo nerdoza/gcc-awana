@@ -116,7 +116,7 @@ export default class extends Vue {
   }
 
   download () {
-    exportClubberCSV(this.clubbersList, 'AllClubbers.csv')
+    exportClubberCSV(vxm.clubbers.clubbersList, 'AllClubbers.csv')
   }
 }
 </script>

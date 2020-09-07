@@ -30,7 +30,21 @@ export const oneMonth = 2592000000
 
 export const debounceSaveTimeout = 2000
 
+export const largeRadialSize = 80
+export const mediumRadialSize = 60
+export const smallRadialSize = 30
+
 export const lastDay = parse('06/30/2021', 'MM/dd/yyyy', new Date())
+
+export const now = () => format(new Date(), 'MM/dd/yyyy')
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+  const cleaned = phoneNumber.replace(/\D/g, '')
+  const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
+  if (match !== null) {
+    return ['+1 ', '(', match[2], ') ', match[3], '-', match[4]].join('')
+  }
+}
 
 export const getCurrentSchoolYear = () => {
   const currentYear = (new Date()).getFullYear()
@@ -163,6 +177,13 @@ export const getClubByValue = (value: Club) => {
   return ''
 }
 
+export const getBookTypeByValue = (value: Club) => {
+  if (value === 'g' || value === 'b') {
+    return 't'
+  }
+  return value as 't' | 'p' | 'c' | 's'
+}
+
 export const getGradeByValue = (value: Grade) => {
   switch (value) {
     case 'p':
@@ -215,6 +236,7 @@ export const firestoreCollections = {
   users: 'users',
   userRoles: 'userRoles',
   clubbers: 'clubbers',
+  clubberBooks: 'clubberBooks',
   notifications: 'notifications',
   configs: 'configs',
   updates: 'updates'

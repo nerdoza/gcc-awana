@@ -9,7 +9,6 @@ import Dashboard from '@/views/dashboard.vue'
 import Admin from '@/views/dashboard/admin.vue'
 import Calendar from '@/views/dashboard/calendar.vue'
 import Leader from '@/views/dashboard/leader.vue'
-import Parent from '@/views/dashboard/parent.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
@@ -18,6 +17,8 @@ import DirectorUpdateCreate from '@/views/director/updateCreate.vue'
 import DirectorUpdateEdit from '@/views/director/updateEdit.vue'
 import DirectorUpdatesList from '@/views/director/updatesList.vue'
 import Landing from '@/views/landing.vue'
+import ParentClubbersList from '@/views/parent/clubbersList.vue'
+import ParentClubberView from '@/views/parent/clubberView.vue'
 import Privacy from '@/views/privacy.vue'
 import SignUp from '@/views/signUp.vue'
 import AppUserEdit from '@/views/superUser/appUserEdit.vue'
@@ -96,11 +97,20 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'parent',
-        name: 'ParentTools',
-        component: Parent,
+        path: 'parent/clubbers',
+        name: 'ParentClubbersList',
+        component: ParentClubbersList,
         meta: {
-          title: 'Parent Tools'
+          title: 'My Clubbers'
+        }
+      },
+      {
+        path: 'parent/clubbers/:cid',
+        name: 'ParentClubberView',
+        component: ParentClubberView,
+        props: true,
+        meta: {
+          title: 'My Clubbers'
         }
       },
       {

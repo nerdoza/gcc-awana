@@ -1,14 +1,14 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBellOn, faBellPlus, faBookUser, faCalendarAlt, faChalkboardTeacher, faChild, faCloudUploadAlt, faCommentAltLines, faCommentAltPlus, faEdit, faFileDownload, faHomeHeart, faKey, faMobileAlt, faPaperPlane, faPhone, faSignOutAlt, faSpinnerThird, faStars, faSync, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faUserSlash, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
+import { faAppleAlt, faAward, faBellOn, faBellPlus, faBible, faBookmark, faBookUser, faCalendarAlt, faChalkboardTeacher, faChild, faCloudUploadAlt, faCommentAltLines, faCommentAltPlus, faEdit, faFileDownload, faGem, faKey, faMedal, faMobileAlt, faPaperPlane, faPhone, faSignOutAlt, faSpinnerThird, faStars, faSync, faTrash, faUserPlus, faUsers, faUsersClass, faUsersCog, faUserSlash, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
 import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
-import { faArrowLeft, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faMinus, faPaperclip, faPlus, faQuestion, faSearch, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
+import { faArrowLeft, faArrowRight, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faEllipsisH, faFastBackward, faHeart, faMapMarkerAlt, faMinus, faPaperclip, faPlus, faQuestion, faSearch, faStar, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faCloudUploadAlt, faChalkboardTeacher, faFileDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faHomeHeart, faPhone, faUserSlash, faPlus, faPaperPlane, faChild, faBellOn, faBellPlus, faCommentAltLines, faCommentAltPlus)
+library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faCloudUploadAlt, faChalkboardTeacher, faFileDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faArrowRight, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faPhone, faUserSlash, faPlus, faPaperPlane, faChild, faBellOn, faBellPlus, faCommentAltLines, faCommentAltPlus, faAward, faGem, faBible, faBookmark, faMapMarkerAlt, faHeart, faFastBackward, faStar, faEllipsisH, faMedal, faAppleAlt)
 
 Vue.use(Vuetify)
 
@@ -45,7 +45,6 @@ export default new Vuetify({
       edit: icon('fad', 'edit'),
       stars: icon('fad', 'stars'),
       user: icon('fas', 'user'),
-      homeHeart: icon('fad', 'home-heart'),
       clubbers: icon('fad', 'users-class'),
       calendar: icon('fad', 'calendar-alt'),
       director: icon('fad', 'whistle'),
@@ -53,6 +52,7 @@ export default new Vuetify({
       close: icon('fas', 'times'),
       admin: icon('fad', 'book-user'),
       left: icon('fas', 'arrow-left'),
+      right: icon('fas', 'arrow-right'),
       superUser: icon('fad', 'users-cog'),
       search: icon('fas', 'search'),
       users: icon('fad', 'users'),
@@ -69,7 +69,19 @@ export default new Vuetify({
       notification: icon('fad', 'bell-on'),
       addNotification: icon('fad', 'bell-plus'),
       weeklyUpdate: icon('fad', 'comment-alt-lines'),
-      addWeeklyUpdate: icon('fad', 'comment-alt-plus')
+      addWeeklyUpdate: icon('fad', 'comment-alt-plus'),
+      award: icon('fad', 'award'),
+      gem: icon('fad', 'gem'),
+      bible: icon('fad', 'bible'),
+      flight: icon('fad', 'paper-plane'),
+      bookmark: icon('fad', 'bookmark'),
+      marker: icon('fas', 'map-marker-alt'),
+      heart: icon('fas', 'heart'),
+      review: icon('fas', 'fast-backward'),
+      star: icon('fas', 'star'),
+      more: icon('fas', 'ellipsis-h'),
+      medal: icon('fad', 'medal'),
+      apple: icon('fad', 'apple-alt')
     }
   }
 })
