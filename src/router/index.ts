@@ -78,7 +78,10 @@ const routes: RouteConfig[] = [
       {
         path: 'user',
         name: 'User',
-        component: User
+        component: User,
+        meta: {
+          title: 'My Profile'
+        }
       },
       {
         path: 'updates',
