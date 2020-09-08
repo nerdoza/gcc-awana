@@ -38,10 +38,21 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Spring 2021 - In Person</v-toolbar-title>
+            <v-toolbar-title>2021 - In-Person</v-toolbar-title>
           </v-toolbar>
           <v-container>
             <v-row>
+              <v-col cols="12">
+                <v-card>
+                  <v-card-title>
+                    <v-icon class="mr-3">$clubbers</v-icon>About In-Person Club
+                  </v-card-title>
+                  <v-card-text>
+                    The tentative plan is to resume in-person club nights following the Christmas break. This is subject to state and local mandates and direction by church leadership. Specific directions and any changes will be made available through the
+                    <router-link :to="{name: 'Updates'}">Weekly Updates</router-link>&nbsp;page.
+                  </v-card-text>
+                </v-card>
+              </v-col>
               <v-col cols="12" sm="6" v-for="(month, index) in springMonths" :key="index">
                 <v-card>
                   <v-card-title class="pb-1" v-text="month"></v-card-title>
