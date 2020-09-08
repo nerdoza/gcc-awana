@@ -3,6 +3,7 @@ import { add, differenceInDays, format, isBefore, isFuture, isSameDay, parse } f
 const calendarUniqueDates: {[index: string]: {title: string, noClub?: true}} = {
   '09/09/2020': { title: 'Drive-Thru Book Pick-Up' },
   '11/25/2020': { title: 'Thanksgiving Break', noClub: true },
+  '11/11/2020': { title: 'Veterans Day Break', noClub: true },
   '12/23/2020': { title: 'Christmas Break', noClub: true },
   '12/30/2020': { title: 'Christmas Break', noClub: true },
   '01/06/2021': { title: 'Christmas Break', noClub: true },
