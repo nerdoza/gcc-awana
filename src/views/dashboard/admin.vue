@@ -6,6 +6,12 @@
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title>Admin</v-toolbar-title>
           </v-toolbar>
+          <v-card-title>
+            <v-icon class="mr-3">$wip</v-icon>Work in progress
+          </v-card-title>
+          <v-card-text>
+            <p>I'll get here eventually...</p>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
