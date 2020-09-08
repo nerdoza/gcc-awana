@@ -1,5 +1,21 @@
 <template>
   <v-container fluid class="fill-height">
+    <v-row v-if="clubbersList.length === 0">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-card class="elevation-12">
+          <v-card-title>No clubbers</v-card-title>
+          <v-card-subtitle>There are no clubbers attached to this user account.</v-card-subtitle>
+          <v-card-text>
+            <p>If your clubbers have already been registered for more than a day, contact the church office to resolve.</p>
+            <v-list-item-title class="text--gray">
+              Grace Community Church
+              <br />
+              <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
+            </v-list-item-title>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-row align="center" justify="center" v-for="(record, index) in clubbersList" :key="index">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
