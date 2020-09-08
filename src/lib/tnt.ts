@@ -36,7 +36,10 @@ export const tntBookDates = Object.keys(tntBookSchedule) as Array<keyof TnTBook>
 export const tntBookSections = tntBookDates.map(key => tntBookSchedule[key])
 
 export const tntSkipReview = [
-  'chapter1section1'
+  'chapter1section1',
+  'chapter2section1',
+  'chapter3section1',
+  'chapter4section1'
 ]
 
 export const tntSectionProperties = ['start', 'explore', 'memorize', 'review', 'silver', 'gold']
