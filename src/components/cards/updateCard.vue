@@ -71,8 +71,8 @@ export default class extends Vue {
     if (this.update.tnt) {
       clubs.push({
         name: 'T&T',
-        color: getClubColor('t' as Club),
-        img: getClubImg('t' as Club),
+        color: getClubColor('b' as Club),
+        img: getClubImg('b' as Club),
         update: this.update.tnt
       })
     }

@@ -81,7 +81,7 @@ export const getClubColor = (club: Club) => {
   return 'green darken-3'
 }
 
-export const getClubImg = (club: Club) => {
+export const getClubImg = (club: Club | 't') => {
   switch (club) {
     case 'c':
       return cubbiesImg
@@ -89,6 +89,7 @@ export const getClubImg = (club: Club) => {
       return sparksImg
     case 'b':
     case 'g':
+    case 't':
       return tntImg
   }
   return gccImg
