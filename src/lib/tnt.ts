@@ -137,7 +137,7 @@ export const tntPropertyColor = (propertName: keyof TnTBookSection, alt: boolean
       case 'explore':
         return 'light-blue darken-2'
       case 'memorize':
-        return 'pink darken-4'
+        return 'red darken-4'
       case 'review':
         return 'light-green darken-2'
       case 'silver':
@@ -152,11 +152,11 @@ export const tntPropertyColor = (propertName: keyof TnTBookSection, alt: boolean
     case 'explore':
       return 'light-blue lighten-3'
     case 'memorize':
-      return 'pink lighten-3'
+      return 'red lighten-3'
     case 'review':
       return 'light-green lighten-3'
     case 'silver':
-      return 'grey lighten-3'
+      return 'grey lighten-1'
     case 'gold':
       return 'amber lighten-3'
   }
