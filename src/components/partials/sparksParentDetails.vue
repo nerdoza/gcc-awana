@@ -21,56 +21,52 @@
         </div>
       </v-col>
     </v-row>
-    <v-row>
-      <v-expansion-panels inset>
-        <v-expansion-panel v-for="(section, index) in getCurrentBookSections()" :key="index">
-          <template v-if="section === 'rankTestReview'">
-            <v-subheader class="text-h5">
-              <v-icon class="mr-2" color="amber">$award</v-icon>Review
-            </v-subheader>
+    <v-row v-for="(section, index) in getCurrentBookSections()" :key="index">
+      <template v-if="section === 'rankTestReview'">
+        <v-col cols="12" class="pa-0">
+          <v-divider></v-divider>
+          <v-subheader class="text-h5">
+            <v-icon class="mr-2" color="amber">$award</v-icon>Review
+          </v-subheader>
+        </v-col>
+      </template>
+      <v-col cols="12" class="pa-0">
+        <v-divider></v-divider>
+        <v-list-item class="px-3">
+          <v-list-item-content class="pa-0">
+            <v-list-item-title>
+              <v-row no-gutters class="align-center">
+                <v-col cols="auto">
+                  <v-icon :color="getColor(section)" v-text="getIcon(section)" class="fa-fw mr-2"></v-icon>
+                </v-col>
+                <v-col cols="auto">
+                  <div v-text="getLabel(section)"></div>
+                </v-col>
+              </v-row>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-col>
+      <v-col :key="index" cols="auto" class="px-2 pt-0">
+        <v-card
+          v-for="(sectionNumber, index) in getSectionSize(section)"
+          :key="index"
+          class="section-props text-center rounded-circle d-inline-flex align-center justify-center ma-2"
+          :color="getSectionSegmentStatus(section, sectionNumber) ? 'primary' : ''"
+          :height="smallRadialSize"
+          :width="smallRadialSize"
+          @click="setProp(section, sectionNumber)"
+        >
+          <template v-if="getSectionSegmentStatus(section, sectionNumber)">
+            <div
+              class="font-weight-heavy white--text"
+            >{{ getSectionSegmentStatusText(section, sectionNumber) }}</div>
           </template>
-          <v-expansion-panel-header>
-            <v-row no-gutters class="align-center">
-              <v-col cols="auto">
-                <v-icon :color="getColor(section)" v-text="getIcon(section)" class="fa-fw mr-2"></v-icon>
-              </v-col>
-              <v-col cols="auto">
-                <v-progress-circular
-                  rotate="-90"
-                  :size="smallRadialSize"
-                  width="2"
-                  :value="getSectionPercentage(section)"
-                  :color="getColor(section)"
-                  class="mr-2"
-                >{{ getSectionCompletion(section) }}/{{ getSectionSize(section) }}</v-progress-circular>
-              </v-col>
-              <v-col cols="auto">
-                <div v-text="getLabel(section)"></div>
-              </v-col>
-            </v-row>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-card
-              v-for="(sectionNumber, index) in getSectionSize(section)"
-              :key="index"
-              class="text-center rounded-circle d-inline-flex align-center justify-center ma-2"
-              :color="getSectionSegmentStatus(section, sectionNumber) ? 'primary' : ''"
-              :height="smallRadialSize"
-              :width="smallRadialSize"
-              @click="setProp(section, sectionNumber)"
-            >
-              <template v-if="getSectionSegmentStatus(section, sectionNumber)">
-                <div
-                  class="font-weight-heavy white--text"
-                >{{ getSectionSegmentStatusText(section, sectionNumber) }}</div>
-              </template>
-              <template v-else>
-                <div class="font-weight-light">{{ sectionNumber }}</div>
-              </template>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+          <template v-else>
+            <div class="font-weight-light">{{ sectionNumber }}</div>
+          </template>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -177,15 +173,6 @@ export default class extends Vue {
 
   getSectionSize (section: keyof SparksBook) {
     return sparksBookRequirements[section]
-  }
-
-  getSectionCompletion (section: keyof SparksBook) {
-    const sectionRecord = this.record.book[section]
-    return typeof sectionRecord === 'object' ? Object.keys(sectionRecord).length : 0
-  }
-
-  getSectionPercentage (section: keyof SparksBook) {
-    return Math.round(this.getSectionCompletion(section) / this.getSectionSize(section) * 100)
   }
 
   getSectionSegmentStatus (section: keyof SparksBook, sectionNum: number) {
