@@ -88,7 +88,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>Clubber Managment</v-list-item-title>
+              <v-list-item-title>Clubber Management</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -130,7 +130,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>App User Managment</v-list-item-title>
+              <v-list-item-title>App User Management</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -140,7 +140,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>Clubber Managment</v-list-item-title>
+              <v-list-item-title>Clubber Management</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
