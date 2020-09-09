@@ -89,7 +89,7 @@ import { getDates, isNextClub } from '@/lib/calendar'
 
 @Component
 export default class extends Vue {
-  readonly fallDefaultTitle = 'On-Line Club'
+  readonly fallDefaultTitle = 'Online Club'
   readonly fallMonths = ['September', 'October', 'November', 'December']
 
   readonly springDefaultTitle = 'Regular Club'
