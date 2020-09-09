@@ -7,9 +7,14 @@ interface ReceivedNotification {
 
 export default class extends createModule({ namespaced: 'system', strict: false }) {
   notification: ReceivedNotification | null = null
+  tutorialViewed: boolean = false
 
   get notificationAvailable () {
     return this.notification !== null
+  }
+
+  get hasSeenTutorial () {
+    return this.tutorialViewed
   }
 
   @mutation
@@ -20,5 +25,10 @@ export default class extends createModule({ namespaced: 'system', strict: false 
   @mutation
   addNotification (notification: ReceivedNotification) {
     this.notification = { ...notification }
+  }
+
+  @mutation
+  setTutorialViewed () {
+    this.tutorialViewed = true
   }
 }

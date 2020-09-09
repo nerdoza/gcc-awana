@@ -33,6 +33,7 @@ import SuperUpdateCreate from '@/views/superUser/updateCreate.vue'
 import SuperUpdateEdit from '@/views/superUser/updateEdit.vue'
 import SuperUpdatesList from '@/views/superUser/updatesList.vue'
 import Terms from '@/views/terms.vue'
+import Tutorial from '@/views/tutorial.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes: RouteConfig[] = [
     path: '/',
     name: 'Landing',
     component: Landing
+  },
+  {
+    path: '/tutorial',
+    name: 'Tutorial',
+    component: Tutorial
   },
   {
     path: '/terms',

@@ -200,6 +200,12 @@ export default class extends Vue {
 
   user = vxm.user
 
+  mounted () {
+    if (!vxm.system.tutorialViewed) {
+      this.$router.push({ name: 'Tutorial' })
+    }
+  }
+
   get title () {
     return this.$store.state.route.meta.title
   }

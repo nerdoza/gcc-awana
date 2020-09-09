@@ -23,7 +23,8 @@ const vuexPersist = new VuexPersistence({
     appUsers: state.appUsers,
     clubbers: state.clubbers,
     notifications: state.notifications,
-    updates: state.updates
+    updates: state.updates,
+    system: { tutorialViewed: state.system.tutorialViewed }
   })
 })
 

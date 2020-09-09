@@ -1,14 +1,14 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faAppleAlt, faAward, faBellOn, faBellPlus, faBible, faBookmark, faBookUser, faCalendarAlt, faChalkboardTeacher, faChild, faCloudUploadAlt, faCommentAltLines, faCommentAltPlus, faEdit, faFileDownload, faGem, faKey, faMedal, faMobileAlt, faPaperPlane, faPhone, faSignOutAlt, faSpinnerThird, faStars, faSync, faTrash, faUserHardHat, faUserPlus, faUsers, faUsersClass, faUsersCog, faUserSlash, faVideo, faWhistle } from '@fortawesome/pro-duotone-svg-icons'
-import { faCircle, faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
-import { faArrowLeft, faArrowRight, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faEllipsisH, faFastBackward, faHeart, faMapMarkerAlt, faMinus, faPaperclip, faPlus, faQuestion, faSearch, faStar, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
+import { faDotCircle, faSquare } from '@fortawesome/pro-regular-svg-icons'
+import { faArrowLeft, faArrowRight, faBars, faCaretDown, faCheck, faCheckSquare, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faCircle, faEllipsisH, faFastBackward, faHeart, faMapMarkerAlt, faMinus, faPaperclip, faPlus, faQuestion, faSearch, faStar, faTimes, faTimesCircle, faUser } from '@fortawesome/pro-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faCloudUploadAlt, faChalkboardTeacher, faFileDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faArrowRight, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faPhone, faUserSlash, faPlus, faPaperPlane, faChild, faBellOn, faBellPlus, faCommentAltLines, faCommentAltPlus, faAward, faGem, faBible, faBookmark, faMapMarkerAlt, faHeart, faFastBackward, faStar, faEllipsisH, faMedal, faAppleAlt, faUserHardHat)
+library.add(faSync, faSpinnerThird, faTimesCircle, faPaperclip, faMinus, faCloudUploadAlt, faChalkboardTeacher, faFileDownload, faUsers, faSearch, faChevronUp, faChevronDown, faArrowLeft, faArrowRight, faUsersCog, faBookUser, faVideo, faTimes, faWhistle, faCalendarAlt, faUsersClass, faUser, faBars, faStars, faEdit, faUserPlus, faSignOutAlt, faKey, faMobileAlt, faTrash, faCaretDown, faCheck, faQuestion, faChevronLeft, faChevronRight, faSquare, faCheckSquare, faCircle, faDotCircle, faPhone, faUserSlash, faPlus, faPaperPlane, faChild, faBellOn, faBellPlus, faCommentAltLines, faCommentAltPlus, faAward, faGem, faBible, faBookmark, faMapMarkerAlt, faHeart, faFastBackward, faStar, faEllipsisH, faMedal, faAppleAlt, faUserHardHat, faCircle)
 
 Vue.use(Vuetify)
 
