@@ -2,23 +2,19 @@
   <v-app>
     <v-main>
       <v-container fluid class="fill-height">
-        <v-carousel height="100%" hide-delimiter-background id="tutorial" :continuous="false">
+        <v-carousel height="100vh" hide-delimiter-background id="tutorial" :continuous="false">
           <v-carousel-item v-for="(slide, i) in slides" :key="i">
-            <v-sheet height="100%">
-              <v-row class="fill-height" align="center" justify="center">
-                <v-img :src="slide" aspect-ratio="0.643" contain></v-img>
-              </v-row>
-            </v-sheet>
+            <v-row class="fill-height" align="center" justify="center">
+              <v-img :src="slide" height="100vh" max-height="600px" aspect-ratio="0.643" contain></v-img>
+            </v-row>
           </v-carousel-item>
           <v-carousel-item>
-            <v-sheet height="100%">
-              <v-row class="fill-height" align="center" justify="center">
-                <v-btn color="primary" @click="getStarted" dark large>
-                  Get Started
-                  <v-icon class="ml-2">$right</v-icon>
-                </v-btn>
-              </v-row>
-            </v-sheet>
+            <v-row class="fill-height" align="center" justify="center">
+              <v-btn color="primary" @click="getStarted" dark large>
+                Get Started
+                <v-icon class="ml-2">$right</v-icon>
+              </v-btn>
+            </v-row>
           </v-carousel-item>
         </v-carousel>
       </v-container>
