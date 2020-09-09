@@ -18,19 +18,30 @@
                   </v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" class="pa-0">
-                  <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+                  <v-text-field
+                    v-model="tableState.search"
+                    clearable
+                    :append-icon="tableState.search ? '' : '$search'"
+                    label="Search"
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </template>
             <template v-else>
-              <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+              <v-text-field
+                v-model="tableState.search"
+                clearable
+                :append-icon="tableState.search ? '' : '$search'"
+                label="Search"
+              ></v-text-field>
             </template>
           </v-card-text>
           <v-data-table
             :headers="headers"
             :items="clubbersList"
-            :search="search"
             :items-per-page="15"
+            :search="tableState.search"
+            :options.sync="tableState.options"
             @click:row="editClubber"
             :loading="loading"
             loading-text="Loading Clubbers..."
@@ -44,16 +55,21 @@
 
 <script lang="ts">
 import camelcase from 'camelcase'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 
 import { fiveMinutes, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
 import { exportClubberCSV } from '@/lib/csv'
 import { vxm } from '@/store'
 
+const tableName = 'directorClubbersList'
+
 @Component
 export default class extends Vue {
   loading = false
-  search = ''
+  tableState = {
+    search: '',
+    options: {} as DataTableOptions
+  }
 
   readonly isCordova = isCordova
 
@@ -86,6 +102,11 @@ export default class extends Vue {
   }
 
   async mounted () {
+    const tableState = vxm.system.dataTableState[tableName]
+    if (typeof tableState !== 'undefined') {
+      this.tableState = { search: tableState.search, options: { ...tableState.options } }
+    }
+
     if (vxm.clubbers.sinceUpdate > fiveMinutes) {
       await this.refreshData()
     }
@@ -106,6 +127,11 @@ export default class extends Vue {
     const club = camelcase(this.clubName.replace('\'', '').replace('&', ' and '), { pascalCase: true })
     const clubbers = vxm.clubbers.clubbersList.filter(record => record.clubber.club === vxm.user.club)
     exportClubberCSV(clubbers, club + 'Clubbers.csv')
+  }
+
+  @Watch('tableState', { deep: true })
+  onTableStateChange (tableState: { options: DataTableOptions, search: string}) {
+    vxm.system.setDataTableState({ tableName, state: { ...tableState } })
   }
 }
 </script>

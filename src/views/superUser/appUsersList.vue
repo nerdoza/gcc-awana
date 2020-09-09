@@ -18,19 +18,30 @@
                   </v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" class="pa-0">
-                  <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+                  <v-text-field
+                    v-model="tableState.search"
+                    clearable
+                    :append-icon="tableState.search ? '' : '$search'"
+                    label="Search"
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </template>
             <template v-else>
-              <v-text-field v-model="search" append-icon="$search" label="Search"></v-text-field>
+              <v-text-field
+                v-model="tableState.search"
+                clearable
+                :append-icon="tableState.search ? '' : '$search'"
+                label="Search"
+              ></v-text-field>
             </template>
           </v-card-text>
           <v-data-table
             :headers="headers"
             :items="usersList"
-            :search="search"
             :items-per-page="15"
+            :search="tableState.search"
+            :options.sync="tableState.options"
             @click:row="editUser"
             :loading="loading"
             loading-text="Loading Users..."
@@ -43,16 +54,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 
 import { fiveMinutes, getFullname, getRoleSnippet, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
 import { vxm } from '@/store'
 
+const tableName = 'appUserList'
+
 @Component
 export default class extends Vue {
   loading = false
-  search = ''
+  tableState = {
+    search: '',
+    options: {} as DataTableOptions
+  }
 
   readonly isCordova = isCordova
 
@@ -70,6 +86,11 @@ export default class extends Vue {
   }
 
   async mounted () {
+    const tableState = vxm.system.dataTableState[tableName]
+    if (typeof tableState !== 'undefined') {
+      this.tableState = { search: tableState.search, options: { ...tableState.options } }
+    }
+
     if (vxm.appUsers.sinceUpdate > fiveMinutes) {
       await this.refreshData()
     }
@@ -95,6 +116,11 @@ export default class extends Vue {
     }))
 
     createCSV(data, 'app_users.csv')
+  }
+
+  @Watch('tableState', { deep: true })
+  onTableStateChange (tableState: { options: DataTableOptions, search: string}) {
+    vxm.system.setDataTableState({ tableName, state: { ...tableState } })
   }
 }
 </script>

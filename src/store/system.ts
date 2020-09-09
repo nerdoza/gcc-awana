@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { createModule, mutation } from 'vuex-class-component'
 
 interface ReceivedNotification {
@@ -8,6 +9,7 @@ interface ReceivedNotification {
 export default class extends createModule({ namespaced: 'system', strict: false }) {
   notification: ReceivedNotification | null = null
   tutorialViewed: boolean = false
+  dataTableState: { [index: string]: { options: DataTableOptions, search: string} } = {}
 
   get notificationAvailable () {
     return this.notification !== null
@@ -30,5 +32,10 @@ export default class extends createModule({ namespaced: 'system', strict: false 
   @mutation
   setTutorialViewed () {
     this.tutorialViewed = true
+  }
+
+  @mutation
+  setDataTableState ({ tableName, state }: { tableName: string, state: { options: DataTableOptions, search: string} }) {
+    Vue.set(this.dataTableState, tableName, state)
   }
 }
