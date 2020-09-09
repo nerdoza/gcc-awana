@@ -19,7 +19,7 @@
                 <div class="headline">{{ title }}</div>
                 <v-subheader
                   class="px-0"
-                >{{ (update.postAt > now ? 'Will post on' : 'Posted on') }} {{postAtString}}</v-subheader>
+                >{{ (updateRecord.postAt > now ? 'Will post on' : 'Posted on') }} {{postAtString}}</v-subheader>
               </v-col>
               <v-col cols="12">
                 <v-card>
@@ -51,7 +51,7 @@ import gccImg from '@/assets/images/gcc_arms.png'
 import sparksImg from '@/assets/images/sparks.png'
 import tntImg from '@/assets/images/tnt.png'
 import DeleteUpdateCard from '@/components/cards/deleteUpdateCard.vue'
-import { fiveMinutes, getClubColor, getClubImg, getTimeString } from '@/const'
+import { fiveMinutes, getClubColor, getClubImg, getDateString } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -113,7 +113,7 @@ export default class extends Vue {
   }
 
   get postAtString () {
-    return getTimeString(this.updateRecord.postAt)
+    return getDateString(this.updateRecord.postAt)
   }
 
   update = {

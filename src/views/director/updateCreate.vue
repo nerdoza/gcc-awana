@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { add, endOfYesterday, format, isSameMonth, isWednesday, parse } from 'date-fns'
+import { add, endOfYesterday, format, isSameMonth, isThursday, parse } from 'date-fns'
 import { Component, Vue } from 'vue-property-decorator'
 
 import { lastDay } from '@/const'
@@ -63,7 +63,7 @@ export default class extends Vue {
   }
 
   get postAtDate () {
-    return parse(this.date + ' 22:00', 'yyyy-MM-dd kk:mm', new Date())
+    return parse(this.date + ' 02:00', 'yyyy-MM-dd kk:mm', new Date())
   }
 
   get postAtDatePeriod () {
@@ -87,7 +87,7 @@ export default class extends Vue {
   }
 
   allowedDates (date: string) {
-    return !this.unavailableDates.includes(date) && isWednesday(parse(date, 'yyyy-MM-dd', new Date()))
+    return !this.unavailableDates.includes(date) && isThursday(parse(date, 'yyyy-MM-dd', new Date()))
   }
 
   async createUpdate () {

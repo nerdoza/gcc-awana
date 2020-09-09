@@ -95,7 +95,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
 import DeleteUpdateCard from '@/components/cards/deleteUpdateCard.vue'
-import { fiveMinutes, getClubColor, getClubImg, getTimeString } from '@/const'
+import { fiveMinutes, getClubColor, getClubImg, getDateString } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -121,7 +121,7 @@ export default class extends Vue {
   }
 
   get postAtString () {
-    return getTimeString(this.update.postAt)
+    return getDateString(this.update.postAt)
   }
 
   async mounted () {

@@ -64,6 +64,10 @@ export const getAgeAsOfSchoolStart = (birthday: string) => {
   return getAgeAsOf(birthday, getSchoolStartDate())
 }
 
+export const getDateString = (time: number) => {
+  return format(time, 'M/dd/yy')
+}
+
 export const getTimeString = (time: number) => {
   return format(time, 'M/dd/yy \'at\' h:mm aaaa')
 }

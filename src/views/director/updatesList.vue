@@ -27,7 +27,7 @@
                   </v-card-title>
                   <v-card-subtitle
                     class="pb-0"
-                  >{{ (record.update.postAt > now ? 'Will post on' : 'Posted on') }} {{getTimeString(record.update.postAt)}}</v-card-subtitle>
+                  >{{ (record.update.postAt > now ? 'Will post on' : 'Posted on') }} {{getDateString(record.update.postAt)}}</v-card-subtitle>
                   <v-card-actions>
                     <v-row>
                       <v-col cols="12" sm="auto" class="py-0">
@@ -62,12 +62,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import { fiveMinutes, getClubColor, getClubImg, getTimeString } from '@/const'
+import { fiveMinutes, getClubColor, getClubImg, getDateString } from '@/const'
 import { vxm } from '@/store'
 
 @Component
 export default class extends Vue {
-  readonly getTimeString = getTimeString
+  readonly getDateString = getDateString
 
   loading = false
 

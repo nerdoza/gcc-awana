@@ -9,14 +9,11 @@
 </template>
 
 <script lang="ts">
-import { add, isWednesday, startOfToday } from 'date-fns'
 import { Component, Vue } from 'vue-property-decorator'
 
 import UpdateCard from '@/components/cards/updateCard.vue'
 import { oneHour, oneMonth } from '@/const'
 import { vxm } from '@/store'
-
-let refreshTimeout: number | undefined
 
 @Component({
   components: {
@@ -36,11 +33,6 @@ export default class extends Vue {
     async mounted () {
       if (vxm.updates.sinceUpdate > oneHour || vxm.updates.isEmpty) {
         await this.refreshData()
-      }
-      const today = new Date()
-      if (isWednesday(today) && typeof refreshTimeout === 'undefined') {
-        const delta = add(startOfToday(), { hours: 22 }).valueOf() - today.valueOf()
-        refreshTimeout = window.setTimeout(() => this.refreshData(), delta)
       }
     }
 
