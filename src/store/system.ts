@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createModule, mutation } from 'vuex-class-component'
+import { action, createModule, mutation } from 'vuex-class-component'
 
 interface ReceivedNotification {
   title: string
@@ -19,23 +19,55 @@ export default class extends createModule({ namespaced: 'system', strict: false 
     return this.tutorialViewed
   }
 
+  @action
+  async clearNotification () {
+    this._clearNotification()
+  }
+
+  @action
+  async addNotification (notification: ReceivedNotification) {
+    this._addNotification(notification)
+  }
+
+  @action
+  async setTutorialViewed () {
+    this._setTutorialViewed()
+  }
+
+  @action
+  async setDataTableState (params: { tableName: string, state: { options: DataTableOptions, search: string} }) {
+    this._setDataTableState(params)
+  }
+
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
-  clearNotification () {
+  private _clearNotification () {
     this.notification = null
   }
 
   @mutation
-  addNotification (notification: ReceivedNotification) {
+  private _addNotification (notification: ReceivedNotification) {
     this.notification = { ...notification }
   }
 
   @mutation
-  setTutorialViewed () {
+  private _setTutorialViewed () {
     this.tutorialViewed = true
   }
 
   @mutation
-  setDataTableState ({ tableName, state }: { tableName: string, state: { options: DataTableOptions, search: string} }) {
+  private _setDataTableState ({ tableName, state }: { tableName: string, state: { options: DataTableOptions, search: string} }) {
     Vue.set(this.dataTableState, tableName, state)
+  }
+
+  @mutation
+  private _clear () {
+    this.notification = null
+    this.tutorialViewed = false
+    this.dataTableState = {}
   }
 }

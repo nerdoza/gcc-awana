@@ -38,8 +38,8 @@ export default class extends Vue {
     clubber1
   ]
 
-  mounted () {
-    vxm.system.setTutorialViewed()
+  async mounted () {
+    await vxm.system.setTutorialViewed()
   }
 
   getStarted () {

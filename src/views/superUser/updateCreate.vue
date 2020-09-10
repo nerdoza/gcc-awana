@@ -67,7 +67,8 @@ export default class extends Vue {
   }
 
   get postAtDatePeriod () {
-    return add(this.postAtDate, { weeks: 1 })
+    // To-Do: test this (Should generate 7 day window for title)
+    return add(this.postAtDate, { days: 6 })
   }
 
   get postAt () {

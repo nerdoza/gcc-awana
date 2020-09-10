@@ -80,6 +80,11 @@ export default class extends createModule({ namespaced: 'notifications', strict:
     await firebaseProject.updateDocument(nid, firestoreCollections.notifications, { sentAt: notification.sentAt })
   }
 
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
   private _replaceData ({ notifications }: {notifications: {[index: string]: AppNotification} }) {
     this.notifications = notifications
@@ -94,5 +99,11 @@ export default class extends createModule({ namespaced: 'notifications', strict:
   @mutation
   private _deleteNotification ({ nid }: {nid: string}) {
     Vue.delete(this.notifications, nid)
+  }
+
+  @mutation
+  private _clear () {
+    this.updatedAt = 0
+    this.notifications = {}
   }
 }

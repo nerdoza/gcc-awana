@@ -141,8 +141,8 @@ export default class extends Vue {
   }
 
   @Watch('tableState', { deep: true })
-  onTableStateChange (tableState: { options: DataTableOptions, search: string}) {
-    vxm.system.setDataTableState({ tableName, state: { ...tableState } })
+  async onTableStateChange (tableState: { options: DataTableOptions, search: string}) {
+    await vxm.system.setDataTableState({ tableName, state: { ...tableState } })
   }
 }
 </script>

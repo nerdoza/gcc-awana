@@ -95,18 +95,18 @@ export default class extends Vue {
         await this.user.requestVerification(this.verifierButtonId)
         this.$router.push({ name: 'AuthVerification' })
       } catch (error) {
-        this.handleError(error)
+        await this.handleError(error)
       } finally {
         this.sendingCode = false
       }
     }
   }
 
-  handleError (error: {code: string, message?: string}) {
+  async handleError (error: {code: string, message?: string}) {
     const errorCode = typeof error.code !== 'undefined' ? error.code : error.message
     switch (errorCode) {
       case 'auth/invalid-phone-number':
-        this.user.clearPhoneNumber()
+        await this.user.clearPhoneNumber()
         this.error = 'Invalid phone number. Re-type phone number.'
         break
       default:

@@ -52,6 +52,11 @@ export default class extends createModule({ namespaced: 'appUsers', strict: fals
     debouncedSaveRole(payload)
   }
 
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
   private _replaceData ({ users, roles }: {users: {[index: string]: User}, roles: {[index: string]: UserRole} }) {
     this.users = users
@@ -68,5 +73,12 @@ export default class extends createModule({ namespaced: 'appUsers', strict: fals
   private _updateAppUser ({ uid, user, role }: AppUser) {
     Vue.set(this.users, uid, user)
     Vue.set(this.roles, uid, role)
+  }
+
+  @mutation
+  private _clear () {
+    this.users = {}
+    this.roles = {}
+    this.updatedAt = 0
   }
 }

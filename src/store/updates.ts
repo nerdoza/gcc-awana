@@ -85,6 +85,11 @@ export default class extends createModule({ namespaced: 'updates', strict: false
     this._deleteUpdate({ uid })
   }
 
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
   private _replaceData ({ updates }: {updates: {[index: string]: ClubUpdate} }) {
     this.updates = updates
@@ -99,5 +104,11 @@ export default class extends createModule({ namespaced: 'updates', strict: false
   @mutation
   private _deleteUpdate ({ uid }: {uid: string}) {
     Vue.delete(this.updates, uid)
+  }
+
+  @mutation
+  private _clear () {
+    this.updatedAt = 0
+    this.updates = {}
   }
 }

@@ -30,7 +30,7 @@ export default class extends Vue {
 
   set open (value: boolean) {
     if (!value) {
-      vxm.system.clearNotification()
+      void vxm.system.clearNotification()
     }
   }
 

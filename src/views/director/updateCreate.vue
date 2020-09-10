@@ -67,7 +67,7 @@ export default class extends Vue {
   }
 
   get postAtDatePeriod () {
-    return add(this.postAtDate, { weeks: 1 })
+    return add(this.postAtDate, { days: 6 })
   }
 
   get postAt () {

@@ -46,7 +46,12 @@
                       <v-col cols="auto"></v-col>
                       <v-spacer />
                       <v-col cols="auto">
-                        <v-btn color="primary" @click="submit()">Continue</v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="submit()"
+                          :disabled="submitting"
+                          :loading="submitting"
+                        >Continue</v-btn>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -76,6 +81,7 @@ import { vxm } from '@/store'
 export default class extends Vue {
   @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>
 
+  submitting = false
   user = vxm.user
 
   async validate () {
@@ -85,8 +91,13 @@ export default class extends Vue {
 
   async submit () {
     if (await this.validate()) {
-      void vxm.user.setProfile()
-      this.$router.push({ name: 'Updates' })
+      this.submitting = true
+      try {
+        await vxm.user.setProfile()
+        this.$router.push({ name: 'Updates' })
+      } catch (error) {
+        this.submitting = false
+      }
     }
   }
 }

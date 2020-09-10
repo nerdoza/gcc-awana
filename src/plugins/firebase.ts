@@ -136,9 +136,9 @@ class FirebaseX {
 
       this.firebaseCordova.subscribe('all', () => {}, () => {})
 
-      this.firebaseCordova.onMessageReceived((message: {title?: string, body?: string}) => {
+      this.firebaseCordova.onMessageReceived(async (message: {title?: string, body?: string}) => {
         if (typeof message.title !== 'undefined') {
-          vxm.system.addNotification({ title: message.title, message: message.body ?? '' })
+          await vxm.system.addNotification({ title: message.title, message: message.body ?? '' })
         }
       })
     }

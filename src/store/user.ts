@@ -4,6 +4,7 @@ import { action, createModule, mutation } from 'vuex-class-component'
 import { firestoreCollections, phoneNumberRegex } from '@/const'
 import firebaseProject from '@/plugins/firebase'
 import router from '@/router'
+import { vxm } from '@/store'
 
 let verificationConfirmation: ((code: string) => Promise<void>) | undefined
 const strippedToFormattedPhoneNumber = (number: string | null) => {
@@ -106,29 +107,44 @@ export default class extends createModule({ namespaced: 'user', strict: false })
   @action
   async userSignedIn (user: AuthUser) {
     const alreadyAuthorized = this.authenticated
-    this.setAuth({ authenticated: true, user })
+    this._setAuth({ authenticated: true, user })
+
+    await this.getProfile()
+    await this.getRoles()
 
     if (!alreadyAuthorized) {
       await router.push(this.defaultRoute)
     }
-
-    void this.getRoles()
-    void this.updateDBProfile()
   }
 
   @action
   async getRoles () {
     const role = await firebaseProject.getDocument(this.uid, firestoreCollections.userRoles) as UserRole | undefined
-    this.setRole(role)
+    this._setRole(role)
   }
 
   @action
   async userSignedOut () {
     const alreadyAuthorized = this.authenticated
-    this.setAuth({ authenticated: false })
+    this._setAuth({ authenticated: false })
+
+    void this.dispose()
+    void vxm.appUsers.dispose()
+    void vxm.clubbers.dispose()
+    void vxm.notifications.dispose()
+    void vxm.system.dispose()
+    void vxm.updates.dispose()
 
     if (alreadyAuthorized) {
       await router.push(this.defaultRoute)
+    }
+  }
+
+  @action
+  async getProfile () {
+    const user = await firebaseProject.getDocument(this.uid, firestoreCollections.users) as User | undefined
+    if (typeof user !== 'undefined') {
+      this._setProfile(user)
     }
   }
 
@@ -152,40 +168,55 @@ export default class extends createModule({ namespaced: 'user', strict: false })
     })
   }
 
+  @action
+  async clearPhoneNumber () {
+    this._clearPhoneNumber()
+  }
+
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
-  clearPhoneNumber () {
+  private _clearPhoneNumber () {
     this.phoneNumber = ''
   }
 
   @mutation
-  clear () {
-    this.authenticated = false
+  private _clear () {
     this.uid = ''
     this.firstName = ''
     this.lastName = ''
     this.email = ''
+    this.phoneNumber = ''
   }
 
   @mutation
-  setAuth (params: {authenticated: boolean, user?: AuthUser}) {
+  private _setProfile ({ firstName, lastName, email }: User) {
+    this.firstName = firstName
+    this.lastName = lastName
+    this.email = email
+  }
+
+  @mutation
+  private _setAuth (params: {authenticated: boolean, user?: AuthUser}) {
     this.authenticated = params.authenticated
-    this.uid = params.user?.uid ?? ''
-    this.phoneNumber = strippedToFormattedPhoneNumber(params.user?.phoneNumber ?? '')
 
     if (params.authenticated && typeof params.user !== 'undefined') {
       this.uid = params.user.uid
-      this.firstName = params.user.name?.split(' ')[0] ?? ''
-      this.lastName = params.user.name?.split(' ')[1] ?? ''
-      this.email = params.user.email ?? ''
-    } else {
+      this.phoneNumber = strippedToFormattedPhoneNumber(params.user?.phoneNumber ?? '')
+    } else if (!params.authenticated) {
+      this.uid = ''
       this.firstName = ''
       this.lastName = ''
       this.email = ''
+      this.phoneNumber = ''
     }
   }
 
   @mutation
-  setRole (role?: UserRole) {
+  private _setRole (role?: UserRole) {
     if (typeof role !== 'undefined') {
       this.leader = role.leader
       this.club = role.club

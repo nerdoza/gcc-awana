@@ -106,6 +106,11 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
     this._deleteClubberRecord({ cid })
   }
 
+  @action
+  async dispose () {
+    this._clear()
+  }
+
   @mutation
   private _replaceData ({ clubbers, books }: {clubbers: {[index: string]: Clubber}, books: {[index: string]: ClubberBook}}) {
     this.clubbers = clubbers
@@ -133,5 +138,12 @@ export default class extends createModule({ namespaced: 'clubbers', strict: fals
   private _deleteClubberRecord ({ cid }: {cid: string}) {
     Vue.delete(this.clubbers, cid)
     Vue.delete(this.books, cid)
+  }
+
+  @mutation
+  private _clear () {
+    this.updatedAt = 0
+    this.clubbers = {}
+    this.books = {}
   }
 }
