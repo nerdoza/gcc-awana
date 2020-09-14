@@ -1,7 +1,7 @@
 import { isBefore, isSameDay, parse } from 'date-fns'
 
-import agentOfGrace from '@/assets/images/tntBooks/agents_of_grace.png'
-export const tntBookImg = agentOfGrace
+import graceInAction from '@/assets/images/tntBooks/grace_in_action.png'
+export const tntBookImg = graceInAction
 
 export const tntBookSchedule: {[index: string]: (keyof TnTBook)} = {
   '09/16/2020': 'chapter1section1',
