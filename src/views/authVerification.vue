@@ -113,6 +113,7 @@ export default class extends Vue {
         void this.resendCode()
         break
       default:
+        this.error = errorCode ?? 'Unknown Error'
         throw errorCode
     }
   }
