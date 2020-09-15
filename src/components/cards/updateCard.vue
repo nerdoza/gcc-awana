@@ -41,7 +41,7 @@ export default class extends Vue {
 
   get clubs () {
     const clubs = []
-    if (this.update.general) {
+    if (this.update.general && this.update.general.text !== '' && this.update.general.video !== '') {
       clubs.push({
         name: 'All Clubs',
         color: getClubColor('' as Club),
@@ -50,7 +50,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.cubbies) {
+    if (this.update.cubbies && this.update.cubbies.text !== '' && this.update.cubbies.video !== '') {
       clubs.push({
         name: 'Cubbies',
         color: getClubColor('c' as Club),
@@ -59,7 +59,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.sparks) {
+    if (this.update.sparks && this.update.sparks.text !== '' && this.update.sparks.video !== '') {
       clubs.push({
         name: 'Sparks',
         color: getClubColor('s' as Club),
@@ -68,7 +68,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.tnt) {
+    if (this.update.tnt && this.update.tnt.text !== '' && this.update.tnt.video !== '') {
       clubs.push({
         name: 'T&T',
         color: getClubColor('b' as Club),
