@@ -14,6 +14,7 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
+            <clubber-leader-details :record="record"></clubber-leader-details>
             <template v-if="book.type === 'c'">
               <cubbies-book-full-details :record="record"></cubbies-book-full-details>
             </template>
@@ -33,6 +34,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
+import ClubberLeaderDetails from '@/components/partials/clubberLeaderDetails.vue'
 import CubbiesBookFullDetails from '@/components/partials/cubbiesBookFullDetails.vue'
 import SparksBookFullDetails from '@/components/partials/sparksBookFullDetails.vue'
 import TNTBookFullDetails from '@/components/partials/tntBookFullDetails.vue'
@@ -43,7 +45,8 @@ import { vxm } from '@/store'
   components: {
     CubbiesBookFullDetails,
     SparksBookFullDetails,
-    TNTBookFullDetails
+    TNTBookFullDetails,
+    ClubberLeaderDetails
   }
 })
 export default class extends Vue {
