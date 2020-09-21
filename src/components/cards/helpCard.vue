@@ -9,11 +9,7 @@
     </v-toolbar>
     <v-card-text class="pb-0 pt-4">
       <p>This app is created and supported by the Awana Directors at Grace Community Church Visalia. We will do our best to help you with any questions or issues you have.</p>
-      <p>
-        <router-link :to="{ name: 'Tutorial' }">
-          <v-icon small color="primary" class="mr-2">$video</v-icon>Tutorial
-        </router-link>
-      </p>
+      <v-btn :to="{ name: 'Tutorial' }" tile dark color="primary" class="mb-4">Tutorial</v-btn>
       <p>
         <strong>Grace Community Church Visalia</strong>
         <br />
