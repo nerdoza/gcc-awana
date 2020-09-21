@@ -1,5 +1,5 @@
 <template>
-  <v-container class="cubbies-parent-details pa-0">
+  <v-container class="cubbies-book-full-details pa-0">
     <v-row no-gutters>
       <v-img :src="cubbiesBookImg" contain aspect-ratio="4.6" max-height="100"></v-img>
     </v-row>
@@ -138,7 +138,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.cubbies-parent-details {
+.cubbies-book-full-details {
   .section-props {
     &.v-card--link:focus:before {
       opacity: 0;

@@ -8,7 +8,6 @@ import AuthVerification from '@/views/authVerification.vue'
 import Dashboard from '@/views/dashboard.vue'
 import Admin from '@/views/dashboard/admin.vue'
 import Calendar from '@/views/dashboard/calendar.vue'
-import Leader from '@/views/dashboard/leader.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
@@ -17,6 +16,8 @@ import DirectorUpdateCreate from '@/views/director/updateCreate.vue'
 import DirectorUpdateEdit from '@/views/director/updateEdit.vue'
 import DirectorUpdatesList from '@/views/director/updatesList.vue'
 import Landing from '@/views/landing.vue'
+import LeaderClubbersList from '@/views/leader/clubbersList.vue'
+import LeaderClubberView from '@/views/leader/clubberView.vue'
 import ParentClubbersList from '@/views/parent/clubbersList.vue'
 import ParentClubberView from '@/views/parent/clubberView.vue'
 import Privacy from '@/views/privacy.vue'
@@ -123,9 +124,18 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'leader',
-        name: 'LeaderTools',
-        component: Leader,
+        path: 'leader/clubbers',
+        name: 'LeaderClubbersList',
+        component: LeaderClubbersList,
+        meta: {
+          title: 'Leader Tools'
+        }
+      },
+      {
+        path: 'leader/clubbers/:cid',
+        name: 'LeaderClubberView',
+        component: LeaderClubberView,
+        props: true,
         meta: {
           title: 'Leader Tools'
         }

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="cubbies-parent-progress pa-0">
+  <v-container class="cubbies-book-progress pa-0">
     <v-row>
       <v-col cols="auto" class="pa-2">
         <v-progress-circular
@@ -173,7 +173,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.cubbies-parent-progress {
+.cubbies-book-progress {
   .section-props {
     &.v-card--link:focus:before {
       opacity: 0;

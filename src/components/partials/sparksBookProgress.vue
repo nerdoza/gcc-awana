@@ -1,5 +1,5 @@
 <template>
-  <v-container class="sparks-parent-progress pa-0">
+  <v-container class="sparks-book-progress pa-0">
     <v-row v-if="progressStage === 'book'">
       <v-col cols="12">
         <div class="text-h6">Which book is this child working on?</div>
@@ -98,7 +98,7 @@
 
 <script lang="ts">
 import { confetti } from 'dom-confetti'
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
 
 import { mediumRadialSize, now } from '@/const'
 import { sparksBookImg, sparksBookRequirements, sparksFocusSection, sparksReviewSegmentsCompleted, sparksSectionIsComplete, sparksSectionLabel, sparksSegmentsCompleted, sparksSegmentsRequired, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
@@ -272,7 +272,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.sparks-parent-progress {
+.sparks-book-progress {
   .section-steps {
     .v-card--link:focus:before {
       opacity: 0;

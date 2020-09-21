@@ -4,14 +4,9 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card class="elevation-12">
           <v-card-title>No clubbers</v-card-title>
-          <v-card-subtitle>There are no clubbers attached to this user account.</v-card-subtitle>
+          <v-card-subtitle>There are no clubbers assigned to you currently.</v-card-subtitle>
           <v-card-text>
-            <p>If your clubbers have already been registered for more than a day, contact the church office to resolve.</p>
-            <v-list-item-title class="text--gray">
-              Grace Community Church Visalia
-              <br />
-              <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
-            </v-list-item-title>
+            <p>Contact your director and let them know you can't see your assigned clubbers.</p>
           </v-card-text>
         </v-card>
       </v-col>
@@ -66,7 +61,7 @@ export default class extends Vue {
 
   get clubbersList () {
     return vxm.clubbers.clubbersList
-      .filter(record => record.clubber?.parents?.includes(vxm.user.phoneNumber))
+      .filter(record => record.clubber?.leader === vxm.user.uid)
   }
 
   async mounted () {
@@ -82,7 +77,7 @@ export default class extends Vue {
   }
 
   openClubber (cid: string) {
-    this.$router.push({ name: 'ParentClubberView', params: { cid } })
+    this.$router.push({ name: 'LeaderClubberView', params: { cid } })
   }
 }
 </script>
