@@ -32,12 +32,12 @@ interface FirebasePlugin {
       error: (err: string) => void
   ): void
   onMessageReceived(
-      success: (value: object) => void,
-      error: (err: string) => void
+      success: (message: {title?: string, body?: string}) => void,
+      error?: (err: string) => void
   ): void
   grantPermission(
       success: (value: boolean) => void,
-      error: (err: string) => void
+      error?: (err: string) => void
   ): void
   hasPermission(
       success: (value: boolean) => void,
@@ -132,7 +132,7 @@ interface FirebasePlugin {
       error?: (err: string) => void
   ): void
   verifyPhoneNumber(
-      success: (value: object) => void,
+      success: (credential: {instantVerification: boolean, id: string, verificationId: string, code?: string}) => void,
       error: (err: string) => void,
       phoneNumber: string,
       timeOutDuration: number,
@@ -198,8 +198,8 @@ interface FirebasePlugin {
   ): void
   updateUserProfile(
       profile: {
-          name: string,
-          photoUri: string
+          name?: string,
+          photoUri?: string
       },
       success?: () => void,
       error?: (err: string) => void
@@ -294,7 +294,7 @@ interface FirebasePlugin {
   addDocumentToFirestoreCollection(
       document: object,
       collection: string,
-      success: () => void,
+      success: (id: string) => void,
       error: (err: string) => void
   ): void
   setDocumentInFirestoreCollection(
@@ -325,7 +325,7 @@ interface FirebasePlugin {
   ): void
   fetchFirestoreCollection(
       collection: string,
-      filters?: [object],
+      filters?: any[],
       success?: (collection: object) => void,
       error?: (err: string) => void
   ): void

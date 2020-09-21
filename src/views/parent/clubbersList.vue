@@ -8,7 +8,7 @@
           <v-card-text>
             <p>If your clubbers have already been registered for more than a day, contact the church office to resolve.</p>
             <v-list-item-title class="text--gray">
-              Grace Community Church
+              Grace Community Church Visalia
               <br />
               <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
             </v-list-item-title>

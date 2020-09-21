@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { add, endOfYesterday, format, isSameMonth, isThursday, parse } from 'date-fns'
+import { add, endOfYesterday, format, isSameMonth, isThursday, parse, subWeeks } from 'date-fns'
 import { Component, Vue } from 'vue-property-decorator'
 
 import { lastDay } from '@/const'
@@ -75,7 +75,7 @@ export default class extends Vue {
   }
 
   get minDate () {
-    return endOfYesterday().toISOString()
+    return subWeeks(endOfYesterday(), 1).toISOString()
   }
 
   get maxDate () {

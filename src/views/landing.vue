@@ -15,14 +15,14 @@
                   </v-col>
                 </v-row>
                 <h1 class="mb-4">Welcome</h1>
-                <p>This app is meant for parents and leaders of Grace Community Church Awana program. Track book progress, calculate clubber's points, and receive important instructions from the Awana directors all in one place.</p>
+                <p>This app is meant for parents and leaders of Grace Community Church Visalia Awana program. Track book progress, calculate clubber's points, and receive important instructions from the Awana directors all in one place.</p>
                 <p>If you have any questions, please contact the Church offices and ask for Brittany Kalmink.</p>
               </v-card-text>
               <v-container class="pt-0">
                 <v-row>
                   <v-col cols="auto">
                     <v-list-item-title class="text--gray">
-                      Grace Community Church
+                      Grace Community Church Visalia
                       <br />
                       <a href="tel:1-559-733-3966">+1 (559) 733-3966</a>
                     </v-list-item-title>

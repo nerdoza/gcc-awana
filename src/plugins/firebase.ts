@@ -90,14 +90,16 @@ class FirebaseX {
       })
     } else {
       await new Promise((resolve, reject) => {
-        this.firebaseCordova.isUserSignedIn(async (isSignedIn: boolean) => {
-          if (isSignedIn) {
-            const user = await this.getCurrentUser()
-            await vxm.user.userSignedIn(user)
-          } else {
-            await vxm.user.userSignedOut()
-          }
-          resolve()
+        this.firebaseCordova.isUserSignedIn((isSignedIn: boolean) => {
+          void (async () => {
+            if (isSignedIn) {
+              const user = await this.getCurrentUser()
+              await vxm.user.userSignedIn(user)
+            } else {
+              await vxm.user.userSignedOut()
+            }
+            resolve()
+          })()
         }, (error: string) => reject(new Error(error)))
       })
     }
@@ -136,9 +138,9 @@ class FirebaseX {
 
       this.firebaseCordova.subscribe('all', () => {}, () => {})
 
-      this.firebaseCordova.onMessageReceived(async (message: {title?: string, body?: string}) => {
+      this.firebaseCordova.onMessageReceived((message: {title?: string, body?: string}) => {
         if (typeof message.title !== 'undefined') {
-          await vxm.system.addNotification({ title: message.title, message: message.body ?? '' })
+          void vxm.system.addNotification({ title: message.title, message: message.body ?? '' })
         }
       })
     }
@@ -173,10 +175,12 @@ class FirebaseX {
       const resolve: (code: string) => Promise<void> = await new Promise((resolve, reject) => {
         this.firebaseCordova.verifyPhoneNumber((credential: {instantVerification: boolean, id: string, verificationId: string, code?: string}) => {
           if (credential.instantVerification) {
-            this.firebaseCordova.signInWithCredential(credential, async () => {
-              const user = await this.getCurrentUser()
-              await vxm.user.userSignedIn(user)
-              resolve(async (code: string) => { })
+            this.firebaseCordova.signInWithCredential(credential, () => {
+              void (async () => {
+                const user = await this.getCurrentUser()
+                await vxm.user.userSignedIn(user)
+                resolve(async (code: string) => { })
+              })()
             }, (error: string) => reject(new Error(error)))
           } else {
             resolve(async (code: string) => {
@@ -303,7 +307,7 @@ class FirebaseX {
       await user?.updateProfile({ displayName: name })
     } else {
       await new Promise((resolve, reject) => {
-        this.firebaseCordova.updateUserProfile({ name }, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.updateUserProfile({ name: name }, () => resolve(), (error: string) => reject(new Error(error)))
       })
     }
   }
