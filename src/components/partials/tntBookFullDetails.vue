@@ -1,5 +1,5 @@
 <template>
-  <v-container class="tnt-parent-details pa-0">
+  <v-container class="tnt-book-full-details pa-0">
     <v-row no-gutters>
       <v-img :src="tntBookImg" contain aspect-ratio="3.06" max-height="100"></v-img>
     </v-row>
@@ -178,7 +178,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.tnt-parent-details {
+.tnt-book-full-details {
   .section-props {
     &.v-card--link:focus:before {
       opacity: 0;

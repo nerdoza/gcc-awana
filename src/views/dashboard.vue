@@ -41,15 +41,27 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'LeaderTools' }" v-if="user.leader">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$leader</v-icon>
-          </v-list-item-icon>
+        <v-list-group v-if="user.leader" :value="isDirOpen('Leader')">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$leader</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>Leader Tools</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Leader Tools</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'LeaderClubbersList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$clubbers</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>My Group</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
 
         <v-list-item :to="{ name: 'AdminTools' }" v-if="user.admin">
           <v-list-item-icon>

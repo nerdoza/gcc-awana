@@ -1,5 +1,5 @@
 <template>
-  <v-container class="sparks-parent-details pa-0">
+  <v-container class="sparks-book-full-details pa-0">
     <v-row no-gutters>
       <v-img :src="bookImg" contain aspect-ratio="2.53" max-height="100"></v-img>
     </v-row>
@@ -223,7 +223,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.sparks-parent-details {
+.sparks-book-full-details {
   .section-props {
     &.v-card--link:focus:before {
       opacity: 0;

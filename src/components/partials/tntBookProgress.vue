@@ -1,5 +1,5 @@
 <template>
-  <v-container class="tnt-parent-progress pa-0">
+  <v-container class="tnt-book-progress pa-0">
     <v-row>
       <v-col cols="auto" class="pa-2">
         <v-progress-circular
@@ -207,7 +207,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.tnt-parent-progress {
+.tnt-book-progress {
   .section-props {
     &.v-card--link:focus:before {
       opacity: 0;
