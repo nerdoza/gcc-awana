@@ -296,7 +296,14 @@ const openRoutes = ['Terms', 'Privacy']
 const router = new VueRouter({
   mode: isWeb ? 'history' : 'hash',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior: (to, from, savedPosition) => {
+    if (typeof savedPosition === 'object' && savedPosition !== null) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {
