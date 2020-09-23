@@ -42,7 +42,8 @@ service cloud.firestore {
     }
 
     match /clubbers/{clubberId} {
-      allow create, update, delete: if isSuper();
+      allow create, delete: if isSuper();
+      allow update: if isAdmin() || isDirector() || isSuper();
       // I don't like this, but can't solve without switching to UID
       allow get, list: if isSignedIn();
     }
