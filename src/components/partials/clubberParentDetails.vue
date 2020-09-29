@@ -20,7 +20,7 @@
                         </v-list-item-content>
                       </v-list-item>
                     </v-hover>
-                    <v-hover v-slot:default="{ hover }">
+                    <v-hover v-slot:default="{ hover }" v-if="parent.email">
                       <v-list-item @click="email(parent.email)">
                         <v-list-item-action color="grey lighten-2">
                           <v-icon :color="hover ? 'primary':  ''">$send</v-icon>
@@ -55,7 +55,9 @@ export default class extends Vue {
   readonly getFullname = getFullname
 
   get parents () {
-    return vxm.appUsers.usersList.filter(parentRecord => this.record.clubber.parents?.includes(parentRecord.user.phoneNumber)).map(appUser => appUser.user) ?? []
+    const matchedParents = vxm.appUsers.usersList.filter(parentRecord => this.record.clubber.parents?.includes(parentRecord.user.phoneNumber)).map(appUser => appUser.user) ?? []
+    const remainingNumbers = (this.record.clubber.parents ?? []).filter(phoneNumber => matchedParents.find(parentRecord => parentRecord.phoneNumber === phoneNumber))
+    return [...matchedParents, ...remainingNumbers.map(phoneNumber => ({ firstName: 'Parent', lastName: '', phoneNumber }))]
   }
 
   async mounted () {
