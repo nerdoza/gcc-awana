@@ -1,7 +1,12 @@
 <template>
   <v-container class="sparks-book-full-details pa-0">
     <v-row no-gutters>
-      <v-img :src="bookImg" contain aspect-ratio="2.53" max-height="100"></v-img>
+      <v-img
+        :src="bookImg"
+        contain
+        aspect-ratio="2.53"
+        max-height="100"
+      ></v-img>
     </v-row>
     <v-row>
       <v-col cols="auto" class="pt-0 text-center">
@@ -10,16 +15,30 @@
           :size="largeRadialSize"
           width="12"
           :value="percentageCompleted"
-          :color="inReview? 'amber' : 'primary'"
-        >{{segmentsCompletedRelative}}/{{segmentsRequiredRelative}}</v-progress-circular>
+          :color="inReview ? 'amber' : 'primary'"
+          >{{ segmentsCompletedRelative }}/{{
+            segmentsRequiredRelative
+          }}</v-progress-circular
+        >
       </v-col>
-      <v-col cols="auto" class="pt-0" align-self="center">
-        <div>Current {{ inReview ? 'Review' : ''}} Section</div>
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="pt-0">
+        <div>Awana Bucks</div>
         <div class="text-h5">
-          <v-icon v-if="completed" color="yellow darken-3" size="30">$award</v-icon>
+          <v-icon class="mr-2" color="primary">$buck</v-icon>{{ bucksEarned }}
+        </div>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="pt-0">
+        <div>Current {{ inReview ? "Review" : "" }} Section</div>
+        <div class="text-h5">
+          <v-icon v-if="completed" color="yellow darken-3" size="30"
+            >$award</v-icon
+          >
           {{ currentSectionLabel }}
         </div>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
     <v-row v-for="(section, index) in getCurrentBookSections()" :key="index">
       <template v-if="section === 'rankTestReview'">
@@ -37,7 +56,11 @@
             <v-list-item-title>
               <v-row no-gutters class="align-center">
                 <v-col cols="auto">
-                  <v-icon :color="getColor(section)" v-text="getIcon(section)" class="fa-fw mr-2"></v-icon>
+                  <v-icon
+                    :color="getColor(section)"
+                    v-text="getIcon(section)"
+                    class="fa-fw mr-2"
+                  ></v-icon>
                 </v-col>
                 <v-col cols="auto">
                   <div v-text="getLabel(section)"></div>
@@ -52,15 +75,17 @@
           v-for="(sectionNumber, index) in getSectionSize(section)"
           :key="index"
           class="section-props text-center rounded-circle d-inline-flex align-center justify-center ma-2"
-          :color="getSectionSegmentStatus(section, sectionNumber) ? 'primary' : ''"
+          :color="
+            getSectionSegmentStatus(section, sectionNumber) ? 'primary' : ''
+          "
           :height="smallRadialSize"
           :width="smallRadialSize"
           @click="setProp(section, sectionNumber)"
         >
           <template v-if="getSectionSegmentStatus(section, sectionNumber)">
-            <div
-              class="font-weight-heavy white--text"
-            >{{ getSectionSegmentStatusText(section, sectionNumber) }}</div>
+            <div class="font-weight-heavy white--text">
+              {{ getSectionSegmentStatusText(section, sectionNumber) }}
+            </div>
           </template>
           <template v-else>
             <div class="font-weight-light">{{ sectionNumber }}</div>
@@ -76,7 +101,7 @@ import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import { largeRadialSize, now, smallRadialSize } from '@/const'
-import { sparksBookImg, sparksBookRequirements, sparksBookSectionOrder, sparksFocusSection, sparksReviewSegmentsCompleted, sparksSectionLabel, sparksSegmentsCompleted, sparksSegmentsRequired, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
+import { sparksBookImg, sparksBookRequirements, sparksBookSectionOrder, sparksBucksEarned, sparksFocusSection, sparksReviewSegmentsCompleted, sparksSectionLabel, sparksSegmentsCompleted, sparksSegmentsRequired, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
 import { vxm } from '@/store'
 
 @Component
@@ -134,6 +159,10 @@ export default class extends Vue {
 
   get percentageCompleted () {
     return Math.round((this.segmentsCompletedRelative / this.segmentsRequiredRelative) * 100)
+  }
+
+  get bucksEarned () {
+    return sparksBucksEarned(this.record.book)
   }
 
   getCurrentBookSections () {

@@ -121,6 +121,10 @@ export const sparksReviewSegmentsCompleted = (book: SparksBook) => {
   return totalCompleted
 }
 
+export const sparksBucksEarned = (book: SparksBook) => {
+  return sparksSegmentsCompleted(book)
+}
+
 export const sparksSectionLabel = (section: keyof SparksBook) => {
   if (section === 'flight') {
     return 'Flight 3:16'

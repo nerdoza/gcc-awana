@@ -45,21 +45,18 @@
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
-      <v-col cols="auto" class="pt-0" align-self="center">
-        <div class="text-h6">Awana Bucks Earned:</div>
-        <div class="text-h5" v-text="bucksEarned"></div>
+      <v-col cols="auto" class="pt-0">
+        <div>Awana Bucks</div>
+        <div class="text-h5">
+          <v-icon class="mr-2" color="primary">$buck</v-icon>{{ bucksEarned }}
+        </div>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12" class="pa-0">
-        <v-divider></v-divider>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="auto">
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="pt-0">
         <div>Current Section</div>
         <div class="text-h5" v-html="currentSectionLabel"></div>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
     <v-row v-for="(date, index) of tntBookDates" :key="index">
       <v-col cols="12" class="pa-0">
