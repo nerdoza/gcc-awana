@@ -1,7 +1,12 @@
 <template>
   <v-container class="tnt-book-full-details pa-0">
     <v-row no-gutters>
-      <v-img :src="tntBookImg" contain aspect-ratio="3.06" max-height="100"></v-img>
+      <v-img
+        :src="tntBookImg"
+        contain
+        aspect-ratio="3.06"
+        max-height="100"
+      ></v-img>
     </v-row>
     <v-row class="px-2">
       <v-spacer></v-spacer>
@@ -12,7 +17,8 @@
           width="12"
           :value="percentageCompleted"
           color="primary"
-        >{{sectionsCompleted}}/{{tntTotalSections}}</v-progress-circular>
+          >{{ sectionsCompleted }}/{{ tntTotalSections }}</v-progress-circular
+        >
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="auto" class="text-center px-0">
@@ -22,7 +28,8 @@
           width="12"
           :value="silverPercentageCompleted"
           :color="tntPropertyColor('silver')"
-        >{{silverCompleted}}/{{tntTotalSections}}</v-progress-circular>
+          >{{ silverCompleted }}/{{ tntTotalSections }}</v-progress-circular
+        >
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="auto" class="text-center px-0">
@@ -32,12 +39,24 @@
           width="12"
           :value="goldPercentageCompleted"
           :color="tntPropertyColor('gold')"
-        >{{goldCompleted}}/{{tntTotalSections}}</v-progress-circular>
+          >{{ goldCompleted }}/{{ tntTotalSections }}</v-progress-circular
+        >
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
+        <div class="text-h6">Awana Bucks Earned:</div>
+        <div class="text-h5" v-text="bucksEarned"></div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" class="pa-0">
+        <v-divider></v-divider>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="auto">
         <div>Current Section</div>
         <div class="text-h5" v-html="currentSectionLabel"></div>
       </v-col>
@@ -47,8 +66,12 @@
         <v-divider></v-divider>
         <v-list-item two-line class="px-3">
           <v-list-item-content class="pa-0">
-            <v-list-item-title v-html="tntSectionLabel(tntBookSchedule[date])"></v-list-item-title>
-            <v-list-item-subtitle v-text="getLongDate(date)"></v-list-item-subtitle>
+            <v-list-item-title
+              v-html="tntSectionLabel(tntBookSchedule[date])"
+            ></v-list-item-title>
+            <v-list-item-subtitle
+              v-text="getLongDate(date)"
+            ></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-col>
@@ -60,14 +83,25 @@
       >
         <v-card
           class="section-props text-center rounded-circle d-flex align-center justify-center"
-          :color="getValue(tntBookSchedule[date], propertyName) ? tntPropertyColor(propertyName) : 'white'"
+          :color="
+            getValue(tntBookSchedule[date], propertyName)
+              ? tntPropertyColor(propertyName)
+              : 'white'
+          "
           :height="smallRadialSize"
           :width="smallRadialSize"
           @click="setProp(tntBookSchedule[date], propertyName)"
-          :disabled="propertyName === 'review' && tntSectionSkipReview(tntBookSchedule[date])"
+          :disabled="
+            propertyName === 'review' &&
+            tntSectionSkipReview(tntBookSchedule[date])
+          "
         >
           <v-icon
-            :color="getValue(tntBookSchedule[date], propertyName) ?  'white' : tntPropertyColor(propertyName, true)"
+            :color="
+              getValue(tntBookSchedule[date], propertyName)
+                ? 'white'
+                : tntPropertyColor(propertyName, true)
+            "
             small
             v-text="tntPropertyIcon(propertyName)"
           ></v-icon>
@@ -82,7 +116,7 @@ import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import { largeRadialSize, now, smallRadialSize } from '@/const'
-import { tntBookDates, tntBookImg, tntBookSchedule, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
+import { tntBookDates, tntBookImg, tntBookSchedule, tntBucksEarned, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
 @Component
@@ -135,6 +169,10 @@ export default class extends Vue {
 
   get goldPercentageCompleted () {
     return Math.round((this.goldCompleted / tntTotalSections) * 100)
+  }
+
+  get bucksEarned () {
+    return tntBucksEarned(this.record.book)
   }
 
   getValue (section: keyof TnTBook, propertyName: keyof TnTBookSection) {
