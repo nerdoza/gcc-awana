@@ -1,7 +1,12 @@
 <template>
   <v-container class="cubbies-book-full-details pa-0">
     <v-row no-gutters>
-      <v-img :src="cubbiesBookImg" contain aspect-ratio="4.6" max-height="100"></v-img>
+      <v-img
+        :src="cubbiesBookImg"
+        contain
+        aspect-ratio="4.6"
+        max-height="100"
+      ></v-img>
     </v-row>
     <v-row>
       <v-col cols="auto" class="pt-0">
@@ -11,20 +16,36 @@
           width="12"
           :value="percentageCompleted"
           color="primary"
-        >{{sectionsCompleted}}/{{cubbiesTotalSections}}</v-progress-circular>
+          >{{ sectionsCompleted }}/{{
+            cubbiesTotalSections
+          }}</v-progress-circular
+        >
       </v-col>
+      <v-spacer></v-spacer>
       <v-col cols="auto" class="pt-0" align-self="center">
-        <div>Current Section{{ currentSections.length > 1 ? 's' : ''}}</div>
+        <div>Awana Bucks</div>
+        <div class="text-h5">
+          <v-icon class="mr-2" color="primary">$buck</v-icon>{{ bucksEarned }}
+        </div>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="pt-0" align-self="center">
+        <div>Current Section{{ currentSections.length > 1 ? "s" : "" }}</div>
         <div class="text-h5" v-html="currentSectionsLabel"></div>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
     <v-row v-for="(date, index) of cubbiesBookDates" :key="index">
       <v-col cols="12" class="pa-0">
         <v-divider></v-divider>
         <v-list-item class="px-3 pt-2 pb-0">
           <v-list-item-content class="pa-0">
-            <v-list-item-title v-html="cubbiesSectionsLabel(cubbiesBookSchedule[date])"></v-list-item-title>
-            <v-list-item-subtitle v-text="getLongDate(date)"></v-list-item-subtitle>
+            <v-list-item-title
+              v-html="cubbiesSectionsLabel(cubbiesBookSchedule[date])"
+            ></v-list-item-title>
+            <v-list-item-subtitle
+              v-text="getLongDate(date)"
+            ></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-col>
@@ -34,14 +55,24 @@
           <v-col :key="secIndex + propertyName" cols="auto" class="pa-2">
             <v-card
               class="section-props text-center rounded-circle d-flex align-center justify-center"
-              :color="getValue(section, propertyName) ? cubbiesSectionColor(section) : 'white'"
+              :color="
+                getValue(section, propertyName)
+                  ? cubbiesSectionColor(section)
+                  : 'white'
+              "
               :height="smallRadialSize"
               :width="smallRadialSize"
               @click="setProp(section, propertyName)"
-              :disabled="propertyName === 'review' && cubbiesSectionSkipReview(section)"
+              :disabled="
+                propertyName === 'review' && cubbiesSectionSkipReview(section)
+              "
             >
               <v-icon
-                :color="getValue(section, propertyName) ?  'white' : cubbiesSectionColor(section, true)"
+                :color="
+                  getValue(section, propertyName)
+                    ? 'white'
+                    : cubbiesSectionColor(section, true)
+                "
                 small
                 v-text="cubbiesPropertyIcon(propertyName)"
               ></v-icon>
@@ -58,7 +89,7 @@ import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import { largeRadialSize, now, smallRadialSize } from '@/const'
-import { cubbiesBookDates, cubbiesBookImg, cubbiesBookSchedule, cubbiesKeyForDate, cubbiesPropertyIcon, cubbiesSectionColor, cubbiesSectionProperties, cubbiesSectionsCompleted, cubbiesSectionSkipReview, cubbiesSectionsLabel, cubbiesTotalSections } from '@/lib/cubbies'
+import { cubbiesBookDates, cubbiesBookImg, cubbiesBookSchedule, cubbiesBucksEarned, cubbiesKeyForDate, cubbiesPropertyIcon, cubbiesSectionColor, cubbiesSectionProperties, cubbiesSectionsCompleted, cubbiesSectionSkipReview, cubbiesSectionsLabel, cubbiesTotalSections } from '@/lib/cubbies'
 import { vxm } from '@/store'
 
 @Component
@@ -95,6 +126,10 @@ export default class extends Vue {
 
   get percentageCompleted () {
     return Math.round((this.sectionsCompleted / cubbiesTotalSections) * 100)
+  }
+
+  get bucksEarned () {
+    return cubbiesBucksEarned(this.record.book)
   }
 
   getValue (section: keyof CubbiesBook, propertyName: keyof CubbiesBookSection) {

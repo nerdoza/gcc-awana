@@ -107,6 +107,26 @@ export const tntGoldsCompleted = (book: TnTBook) => {
   return totalCompleted
 }
 
+export const tntBucksEarned = (book: TnTBook) => {
+  let bucksEarned = 0
+
+  Object.keys(book).forEach(key => {
+    const sectionName = key as keyof TnTBook
+    const section = book[sectionName]
+    if (typeof section === 'object' && tntSectionCompleted(sectionName, section)) {
+      bucksEarned += 2
+      if (typeof section.silver === 'string') {
+        bucksEarned += 1
+      }
+      if (typeof section.gold === 'string') {
+        bucksEarned += 2
+      }
+    }
+  })
+
+  return bucksEarned
+}
+
 export const tntSectionCompleted = (sectionName: keyof TnTBook, section: TnTBookSection) => {
   const skipReview = tntSectionSkipReview(sectionName)
   return typeof section.start === 'string' && typeof section.explore === 'string' && typeof section.memorize === 'string' && (skipReview || typeof section.review === 'string')
