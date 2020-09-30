@@ -114,7 +114,7 @@ export const tntBucksEarned = (book: TnTBook) => {
     const sectionName = key as keyof TnTBook
     const section = book[sectionName]
     if (typeof section === 'object' && tntSectionCompleted(sectionName, section)) {
-      bucksEarned += tntSectionSkipReview(sectionName) ? 3 : 4
+      bucksEarned += 2
       if (typeof section.silver === 'string') {
         bucksEarned += 1
       }
