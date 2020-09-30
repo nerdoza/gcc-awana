@@ -136,6 +136,10 @@ export const cubbiesSectionsCompleted = (book: CubbiesBook) => {
   return totalCompleted
 }
 
+export const cubbiesBucksEarned = (book: CubbiesBook) => {
+  return cubbiesSectionsCompleted(book) * 2
+}
+
 export const cubbiesSectionCompleted = (sectionName: keyof CubbiesBook, section: CubbiesBookSection) => {
   // const skipReview = tntSectionSkipReview(sectionName)
   return typeof section.memorize === 'string'
