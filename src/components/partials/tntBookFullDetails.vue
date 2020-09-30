@@ -45,14 +45,14 @@
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
         <div>Awana Bucks</div>
         <div class="text-h5">
           <v-icon class="mr-2" color="primary">$buck</v-icon>{{ bucksEarned }}
         </div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
         <div>Current Section</div>
         <div class="text-h5" v-html="currentSectionLabel"></div>
       </v-col>

@@ -22,14 +22,14 @@
         >
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
         <div>Awana Bucks</div>
         <div class="text-h5">
           <v-icon class="mr-2" color="primary">$buck</v-icon>{{ bucksEarned }}
         </div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="auto" class="pt-0">
+      <v-col cols="auto" class="pt-0" align-self="center">
         <div>Current {{ inReview ? "Review" : "" }} Section</div>
         <div class="text-h5">
           <v-icon v-if="completed" color="yellow darken-3" size="30"
