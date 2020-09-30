@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    name: Release Build
+    name: Release Archive
     needs: check
     if: needs.check.outputs.changed == 'true'
     runs-on: ubuntu-latest
