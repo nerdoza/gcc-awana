@@ -29,14 +29,22 @@ jobs:
           diff-search: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  release:
+    name: Release Build
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Create Release
         uses: actions/create-release@v1
-        if: steps.check.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.check.outputs.version }}
-          release_name: Release v${{ steps.check.outputs.version }}
+          tag_name: v${{ needs.check.outputs.version }}
+          release_name: Release v${{ needs.check.outputs.version }}
 
   web:
     name: Web Build
