@@ -67,7 +67,11 @@
                     />
                   </v-col>
                   <v-col cols="12" sm="6">
-                    <v-select label="Leader" v-model="clubber.leader" :items="leaderSelect"></v-select>
+                    <v-select
+                      label="Leader"
+                      v-model="clubber.leader"
+                      :items="leaderSelect"
+                    ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -77,7 +81,12 @@
           <v-subheader>Parents</v-subheader>
           <v-container class="pt-0">
             <v-row>
-              <v-col cols="12" md="6" v-for="(parent, index) in parents" :key="index">
+              <v-col
+                cols="12"
+                md="6"
+                v-for="(parent, index) in parents"
+                :key="index"
+              >
                 <v-list-item>
                   <v-hover v-slot:default="{ hover }">
                     <v-list-item-avatar
@@ -85,18 +94,28 @@
                       @click="callParent(parent.phoneNumber)"
                       color="grey lighten-2"
                     >
-                      <v-icon color="primary" class="call" v-if="hover">$call</v-icon>
+                      <v-icon color="primary" class="call" v-if="hover"
+                        >$call</v-icon
+                      >
                       <v-icon v-else>$user</v-icon>
                     </v-list-item-avatar>
                   </v-hover>
 
                   <v-list-item-content>
-                    <v-list-item-title v-text="parent.fullName"></v-list-item-title>
-                    <v-list-item-subtitle v-text="parent.phoneNumber"></v-list-item-subtitle>
+                    <v-list-item-title
+                      v-text="parent.fullName"
+                    ></v-list-item-title>
+                    <v-list-item-subtitle
+                      v-text="parent.phoneNumber"
+                    ></v-list-item-subtitle>
                   </v-list-item-content>
 
                   <v-list-item-action>
-                    <v-dialog v-model="removeParentDialogs[index]" persistent max-width="290">
+                    <v-dialog
+                      v-model="removeParentDialogs[index]"
+                      persistent
+                      max-width="290"
+                    >
                       <template v-slot:activator="{ on }">
                         <v-btn icon v-on="on">
                           <v-icon>$removeUser</v-icon>
@@ -146,6 +165,14 @@
                 v-on:close="removeClubberDialog = false"
               ></remove-clubber-card>
             </v-dialog>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="ma-2"
+              color="primary"
+              :to="{ name: 'SuperClubberProgress' }"
+            >
+              <v-icon class="mr-2">$card</v-icon>Progress
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>

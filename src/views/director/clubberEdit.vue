@@ -21,7 +21,11 @@
                 <div>Grade: {{ grade }}</div>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select label="Leader" v-model="clubber.leader" :items="leaderSelect"></v-select>
+                <v-select
+                  label="Leader"
+                  v-model="clubber.leader"
+                  :items="leaderSelect"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -29,7 +33,12 @@
           <v-subheader>Parents</v-subheader>
           <v-container class="pt-0">
             <v-row>
-              <v-col cols="12" sm="6" v-for="(parent, index) in parents" :key="index">
+              <v-col
+                cols="12"
+                sm="6"
+                v-for="(parent, index) in parents"
+                :key="index"
+              >
                 <v-list-item>
                   <v-hover v-slot:default="{ hover }">
                     <v-list-item-avatar
@@ -37,19 +46,36 @@
                       @click="callParent(parent.phoneNumber)"
                       color="grey lighten-2"
                     >
-                      <v-icon color="primary" class="call" v-if="hover">$call</v-icon>
+                      <v-icon color="primary" class="call" v-if="hover"
+                        >$call</v-icon
+                      >
                       <v-icon v-else>$user</v-icon>
                     </v-list-item-avatar>
                   </v-hover>
 
                   <v-list-item-content>
-                    <v-list-item-title v-text="parent.fullName"></v-list-item-title>
-                    <v-list-item-subtitle v-text="parent.phoneNumber"></v-list-item-subtitle>
+                    <v-list-item-title
+                      v-text="parent.fullName"
+                    ></v-list-item-title>
+                    <v-list-item-subtitle
+                      v-text="parent.phoneNumber"
+                    ></v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
             </v-row>
           </v-container>
+          <v-divider class="mb-2"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="ma-2"
+              color="primary"
+              :to="{ name: 'DirectorClubberProgress' }"
+            >
+              <v-icon class="mr-2">$card</v-icon>Progress
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -59,10 +85,19 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
+import CubbiesBookFullDetails from '@/components/partials/cubbiesBookFullDetails.vue'
+import SparksBookFullDetails from '@/components/partials/sparksBookFullDetails.vue'
+import TNTBookFullDetails from '@/components/partials/tntBookFullDetails.vue'
 import { getFullname, getGradeByValue, oneHour } from '@/const'
 import { vxm } from '@/store'
 
-@Component
+@Component({
+  components: {
+    CubbiesBookFullDetails,
+    SparksBookFullDetails,
+    TNTBookFullDetails
+  }
+})
 export default class extends Vue {
   @Prop() readonly cid!: string
 

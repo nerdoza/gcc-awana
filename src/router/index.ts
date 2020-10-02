@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
+import ClubberProgressCard from '@/components/cards/clubberProgressCard.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
 import AuthStart from '@/views/authStart.vue'
@@ -191,6 +192,15 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        path: 'director/clubbers/:cid/progress',
+        name: 'DirectorClubberProgress',
+        component: ClubberProgressCard,
+        props: true,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
         path: 'super/notifications',
         name: 'NotificationsList',
         component: NotificationsList,
@@ -277,6 +287,15 @@ const routes: RouteConfig[] = [
         path: 'super/clubbers/:cid',
         name: 'SuperClubberEdit',
         component: SuperClubberEdit,
+        props: true,
+        meta: {
+          title: 'Super User Tools'
+        }
+      },
+      {
+        path: 'super/clubbers/:cid/progress',
+        name: 'SuperClubberProgress',
+        component: ClubberProgressCard,
         props: true,
         meta: {
           title: 'Super User Tools'
