@@ -2,31 +2,47 @@
   <v-container class="clubber-parent-details pa-0 pb-4">
     <v-expansion-panels flat accordion>
       <v-expansion-panel>
-        <v-expansion-panel-header class="text-h5 pa-0">Parent Details</v-expansion-panel-header>
+        <v-expansion-panel-header class="text-h5 pa-0"
+          >Parent Details</v-expansion-panel-header
+        >
         <v-expansion-panel-content>
           <v-row>
-            <v-col v-for="(parent, index) in parents" :key="index" cols="12" md="6">
+            <v-col
+              v-for="(parent, index) in parents"
+              :key="index"
+              cols="12"
+              md="6"
+            >
               <v-card>
-                <v-card-title class="pb-0">{{ getFullname(parent) }}</v-card-title>
+                <v-card-title class="pb-0">{{
+                  getFullname(parent)
+                }}</v-card-title>
                 <v-card-actions>
                   <v-list class="pa-0" width="100%">
                     <v-hover v-slot:default="{ hover }">
-                      <v-list-item @click="call(parent.phoneNumber)" @mouseover="color = 'primary'">
+                      <v-list-item
+                        @click="call(parent.phoneNumber)"
+                        @mouseover="color = 'primary'"
+                      >
                         <v-list-item-action>
-                          <v-icon :color="hover ? 'primary':  ''">$call</v-icon>
+                          <v-icon :color="hover ? 'primary' : ''">$call</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                          <v-list-item-title v-text="parent.phoneNumber"></v-list-item-title>
+                          <v-list-item-title
+                            v-text="parent.phoneNumber"
+                          ></v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
                     </v-hover>
                     <v-hover v-slot:default="{ hover }" v-if="parent.email">
                       <v-list-item @click="email(parent.email)">
                         <v-list-item-action color="grey lighten-2">
-                          <v-icon :color="hover ? 'primary':  ''">$send</v-icon>
+                          <v-icon :color="hover ? 'primary' : ''">$send</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                          <v-list-item-title v-text="parent.email"></v-list-item-title>
+                          <v-list-item-title
+                            v-text="parent.email"
+                          ></v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
                     </v-hover>
@@ -56,7 +72,7 @@ export default class extends Vue {
 
   get parents () {
     const matchedParents = vxm.appUsers.usersList.filter(parentRecord => this.record.clubber.parents?.includes(parentRecord.user.phoneNumber)).map(appUser => appUser.user) ?? []
-    const remainingNumbers = (this.record.clubber.parents ?? []).filter(phoneNumber => matchedParents.find(parentRecord => parentRecord.phoneNumber === phoneNumber))
+    const remainingNumbers = (this.record.clubber.parents ?? []).filter(phoneNumber => !matchedParents.find(parentRecord => parentRecord.phoneNumber === phoneNumber))
     return [...matchedParents, ...remainingNumbers.map(phoneNumber => ({ firstName: 'Parent', lastName: '', phoneNumber }))]
   }
 
