@@ -211,6 +211,34 @@ export const getGradeByValue = (value: Grade) => {
   return ''
 }
 
+export const getColorLineByValue = (value: ColorLine) => {
+  switch (value) {
+    case 'r':
+      return 'Red'
+    case 'b':
+      return 'Blue'
+    case 'g':
+      return 'Green'
+    case 'y':
+      return 'Yellow'
+  }
+  return ''
+}
+
+export const getColorLineColorByValue = (value?: ColorLine) => {
+  switch (value) {
+    case 'r':
+      return 'red darken-1'
+    case 'b':
+      return 'blue darken-2'
+    case 'g':
+      return 'green'
+    case 'y':
+      return 'amber'
+  }
+  return ''
+}
+
 export const clubs = ['p', 'c', 's', 'b', 'g']
 
 export const clubSelect = [
@@ -235,6 +263,13 @@ export const gradeSelect = [
   { text: '4th', value: '4' },
   { text: '5th', value: '5' },
   { text: '6th', value: '6' }
+]
+
+export const colorLineSelect = [
+  { text: 'Red', value: 'r' },
+  { text: 'Blue', value: 'b' },
+  { text: 'Green', value: 'g' },
+  { text: 'Yellow', value: 'y' }
 ]
 
 export const firestoreCollections = {

@@ -17,6 +17,15 @@ $backgroundColor: #212121;
   font-size: 1rem;
 }
 
+.v-data-table {
+  .v-data-footer__icons-before .v-btn--icon.v-size--default,
+  .v-data-footer__icons-after .v-btn--icon.v-size--default
+  {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 // Global Styles
 #background {
   position: fixed;

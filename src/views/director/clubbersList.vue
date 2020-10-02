@@ -46,7 +46,17 @@
             :loading="loading"
             loading-text="Loading Clubbers..."
             class="clickable"
-          ></v-data-table>
+          >
+            <template v-slot:[colorLineHack]="{ item }">
+              <v-chip
+                :color="getColorLineColorByValue(item.colorLine)"
+                v-if="item.colorLine"
+                dark
+              >
+                {{ item.colorLine.toUpperCase() }}
+              </v-chip>
+            </template>
+          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -57,8 +67,8 @@
 import camelcase from 'camelcase'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 
-import { fiveMinutes, getClubByValue, getFullname, getGradeByValue, isCordova } from '@/const'
-import { exportClubberCSV } from '@/lib/csv'
+import { fiveMinutes, getClubByValue, getColorLineColorByValue, getFullname, getGradeByValue, isCordova } from '@/const'
+import { createCSV } from '@/lib/csv'
 import { vxm } from '@/store'
 
 const tableName = 'directorClubbersList'
@@ -72,12 +82,26 @@ export default class extends Vue {
   }
 
   readonly isCordova = isCordova
+  readonly colorLineHack = 'item.colorLine'
+  readonly getColorLineColorByValue = getColorLineColorByValue
 
-  readonly headers = [
-    { text: 'Name', value: 'clubber.fullName' },
-    { text: 'Grade', value: 'clubber.gradeName', groupable: true },
-    { text: 'Leader', value: 'clubber.leaderName', groupable: true }
-  ]
+  get headers () {
+    let headers = [
+      { text: 'Name', value: 'fullName' },
+      { text: 'Grade', value: 'gradeName', groupable: true },
+      { text: 'Leader', value: 'leaderName', groupable: true }
+    ]
+
+    if (vxm.user.club === 'b') {
+      headers = [
+        ...headers.slice(0, 2),
+        { text: 'Color', value: 'colorLine', groupable: true },
+        ...headers.slice(2)
+      ]
+    }
+
+    return headers
+  }
 
   get clubName () {
     return getClubByValue(vxm.user.club)
@@ -88,12 +112,10 @@ export default class extends Vue {
       .filter(record => record.clubber.club === vxm.user.club)
       .map(record => ({
         cid: record.cid,
-        clubber: {
-          ...record.clubber,
-          fullName: getFullname(record.clubber),
-          gradeName: getGradeByValue(record.clubber.grade),
-          leaderName: this.getLeaderName(record.clubber.leader)
-        }
+        ...record.clubber,
+        fullName: getFullname(record.clubber),
+        gradeName: getGradeByValue(record.clubber.grade),
+        leaderName: this.getLeaderName(record.clubber.leader)
       }))
   }
 
@@ -125,8 +147,22 @@ export default class extends Vue {
 
   download () {
     const club = camelcase(this.clubName.replace('\'', '').replace('&', ' and '), { pascalCase: true })
-    const clubbers = vxm.clubbers.clubbersList.filter(record => record.clubber.club === vxm.user.club)
-    exportClubberCSV(clubbers, club + 'Clubbers.csv')
+    const data = this.clubbersList.map((clubber) => ({
+      'First Name': clubber.firstName,
+      'Last Name': clubber.lastName,
+      Club: clubber.club,
+      Birthday: clubber.birthday,
+      Gender: clubber.gender,
+      Grade: clubber.grade,
+      Leader: clubber.leaderName,
+      'Color Line': clubber.colorLine,
+      'Parent Phone 1': (clubber.parents ?? [])[0] ?? '',
+      'Parent Phone 2': (clubber.parents ?? [])[1] ?? '',
+      'Parent Phone 3': (clubber.parents ?? [])[2] ?? '',
+      'Parent Phone 4': (clubber.parents ?? [])[3] ?? ''
+    }))
+
+    createCSV(data, club + 'Clubbers.csv')
   }
 
   @Watch('tableState', { deep: true })

@@ -26,6 +26,12 @@
                   v-model="clubber.leader"
                   :items="leaderSelect"
                 ></v-select>
+                <v-select
+                  v-if="clubber.club === 'b'"
+                  label="Color Line"
+                  v-model="clubber.colorLine"
+                  :items="colorLineSelect"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -88,7 +94,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import CubbiesBookFullDetails from '@/components/partials/cubbiesBookFullDetails.vue'
 import SparksBookFullDetails from '@/components/partials/sparksBookFullDetails.vue'
 import TNTBookFullDetails from '@/components/partials/tntBookFullDetails.vue'
-import { getFullname, getGradeByValue, oneHour } from '@/const'
+import { colorLineSelect, getFullname, getGradeByValue, oneHour } from '@/const'
 import { vxm } from '@/store'
 
 @Component({
@@ -100,6 +106,8 @@ import { vxm } from '@/store'
 })
 export default class extends Vue {
   @Prop() readonly cid!: string
+
+  readonly colorLineSelect = colorLineSelect
 
   loading = false
 
@@ -157,7 +165,7 @@ export default class extends Vue {
     this.$router.go(-1)
   }
 
-    @Watch('clubber', { deep: true })
+  @Watch('clubber', { deep: true })
   async onClubberChanged (clubber: Clubber) {
     await vxm.clubbers.updateClubber({ cid: this.cid, clubber: { ...clubber, parents: [...clubber.parents ?? []] } })
   }

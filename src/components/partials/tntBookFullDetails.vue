@@ -45,6 +45,14 @@
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
+      <v-col cols="auto" class="pt-0" align-self="center" v-if="hasColorLine">
+        <div>Color Line</div>
+        <div class="text-h5">
+          <v-icon :color="colorLineColor">$circle</v-icon>
+          {{ colorLineName }}
+        </div>
+      </v-col>
+      <v-spacer v-if="hasColorLine"></v-spacer>
       <v-col cols="auto" class="pt-0" align-self="center">
         <div>Awana Bucks</div>
         <div class="text-h5">
@@ -112,7 +120,7 @@
 import { format, parse } from 'date-fns'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import { largeRadialSize, now, smallRadialSize } from '@/const'
+import { getColorLineByValue, getColorLineColorByValue, largeRadialSize, now, smallRadialSize } from '@/const'
 import { tntBookDates, tntBookImg, tntBookSchedule, tntBucksEarned, tntGoldsCompleted, tntKeyForDate, tntPropertyColor, tntPropertyIcon, tntSectionLabel, tntSectionProperties, tntSectionsCompleted, tntSectionSkipReview, tntSilversCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
@@ -170,6 +178,18 @@ export default class extends Vue {
 
   get bucksEarned () {
     return tntBucksEarned(this.record.book)
+  }
+
+  get hasColorLine () {
+    return typeof this.record.clubber.colorLine === 'string'
+  }
+
+  get colorLineColor () {
+    return getColorLineColorByValue(this.record.clubber.colorLine)
+  }
+
+  get colorLineName () {
+    return this.record.clubber.colorLine ? getColorLineByValue(this.record.clubber.colorLine) : ''
   }
 
   getValue (section: keyof TnTBook, propertyName: keyof TnTBookSection) {

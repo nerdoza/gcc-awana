@@ -60,6 +60,14 @@ interface Clubber {
   club: Club
   leader?: string
   parents?: string[]
+  colorLine?: ColorLine
+}
+
+declare enum ColorLine {
+  Red = 'r',
+  Blue = 'b',
+  Green = 'g',
+  Yellow = 'y'
 }
 
 interface ClubberBookBase {

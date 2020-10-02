@@ -84,7 +84,8 @@ export default new Vuetify({
       apple: icon('fad', 'apple-alt'),
       wip: icon('fad', 'user-hard-hat'),
       buck: icon('fad', 'money-bill-wave'),
-      card: icon('fad', 'id-card')
+      card: icon('fad', 'id-card'),
+      circle: icon('fas', 'circle')
     }
   }
 })

@@ -38,6 +38,7 @@ export const exportClubberCSV = (records: ClubberRecord[], fileName: string) => 
     Birthday: record.clubber.birthday,
     Gender: record.clubber.gender,
     Grade: record.clubber.grade,
+    Leader: record.clubber.leader,
     'Parent Phone 1': (record.clubber.parents ?? [])[0] ?? '',
     'Parent Phone 2': (record.clubber.parents ?? [])[1] ?? '',
     'Parent Phone 3': (record.clubber.parents ?? [])[2] ?? '',
