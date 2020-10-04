@@ -5,22 +5,32 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <template v-for="(club, index) in clubs">
-      <v-divider :key="'divider-' + index" class="mx-2 my-2" v-if="index > 0"></v-divider>
+      <v-divider
+        :key="'divider-' + index"
+        class="mx-2 my-2"
+        v-if="index > 0"
+      ></v-divider>
       <v-list-item :key="'list-' + index">
         <v-list-item-avatar :color="club.color">
           <v-img :src="club.img"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="headline">{{ club.name }}</v-list-item-title>
+          <v-list-item-title class="headline">{{
+            club.name
+          }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-card-text
         v-text="club.update.text"
-        style="white-space: pre-line;"
+        style="white-space: pre-line"
         :key="index"
         class="pt-0 py-0"
       ></v-card-text>
-      <v-card-actions v-if="club.update.video" :key="'action-' + index" class="py-2">
+      <v-card-actions
+        v-if="club.update.video"
+        :key="'action-' + index"
+        class="py-2"
+      >
         <v-spacer></v-spacer>
         <v-btn color="primary" :href="club.update.video" target="_blank">
           <v-icon class="mr-2">$video</v-icon>Watch Video
@@ -41,7 +51,7 @@ export default class extends Vue {
 
   get clubs () {
     const clubs = []
-    if (this.update.general && this.update.general.text !== '' && this.update.general.video !== '') {
+    if (this.update.general && this.update.general.text !== '') {
       clubs.push({
         name: 'All Clubs',
         color: getClubColor('' as Club),
@@ -50,7 +60,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.cubbies && this.update.cubbies.text !== '' && this.update.cubbies.video !== '') {
+    if (this.update.cubbies && this.update.cubbies.text !== '') {
       clubs.push({
         name: 'Cubbies',
         color: getClubColor('c' as Club),
@@ -59,7 +69,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.sparks && this.update.sparks.text !== '' && this.update.sparks.video !== '') {
+    if (this.update.sparks && this.update.sparks.text !== '') {
       clubs.push({
         name: 'Sparks',
         color: getClubColor('s' as Club),
@@ -68,7 +78,7 @@ export default class extends Vue {
       })
     }
 
-    if (this.update.tnt && this.update.tnt.text !== '' && this.update.tnt.video !== '') {
+    if (this.update.tnt && this.update.tnt.text !== '') {
       clubs.push({
         name: 'T&T',
         color: getClubColor('b' as Club),
