@@ -1,7 +1,10 @@
 {
   "name": "gcc-awana-firebase",
   "version": "0.0.1",
+  "author": "Zachary Cardoza",
+  "description": "GCC Visalia Awana Club App",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "firebase emulators:start --export-on-exit=exports --import=exports",
     "export-users": "firebase auth:export exports/accounts.json --format=json",
