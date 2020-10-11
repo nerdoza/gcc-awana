@@ -1,4 +1,3 @@
-
 The MIT License
 
 Copyright (c) 2020 Zachary Cardoza https://zachcardoza.com
