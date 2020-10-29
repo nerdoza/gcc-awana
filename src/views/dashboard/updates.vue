@@ -31,9 +31,7 @@ export default class extends Vue {
     }
 
     async mounted () {
-      if (vxm.updates.sinceUpdate > oneHour || vxm.updates.isEmpty) {
-        await this.refreshData()
-      }
+      await this.refreshData()
     }
 
     async refreshData () {
