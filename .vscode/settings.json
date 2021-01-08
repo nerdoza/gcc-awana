@@ -19,13 +19,14 @@
   "typescript.format.insertSpaceAfterConstructor": true,
   "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
   "vetur.format.defaultFormatter.ts": "none",
-  "remote.WSL.fileWatcher.polling": true,
   "eslint.format.enable": true,
   "cSpell.words": [
+    "awana",
     "decamelize",
     "firestore",
     "puggles",
     "upsert",
+    "visalia",
     "vuetify",
     "vuex"
   ]
