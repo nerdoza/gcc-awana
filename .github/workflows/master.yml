@@ -59,9 +59,6 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: 14
-      
-      - name: Install AWS CLI
-        uses: chrislennon/action-aws-cli@v1.1
 
       - name: Set Secrets
         env:
