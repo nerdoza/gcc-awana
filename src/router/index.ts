@@ -4,7 +4,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import ClubberProgressCard from '@/components/cards/clubberProgressCard.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
-import AdminClubbersList from '@/views/admin/clubbersList.vue'
+import AdminClubberProgressList from '@/views/admin/clubberProgressList.vue'
+import AdminClubberRewardsList from '@/views/admin/clubberRewardsList.vue'
 import AdminClubberView from '@/views/admin/clubberView.vue'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
@@ -13,6 +14,7 @@ import Calendar from '@/views/dashboard/calendar.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
 import DirectorClubberEdit from '@/views/director/clubberEdit.vue'
+import DirectorClubberProgressList from '@/views/director/clubberProgressList.vue'
 import DirectorClubbersList from '@/views/director/clubbersList.vue'
 import DirectorUpdateCreate from '@/views/director/updateCreate.vue'
 import DirectorUpdateEdit from '@/views/director/updateEdit.vue'
@@ -143,9 +145,17 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'admin/clubbers',
-        name: 'AdminClubbersList',
-        component: AdminClubbersList,
+        path: 'admin/clubbers-rewards',
+        name: 'AdminClubberRewardsList',
+        component: AdminClubberRewardsList,
+        meta: {
+          title: 'Admin Tools'
+        }
+      },
+      {
+        path: 'admin/clubbers-progress',
+        name: 'AdminClubberProgressList',
+        component: AdminClubberProgressList,
         meta: {
           title: 'Admin Tools'
         }
@@ -188,6 +198,14 @@ const routes: RouteConfig[] = [
         path: 'director/clubbers',
         name: 'DirectorClubbersList',
         component: DirectorClubbersList,
+        meta: {
+          title: 'Director Tools'
+        }
+      },
+      {
+        path: 'director/clubbers-progress',
+        name: 'DirectorClubberProgressList',
+        component: DirectorClubberProgressList,
         meta: {
           title: 'Director Tools'
         }

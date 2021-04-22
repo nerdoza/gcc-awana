@@ -74,13 +74,23 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'AdminClubbersList' }">
+          <v-list-item :to="{ name: 'AdminClubberRewardsList' }">
             <v-list-item-icon>
               <v-icon class="fa-fw">$award</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
               <v-list-item-title>Clubber Rewards</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'AdminClubberProgressList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$progress</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Progress</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -113,6 +123,16 @@
 
             <v-list-item-content>
               <v-list-item-title>Clubber Management</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'DirectorClubberProgressList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$progress</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Progress</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>

@@ -63,9 +63,9 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import ImportClubber from '@/components/cards/importClubbersCard.vue'
 import { fiveMinutes, getClubByValue, getFullname, isCordova } from '@/const'
 import { createCSV } from '@/lib/csv'
-import { cubbiesBucksEarned } from '@/lib/cubbies'
-import { sparksBucksEarned } from '@/lib/sparks'
-import { tntBucksEarned } from '@/lib/tnt'
+import { cubbiesSectionsCompleted, cubbiesTotalSections } from '@/lib/cubbies'
+import { sparksSegmentsCompleted, sparksTotalSegmentsRequirementsPerPass } from '@/lib/sparks'
+import { tntSectionsCompleted, tntTotalSections } from '@/lib/tnt'
 import { vxm } from '@/store'
 
 const tableName = 'superClubbersList'
@@ -86,7 +86,7 @@ export default class extends Vue {
 
   readonly headers = [
     { text: 'Name', value: 'clubber.fullName' },
-    { text: 'Bucks', value: 'clubber.bucksEarned', groupable: true },
+    { text: 'Completion (%)', value: 'clubber.percentageCompleted', groupable: true },
     { text: 'Club', value: 'clubber.clubName', groupable: true }
   ]
 
@@ -98,16 +98,16 @@ export default class extends Vue {
 
   get clubbersList () {
     return vxm.clubbers.clubbersList.map(record => {
-      let bucksEarned = 0
+      let percentageCompleted = 0
       switch (record.book.type) {
         case 'c':
-          bucksEarned = cubbiesBucksEarned(record.book as CubbiesBook)
+          percentageCompleted = Math.round((cubbiesSectionsCompleted(record.book as CubbiesBook) / cubbiesTotalSections) * 100)
           break
         case 's':
-          bucksEarned = sparksBucksEarned(record.book as SparksBook)
+          percentageCompleted = Math.min(Math.round((sparksSegmentsCompleted(record.book as SparksBook) / sparksTotalSegmentsRequirementsPerPass) * 100), 100)
           break
         case 't':
-          bucksEarned = tntBucksEarned(record.book as TnTBook)
+          percentageCompleted = Math.round((tntSectionsCompleted(record.book as TnTBook) / tntTotalSections) * 100)
           break
       }
       return {
@@ -116,7 +116,7 @@ export default class extends Vue {
           ...record.clubber,
           fullName: getFullname(record.clubber),
           clubName: getClubByValue(record.clubber.club),
-          bucksEarned
+          percentageCompleted
         }
       }
     }
@@ -150,8 +150,7 @@ export default class extends Vue {
       'First Name': clubber.firstName,
       'Last Name': clubber.lastName,
       Club: clubber.club,
-      'Color Line': clubber.colorLine,
-      'Bucks Earned': clubber.bucksEarned
+      'Completion %': clubber.percentageCompleted
     }))
     createCSV(data, club + 'Clubbers.csv')
   }
