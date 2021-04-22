@@ -128,6 +128,7 @@ export default class extends Vue {
         }
         return {
           ...record.clubber,
+          cid: record.cid,
           fullName: getFullname(record.clubber),
           gradeName: getGradeByValue(record.clubber.grade),
           percentageCompleted
