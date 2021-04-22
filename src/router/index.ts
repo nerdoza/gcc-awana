@@ -4,10 +4,11 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import ClubberProgressCard from '@/components/cards/clubberProgressCard.vue'
 import { isWeb } from '@/const'
 import { vxm } from '@/store'
+import AdminClubbersList from '@/views/admin/clubbersList.vue'
+import AdminClubberView from '@/views/admin/clubberView.vue'
 import AuthStart from '@/views/authStart.vue'
 import AuthVerification from '@/views/authVerification.vue'
 import Dashboard from '@/views/dashboard.vue'
-import Admin from '@/views/dashboard/admin.vue'
 import Calendar from '@/views/dashboard/calendar.vue'
 import Updates from '@/views/dashboard/updates.vue'
 import User from '@/views/dashboard/user.vue'
@@ -142,9 +143,18 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: 'admin',
-        name: 'AdminTools',
-        component: Admin,
+        path: 'admin/clubbers',
+        name: 'AdminClubbersList',
+        component: AdminClubbersList,
+        meta: {
+          title: 'Admin Tools'
+        }
+      },
+      {
+        path: 'admin/clubbers/:cid',
+        name: 'AdminClubberView',
+        component: AdminClubberView,
+        props: true,
         meta: {
           title: 'Admin Tools'
         }

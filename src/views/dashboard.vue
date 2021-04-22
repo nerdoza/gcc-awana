@@ -63,15 +63,27 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item :to="{ name: 'AdminTools' }" v-if="user.admin">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$admin</v-icon>
-          </v-list-item-icon>
+        <v-list-group v-if="user.admin" :value="isDirOpen('Admin')">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$admin</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>Admin Tools</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Admin Tools</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'AdminClubbersList' }">
+            <v-list-item-icon>
+              <v-icon class="fa-fw">$award</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Clubber Rewards</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
 
         <v-list-group v-if="user.director" :value="isDirOpen('Director')">
           <template v-slot:activator>
