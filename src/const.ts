@@ -14,13 +14,13 @@ export const isWeb = !isCordova && !isElectron
 export const isProduction = process.env.NODE_ENV === 'production'
 export const isDevelopment = process.env.NODE_ENV === 'development'
 
-export const phoneNumberRegex = new RegExp(/^\+1\s\(\d{3}\)\s\d{3}-\d{4}$/)
+export const phoneNumberRegex = /^\+1\s\(\d{3}\)\s\d{3}-\d{4}$/
 export const phoneNumberMask = '+1 (###) ###-####'
 
-export const verificationCodeRegex = new RegExp(/^\d{6}$/)
+export const verificationCodeRegex = /^\d{6}$/
 export const verificationCodeMask = '######'
 
-export const birthdayRegex = new RegExp(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/)
+export const birthdayRegex = /^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d/
 export const birthdayMask = '##/##/####'
 
 export const oneMinute = 60000

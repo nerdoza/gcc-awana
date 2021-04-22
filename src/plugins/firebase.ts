@@ -1,4 +1,4 @@
-/* eslint-disable simple-import-sort/sort */
+/* eslint-disable simple-import-sort/imports */
 import { isCordova, isDevelopment } from '@/const'
 
 import * as firebase from 'firebase/app'
@@ -72,7 +72,7 @@ class FirebaseX {
     } else {
       try {
         await new Promise((resolve, reject) => {
-          this.firebaseCordova.signOutUser(() => resolve(), (error: string) => reject(new Error(error)))
+          this.firebaseCordova.signOutUser(() => resolve(undefined), (error: string) => reject(new Error(error)))
         })
       } catch (error) { }
     }
@@ -98,7 +98,7 @@ class FirebaseX {
             } else {
               await vxm.user.userSignedOut()
             }
-            resolve()
+            resolve(undefined)
           })()
         }, (error: string) => reject(new Error(error)))
       })
@@ -186,7 +186,7 @@ class FirebaseX {
             resolve(async (code: string) => {
               await new Promise((resolve, reject) => {
                 credential.code = code
-                this.firebaseCordova.signInWithCredential(credential, () => resolve(), (error: string) => reject(new Error(error)))
+                this.firebaseCordova.signInWithCredential(credential, () => resolve(undefined), (error: string) => reject(new Error(error)))
               })
             })
           }
@@ -201,7 +201,7 @@ class FirebaseX {
       return (await this.jsDB.collection(collection).doc(documentId).get())?.data()
     } else {
       return await new Promise((resolve) => {
-        this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), () => { resolve() })
+        this.firebaseCordova.fetchDocumentInFirestoreCollection(documentId, collection, (document: any) => resolve(document), () => { resolve(undefined) })
       })
     }
   }
@@ -221,7 +221,7 @@ class FirebaseX {
       return await this.jsDB.collection(collection).doc(documentId).set(document)
     } else {
       return await new Promise((resolve, reject) => {
-        this.firebaseCordova.setDocumentInFirestoreCollection(documentId, document, collection, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.setDocumentInFirestoreCollection(documentId, document, collection, () => resolve(undefined), (error: string) => reject(new Error(error)))
       })
     }
   }
@@ -231,7 +231,7 @@ class FirebaseX {
       return await this.jsDB.collection(collection).doc(documentId).update(document)
     } else {
       return await new Promise((resolve, reject) => {
-        this.firebaseCordova.updateDocumentInFirestoreCollection(documentId, document, collection, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.updateDocumentInFirestoreCollection(documentId, document, collection, () => resolve(undefined), (error: string) => reject(new Error(error)))
       })
     }
   }
@@ -241,7 +241,7 @@ class FirebaseX {
       return await this.jsDB.collection(collection).doc(documentId).delete()
     } else {
       return await new Promise((resolve, reject) => {
-        this.firebaseCordova.deleteDocumentFromFirestoreCollection(documentId, collection, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.deleteDocumentFromFirestoreCollection(documentId, collection, () => resolve(undefined), (error: string) => reject(new Error(error)))
       })
     }
   }
@@ -292,7 +292,7 @@ class FirebaseX {
         }
         this.firebaseCordova.fetchFirestoreCollection(collection, cordovaFilter, (documents: any) => resolve(documents), (error: string) => {
           if (error === 'No document found in collection') {
-            resolve()
+            resolve(undefined)
           } else {
             reject(new Error(error))
           }
@@ -307,7 +307,7 @@ class FirebaseX {
       await user?.updateProfile({ displayName: name })
     } else {
       await new Promise((resolve, reject) => {
-        this.firebaseCordova.updateUserProfile({ name: name }, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.updateUserProfile({ name: name }, () => resolve(undefined), (error: string) => reject(new Error(error)))
       })
     }
   }
@@ -318,7 +318,7 @@ class FirebaseX {
       await user?.updateEmail(email)
     } else {
       await new Promise((resolve, reject) => {
-        this.firebaseCordova.updateUserEmail(email, () => resolve(), (error: string) => reject(new Error(error)))
+        this.firebaseCordova.updateUserEmail(email, () => resolve(undefined), (error: string) => reject(new Error(error)))
       })
     }
   }

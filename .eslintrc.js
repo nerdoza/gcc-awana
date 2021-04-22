@@ -17,7 +17,7 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'simple-import-sort/sort': 'error',
+    'simple-import-sort/imports': 'error',
     'no-void': [
       'error',
       {
@@ -38,7 +38,8 @@ module.exports = {
       parser: 'vue-eslint-parser',
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.vue']
+        extraFileExtensions: ['.vue'],
+        createDefaultProgram: false
       },
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
