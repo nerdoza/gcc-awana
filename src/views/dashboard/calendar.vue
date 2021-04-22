@@ -38,7 +38,7 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>2021 - At Home (for now)</v-toolbar-title>
+            <v-toolbar-title>2021 - At Home (mostly)</v-toolbar-title>
           </v-toolbar>
           <v-container>
             <v-row>

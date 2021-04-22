@@ -12,7 +12,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import UpdateCard from '@/components/cards/updateCard.vue'
-import { oneHour, oneMonth } from '@/const'
+import { oneMonth } from '@/const'
 import { vxm } from '@/store'
 
 @Component({

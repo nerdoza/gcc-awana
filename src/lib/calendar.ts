@@ -8,6 +8,7 @@ const calendarUniqueDates: {[index: string]: {title: string, noClub?: true}} = {
   '12/30/2020': { title: 'Christmas Break', noClub: true },
   '01/06/2021': { title: 'Christmas Break', noClub: true },
   '03/31/2021': { title: 'Easter Break', noClub: true },
+  '05/05/2021': { title: 'Grand Prix' },
   '05/12/2021': { title: 'Award Night' }
 }
 
