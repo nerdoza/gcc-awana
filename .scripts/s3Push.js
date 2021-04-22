@@ -7,8 +7,8 @@ const cmd = require('node-cmd')
 // ]
 
 const cliCmds = [
-  'aws s3 sync --delete dist "s3://gccawana.com" --cache-control "no-cache, max-age=0" --content-type "text/html; charset=utf-8" --exclude "*" --include "*.html"',
-  'aws s3 sync --delete dist "s3://gccawana.com" --cache-control "no-cache, max-age=0" --exclude "*.html" --include "*"',
+  'aws s3 sync --region us-west-2 --delete dist "s3://gccawana.com" --cache-control "no-cache, max-age=0" --content-type "text/html; charset=utf-8" --exclude "*" --include "*.html"',
+  'aws s3 sync --region us-west-2 --delete dist "s3://gccawana.com" --cache-control "no-cache, max-age=0" --exclude "*.html" --include "*"',
 ]
 
 cliCmds.forEach(cliCmd => {
