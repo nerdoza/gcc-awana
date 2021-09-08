@@ -24,8 +24,8 @@ module.exports = {
       ]
     },
     name: 'GCC Awana',
-    themeColor: '#00bfa5',
-    msTileColor: '#00bfa5',
+    themeColor: '#7B1FA2',
+    msTileColor: '#7B1FA2',
     iconPaths: {
       favicon32: 'img/icons/favicon-32x32.png',
       favicon16: 'img/icons/favicon-16x16.png',

@@ -9,8 +9,8 @@
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
   <allow-intent href="sms:*"/>
-  <engine name="ios" spec="^6.1.0"/>
-  <engine name="android" spec="^9.0.0"/>
+  <engine name="ios" spec="^6.2.0"/>
+  <engine name="android" spec="^9.1.0"/>
   <platform name="ios">
     <preference name="UIWebViewBounce" value="false"/>
     <preference name="WKWebViewOnly" value="true"/>
@@ -41,12 +41,13 @@
     <icon height="152" src="res/icon/ios/icon-76@2x.png" width="152"/>
     <icon height="167" src="res/icon/ios/icon-167.png" width="167"/>
     <icon height="167" src="res/icon/ios/icon-83.5@2x.png" width="167"/>
-    <splash src="res/screen/ios/Default@2x~iphone~anyany.png"/>
-    <splash src="res/screen/ios/Default@2x~iphone~comany.png"/>
-    <splash src="res/screen/ios/Default@3x~iphone~anyany.png"/>
-    <splash src="res/screen/ios/Default@3x~iphone~comany.png"/>
-    <splash src="res/screen/ios/Default@2x~ipad~anyany.png"/>
-    <splash src="res/screen/ios/Default@2x~ipad~comany.png"/>
+    <splash src="res/screen/ios/screen-ipad-portrait.png"/>
+    <splash src="res/screen/ios/screen-ipad-portrait-2x.png"/>
+    <splash src="res/screen/ios/screen-iphone-568h-2x.png"/>
+    <splash src="res/screen/ios/screen-iphone-portrait.png"/>
+    <splash src="res/screen/ios/screen-iphone-portrait-2x.png"/>
+    <splash src="res/screen/ios/screen-iphone-portrait-667h.png"/>
+    <splash src="res/screen/ios/screen-iphone-portrait-736h.png"/>
   </platform>
   <platform name="android">
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -56,18 +57,19 @@
     <preference name="android-minSdkVersion" value="21"/>
     <preference name="SplashMaintainAspectRatio" value="true"/>
     <preference name="SplashShowOnlyFirstTime" value="false"/>
+    <preference name="AndroidXEnabled" value="true" />
     <icon density="ldpi" src="res/icon/android/ldpi.png"/>
     <icon density="mdpi" src="res/icon/android/mdpi.png"/>
     <icon density="hdpi" src="res/icon/android/hdpi.png"/>
     <icon density="xhdpi" src="res/icon/android/xhdpi.png"/>
     <icon density="xxhdpi" src="res/icon/android/xxhdpi.png"/>
     <icon density="xxxhdpi" src="res/icon/android/xxxhdpi.png"/>
-    <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png"/>
-    <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png"/>
-    <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png"/>
-    <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png"/>
-    <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png"/>
-    <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png"/>
+    <splash density="port-ldpi" src="res/screen/android/screen-ldpi-portrait.png"/>
+    <splash density="port-mdpi" src="res/screen/android/screen-mdpi-portrait.png"/>
+    <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png"/>
+    <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png"/>
+    <splash density="port-xxhdpi" src="res/screen/android/screen-xhdpi-portrait.png"/>
+    <splash density="port-xxxhdpi" src="res/screen/android/screen-xhdpi-portrait.png"/>
     <resource-file src="res/notification/android/notification_icon-mdpi.png" target="app/src/main/res/drawable-mdpi/notification_icon.png"/>
     <resource-file src="res/notification/android/notification_icon-hdpi.png" target="app/src/main/res/drawable-hdpi/notification_icon.png"/>
     <resource-file src="res/notification/android/notification_icon-xhdpi.png" target="app/src/main/res/drawable-xhdpi/notification_icon.png"/>
