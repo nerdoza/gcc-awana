@@ -15,7 +15,7 @@
                     <v-list-item v-for="(date, index) in dates[month]" :key="index">
                       <v-list-item-avatar>
                         <v-avatar
-                          :color="isNextClub(date.date) ? 'amber' : date.noClub ? 'grey' : 'primary'"
+                          :color="isNextClub(date.date) ? 'orange' : date.noClub ? 'grey' : 'primary'"
                         >
                           <span class="white--text headline" v-text="date.day"></span>
                         </v-avatar>
