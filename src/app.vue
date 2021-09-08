@@ -13,7 +13,7 @@ import { vxm } from '@/store'
 @Component
 export default class extends Vue {
   created () {
-    if (vxm.user.hasLaunched) {
+    if (this.$router.currentRoute.name !== 'Calendar' && vxm.user.hasLaunched) {
       this.$router.push({ name: 'Calendar' })
     }
   }
