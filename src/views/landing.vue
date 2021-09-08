@@ -15,7 +15,7 @@
                   </v-col>
                 </v-row>
                 <h1 class="mb-4">Welcome</h1>
-                <p>This app is meant for parents and leaders of Grace Community Church Visalia Awana program. Track book progress, calculate clubber's points, and receive important instructions from the Awana directors all in one place.</p>
+                <p>This app is meant for parents and leaders of Grace Community Church Visalia Awana program. This app was originally built in response to the difficulties presented during the 2020-2021 Awana year. In person club has now resumed and this app has been modified to function as a calendar and event notification app.</p>
                 <p>If you have any questions, please contact the Church offices and ask for Brittany Kalmink.</p>
               </v-card-text>
               <v-container class="pt-0">
@@ -29,7 +29,7 @@
                   </v-col>
                   <v-spacer />
                   <v-col cols="auto" align="right">
-                    <v-btn color="primary" @click="getStarted()">Get Started</v-btn>
+                    <v-btn color="primary" @click="enter()">Enter</v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -44,10 +44,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import { vxm } from '@/store'
+
 @Component
 export default class extends Vue {
-  getStarted () {
-    this.$router.push({ name: 'AuthStart' })
+  async enter () {
+    await vxm.user.setHasLaunched()
+    this.$router.push({ name: 'Calendar' })
   }
 }
 </script>

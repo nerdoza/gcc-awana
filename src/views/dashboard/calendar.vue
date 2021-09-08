@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Fall 2020 - At Home</v-toolbar-title>
+            <v-toolbar-title>Fall 2021</v-toolbar-title>
           </v-toolbar>
           <v-container>
             <v-row>
@@ -15,7 +15,7 @@
                     <v-list-item v-for="(date, index) in dates[month]" :key="index">
                       <v-list-item-avatar>
                         <v-avatar
-                          :color="isNextClub(date.date) ? 'amber' : date.noClub ? 'grey' : 'primary'"
+                          :color="isNextClub(date.date) ? 'orange' : date.noClub ? 'grey' : 'primary'"
                         >
                           <span class="white--text headline" v-text="date.day"></span>
                         </v-avatar>
@@ -26,6 +26,7 @@
                           :class="{'font-weight-bold': date.title !== '' , 'grey--text': date.noClub}"
                         ></v-list-item-title>
                         <v-list-item-subtitle v-if="date.noClub">No Club</v-list-item-subtitle>
+                        <v-list-item-subtitle v-else-if="date.subText">{{ date.subText }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -38,21 +39,10 @@
       <v-col cols="12" sm="10" md="8" lg="6" xl="4" align-self="start">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>2021 - At Home (mostly)</v-toolbar-title>
+            <v-toolbar-title>Spring 2022</v-toolbar-title>
           </v-toolbar>
           <v-container>
             <v-row>
-              <v-col cols="12">
-                <v-card>
-                  <v-card-title>
-                    <v-icon class="mr-3">$clubbers</v-icon>About Spring Club
-                  </v-card-title>
-                  <v-card-text>
-                    The new plan is to continue with at home club nights until further notice. Any changes will be made available through the
-                    <router-link :to="{name: 'Updates'}">Weekly Updates</router-link>&nbsp;page.
-                  </v-card-text>
-                </v-card>
-              </v-col>
               <v-col cols="12" sm="6" v-for="(month, index) in springMonths" :key="index">
                 <v-card>
                   <v-card-title class="pb-1" v-text="month"></v-card-title>
@@ -69,6 +59,7 @@
                           :class="{'font-weight-bold': date.title !== '', 'grey--text': date.noClub}"
                         ></v-list-item-title>
                         <v-list-item-subtitle v-if="date.noClub">No Club</v-list-item-subtitle>
+                        <v-list-item-subtitle v-else-if="date.subText">{{ date.subText }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -89,10 +80,10 @@ import { getDates, isNextClub } from '@/lib/calendar'
 
 @Component
 export default class extends Vue {
-  readonly fallDefaultTitle = 'Online Club'
+  readonly fallDefaultTitle = 'Regular Club'
   readonly fallMonths = ['September', 'October', 'November', 'December']
 
-  readonly springDefaultTitle = 'Online Club'
+  readonly springDefaultTitle = 'Regular Club'
   readonly springMonths = ['January', 'February', 'March', 'April', 'May']
 
   readonly isNextClub = isNextClub

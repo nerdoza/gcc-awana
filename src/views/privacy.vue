@@ -88,14 +88,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import { vxm } from '@/store'
-
 @Component
 export default class extends Vue {
-  user = vxm.user
-
   close () {
-    this.$router.push(this.user.defaultRoute)
+    this.$router.back()
   }
 }
 </script>

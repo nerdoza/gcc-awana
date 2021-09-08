@@ -1,6 +1,6 @@
 {
   "name": "gcc-awana",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "author": "Zachary Cardoza",
   "description": "GCC Visalia Awana Club App",
   "private": true,

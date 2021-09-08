@@ -1,10 +1,7 @@
 import './registerServiceWorker'
-import './plugins/veeValidate'
-import './plugins/firebase'
 import './filters'
 
 import Vue from 'vue'
-import { sync } from 'vuex-router-sync'
 
 import App from './app.vue'
 import vuetify from './plugins/vuetify'
@@ -20,8 +17,6 @@ Vue.config.warnHandler = (message, vm, componentTrace) => {
     console.error(message + componentTrace)
   }
 }
-
-sync(store, router)
 
 new Vue({
   router,
