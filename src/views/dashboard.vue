@@ -2,25 +2,6 @@
   <v-app class="dashboard">
     <v-navigation-drawer v-model="drawer" width="320" app temporary>
       <v-list nav>
-        <v-list-item :to="{ name: 'User' }">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$user</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ user.fullName }}</v-list-item-title>
-        </v-list-item>
-
-        <v-divider></v-divider>
-
-        <v-list-item :to="{ name: 'Updates' }">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$weeklyUpdate</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>Weekly Updates</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
         <v-list-item :to="{ name: 'Calendar' }">
           <v-list-item-icon>
             <v-icon class="fa-fw">$calendar</v-icon>
@@ -30,164 +11,6 @@
             <v-list-item-title>Club Calendar</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-        <v-list-item :to="{ name: 'ParentClubbersList' }">
-          <v-list-item-icon>
-            <v-icon class="fa-fw">$child</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>My Clubbers</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-group v-if="user.leader" :value="isDirOpen('Leader')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$leader</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Leader Tools</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'LeaderClubbersList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$clubbers</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>My Group</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group v-if="user.admin" :value="isDirOpen('Admin')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$admin</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Admin Tools</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'AdminClubberRewardsList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$award</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Clubber Rewards</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'AdminClubberProgressList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$progress</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Clubber Progress</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group v-if="user.director" :value="isDirOpen('Director')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$director</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Director Tools</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'DirectorUpdatesList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$weeklyUpdate</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Weekly Updates</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'DirectorClubbersList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$clubbers</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Clubber Management</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'DirectorClubberProgressList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$progress</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Clubber Progress</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group v-if="user.super" :value="isDirOpen('Super')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$superUser</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Super User Tools</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'NotificationsList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$notification</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Notifications</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'SuperUpdatesList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$weeklyUpdate</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Weekly Updates</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'AppUsersList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$users</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>App User Management</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'SuperClubbersList' }">
-            <v-list-item-icon>
-              <v-icon class="fa-fw">$clubbers</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Clubber Management</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
       </v-list>
 
       <template v-slot:append>
@@ -221,7 +44,6 @@
         </v-slide-x-transition>
       </v-container>
     </v-main>
-    <notification></notification>
   </v-app>
 </template>
 
@@ -229,12 +51,9 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import HelpCard from '@/components/cards/helpCard.vue'
-import Notification from '@/components/notification.vue'
-import { vxm } from '@/store'
 
 @Component({
   components: {
-    Notification,
     HelpCard
   }
 })
@@ -242,20 +61,8 @@ export default class extends Vue {
   drawer = false
   help = false
 
-  user = vxm.user
-
-  mounted () {
-    if (!vxm.system.tutorialViewed) {
-      this.$router.push({ name: 'Tutorial' })
-    }
-  }
-
   get title () {
-    return this.$store.state.route.meta.title
-  }
-
-  isDirOpen (dirName: string) {
-    return (this.$store.state.route.name as string).startsWith(dirName)
+    return this.$router.currentRoute.meta.title
   }
 }
 </script>
